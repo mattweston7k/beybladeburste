@@ -27,7 +27,7 @@ const DB = {
         }
     },
     cache(handler) {
-        fetch('/staticVCRV/update/names.json').then(r => r.json()).then(j => DB.put('json', ['names', j]));
+        fetch('/update/names.json').then(r => r.json()).then(j => DB.put('json', ['names', j]));
         DB.fetch(groups).then(grouped => {
             const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
             grouped.forEach((json, i) => {
@@ -46,7 +46,7 @@ const DB = {
         }).then(handler);
     },
     fetch(groups) {
-        return Promise.all(groups.map(g => fetch(`/staticVCRV/update/${g}.json`).then(r => r.status === 200 ? r.json() : null)));
+        return Promise.all(groups.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? r.json() : null)));
     },
     put(store, [key, value], tran) {
         (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key);
