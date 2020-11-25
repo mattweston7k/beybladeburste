@@ -23,7 +23,7 @@ const DB = {
         }
         open.onsuccess = () => {
             DB.db = open.result;
-            return firstTime ? null : handler();
+            return firstTime || !handler ? null : handler();
         }
     },
     cache(handler) {
