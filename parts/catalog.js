@@ -2,14 +2,14 @@ function Catalog(part) {
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = part;
     this.bg = {
         heavy: deck ? 'fusion' : null,
-        set setting(classes) {
+        set heaviness(classes) {
             if (this.heavy !== null) return;
             this.heavy = classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : '';
         },
         get url() {
             const query = [['hue', this.hue], ['heavy', this.heavy]].filter(([p, v]) => v !== null);
             const mode = Q('html').classList.contains('day') ? 'day' : 'night'
-            return `/parts/require/${mode}.svg?` + query.map(q => q.join('=')).join('&') + (type ? `#${type + stat.length}` : ``)
+            return `/parts/require/${mode}.svg?` + query.map(q => q.join('=')).join('&') + (type ? `#${type + (stat?.length || 5)}` : ``)
         },
         get hue() {
             return {
@@ -34,7 +34,7 @@ function Catalog(part) {
         }
     }
     this.code = {
-        symbol() {
+        get symbol() {
             let code = sym
                 .replace(/^([dlr]α).$/, '$1')
                 .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
@@ -44,14 +44,14 @@ function Catalog(part) {
                 code = '';
             else if (sym == 'sΩ')
                 code = "Ω";
-            else if (sym == 'Δ' && comp == 'layer5c')
+            else if (comp == 'layer5c' && sym == 'Δ')
                 code = "D";
             else if (comp == 'layer6r' && sym[0] != '+')
                 code = code[0];
             const cl = code.match(/^[^′<]+/)[0].length == 1 ? sym.charCodeAt(0) > 18000 ? 'kanji' : 'single' : '';
             return `<div class='symbol'><h2${cl ? ` class='${cl}'` : ``}>${code}</h2></div>`;
         },
-        name() {
+        get name() {
             if (!names) return '';
             names = {
                 eng: comp == 'layer6s' ? `${sym[0]}-${Parts.types[sym[1]]}` : names.eng || '',
@@ -72,18 +72,18 @@ function Catalog(part) {
                     <h4 class='can'>${names.can}</h4>
                     <h3 class='eng'>${names.eng}</h3>
                 </div>
-                <div class='bottom' ${len > 0 ? `style='--space:${len * .045}'` : ''}>
+                <div class='bottom'${len > 0 ? ` style='--space:${len * .045}'` : ''}>
                     <h3 class='jap'>${names.jap}</h3>
                     <h3 class='chi'>${names.chi}</h3>
                 </div>`;
             } else {
                 len = names.jap.length + (names.chi ? names.chi.length + 2 : 0) + names.eng.length / 2 - (names.eng.match(/[IJfijlt]/g) || []).length / 4 - 13.25;
                 code = `
-                <div class='left' ${len > 0 ? `style='--space:${Math.min(len, 2)}'` : ''}>
+                <div class='left'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
                     <h4 class='can'>${names.can}</h4>
                     <h3 class='jap'>${names.jap}</h3>
                 </div>
-                <div class='right' ${len > 0 ? `style='--space:${Math.min(len, 2)}'` : ''}>
+                <div class='right'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
                     <h3 class='eng'>${names.eng}</h3>
                     <h3 class='chi'>${names.chi}</h3>
                 </div>`;
@@ -91,11 +91,13 @@ function Catalog(part) {
             return `<div class='name'>${code}</div>`;
         },
         content(classes) {
+            const code = `<figure class='${(attr || []).join(' ')}' style='background:url("/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png")'></figure>`;
+            if (!stat)
+                return code;
             const terms = ['攻擊力', '防禦力', '持久力', classes.includes('grams') && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
             if (typeof stat[3] == 'string')
                 stat[3] = stat[3].replace(/克$/, '<small>克</small>');
-            return `
-            <figure class='${(attr || []).join(' ')}' style='background:url("/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png")'></figure>
+            return code + `
             <dl class='stat-${stat.length} ${classes.join(' ')}'>` +
                 stat.map((s, i) => s === null ? '' : `<div><dt>${terms[i]}<dd>${s}</div>`).join('') + `
             </dl>`;
@@ -106,12 +108,12 @@ function Catalog(part) {
         const descF = group => ({
             dash: `內藏強化彈簧的【${sym.replace('′', '')}】driver。`,
             high: `高度增加的【${sym.replace(/^H/, '')}】driver。`
-        })[group];
+        })[group] || desc || '';
         part.innerHTML = `
             <img src='${this.bg.url}'>` + (attr.rel ? `
-            <div class='info'>` + this.code.symbol() + this.code.name() + `</div>
+            <div class='info'>` + this.code.symbol + this.code.name + `</div>
             <div class='content'>` + this.code.content(this.weight.classes) + `</div>
-            <div class='desc'>` + (descF(group) || desc) + `</div>` : ``);
+            <div class='desc'>` + descF(group) + `</div>` : ``);
         Object.entries(attr).forEach(([a, v]) => v ? part[a] = v : null);
         return part;
     }
@@ -125,11 +127,11 @@ function Catalog(part) {
     if (!/^(dash|high)$/.test(group) && (/(メタル|プラス)/.test(names.jap) || names.jap?.length >= 10))
         classes.push('long');
 
-    this.bg.setting = this.weight.classify(this.bg);
+    this.bg.heaviness = this.weight.classify(this.bg) || [];
 
     return Q('.catalog').appendChild(element({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
-        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `href=/products/?${/^\+/.test(sym) ? 'more' : comp}=` + encodeURIComponent(sym),
+        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=` + encodeURIComponent(sym),
         rel: group,
         classList: classes.join(' ')
     }));

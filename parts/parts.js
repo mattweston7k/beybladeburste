@@ -2,10 +2,11 @@ const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : doc
 const Parts = {
     group: window.location.search.substring(1).split('&').map(q => q.split('=')).find(([p, v]) => p == 'g')?.[1],
     detach({sym, comp, ...part}) {
+        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
         return {...part, names: part.names?.can ? {can: part.names.can} : {}};
     },
     attach([sym, comp], part) {
-        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym] || ['', '', ''];
+        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
         return {...part, sym: sym, comp: comp};
     },
     load() {

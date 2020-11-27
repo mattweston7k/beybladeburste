@@ -13,8 +13,7 @@ const DB = {
         return open.transaction;
     },
     open(handler) {
-        if (DB.db)
-            return handler();
+        if (DB.db) return handler();
         let firstTime = false;
         const open = indexedDB.open('db', 1);
         open.onupgradeneeded = () => {
@@ -27,7 +26,7 @@ const DB = {
         }
     },
     cache(handler) {
-        fetch('/update/names.json').then(r => r.json()).then(j => DB.put('json', ['names', j]));
+        fetch('/row.js/update/names.json').then(r => r.json()).then(j => DB.put('json', ['names', j]));
         DB.fetch(groups).then(grouped => {
             const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
             grouped.forEach((json, i) => {
@@ -45,7 +44,7 @@ const DB = {
         }).then(handler);
     },
     fetch(groups) {
-        return Promise.all(groups.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? r.json() : null)));
+        return Promise.all(groups.map(g => fetch(`/row.js/update/${g}.json`).then(r => r.status === 200 ? r.json() : null)));
     },
     put(store, [key, value], tran) {
         (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key);
@@ -68,7 +67,7 @@ const DB = {
                 const cursor = ev.target.result;
                 if (!cursor)
                     return Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))).then(([order, info]) => {
-                        order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || sym || {comp: group}));
+                        order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || {sym: sym, group: group}));
                         info.onsuccess = () => callback(info.result);
                     });
                 const [sym, comp] = cursor.primaryKey.split('.');
