@@ -33,8 +33,7 @@ const DB = {
             grouped.forEach((json, i) => {
                 if (!json) return;
                 const {info, parts} = json;
-                if (info)
-                    DB.put('html', [groups[i], info], tran);
+                info ? DB.put('html', [groups[i], info], tran) : null;
                 DB.put('order', [groups[i], parts.map(part => part?.sym || part)], tran);
                 parts.filter(part => part && typeof part == 'object').forEach(part =>
                     DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
@@ -59,16 +58,19 @@ const DB = {
         const handler = () => DB.get('json', 'names', tran).onsuccess = ev => names = ev.target.result;
         DB.open(handler);
     },
-    getParts(group, callback) {
+    getParts(group, callback = r => console.log(r)) {
         const handler = () => {
-            const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
+            const tran = DB.db.transaction(['json', 'order', 'html']);
             if (!names)
                 DB.getNames(tran);
             const parts = {};
             tran.objectStore('json').index('group').openCursor(group).onsuccess = ev => {
                 const cursor = ev.target.result;
                 if (!cursor)
-                    return Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))).then(reqs => callback(reqs, parts));
+                    return Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))).then(([order, info]) => {
+                        order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || sym || {comp: group}));
+                        info.onsuccess = () => callback(info.result);
+                    });
                 const [sym, comp] = cursor.primaryKey.split('.');
                 parts[sym] = Parts.attach([sym, comp], cursor.value);
                 cursor.continue();

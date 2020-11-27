@@ -8,12 +8,9 @@ const Parts = {
         [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym] || ['', '', ''];
         return {...part, sym: sym, comp: comp};
     },
-    async load() {
+    load() {
         Parts.before();
-        DB.getParts(Parts.group, ([order, info], parts) => {
-            order.onsuccess = ev => ev.target.result.forEach(sym => Catalog(parts[sym] || sym || {comp: Parts.group}));
-            info.onsuccess = ev => Parts.after(ev.target.result);
-        });
+        DB.getParts(Parts.group, Parts.after);
     },
     before() {
         Tools.filter(Parts.group);
@@ -22,6 +19,7 @@ const Parts = {
     },
     after(info) {
         info ? Q('details article').innerHTML = info : Q('details').hidden = true;
+        console.log(document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length)
         //Q('main h5').innerHTML = '　';
         Parts.target();
         //Parts.count();
@@ -30,7 +28,7 @@ const Parts = {
         if (document.querySelectorAll('.catalog>a').length < 28)
             Q('label[for=fixed]').remove();
         Q('nav .parts data').value = document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length;
-        if (Parts.group == 'driver3' || Parts.group == 'dash')
+        if (/^(driver3|dash)$/.test(Parts.group))
             Q('nav .parts data').setAttribute('data-extra', '+4');
     },
     target() {
@@ -90,8 +88,7 @@ const Tools = {
             Q('nav .mag').insertAdjacentHTML('beforeend', [...Array(level).keys()].map(i => `<label for='mag${i + 1}'></label>`).join(''));
         }
         buttons();
-        if (window.innerWidth > 630)
-            slider();
+        window.innerWidth > 630 ? slider() : null;
         window.resize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
     },
     ruler(group) {
