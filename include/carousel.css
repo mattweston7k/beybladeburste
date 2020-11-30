@@ -1,0 +1,76 @@
+main {
+    overflow:hidden; }
+input,menu {
+    display:none; }
+ol,menu {
+    list-style:none;
+    padding:0;margin:0;
+    position:relative;
+}
+ol li {
+    position:absolute; }
+ol li img {
+    opacity:0.5;transform:scale(0.8);
+    pointer-events:none;
+}
+ol li[is] img {
+    opacity:1;transform:scale(1);
+    transition:transform 1s 0.75s,opacity 1s;
+    pointer-events:auto;
+}
+ol,ol li,ol li img {
+    width:100%;
+    transition:1s;will-change:transform; }
+
+@media (max-width:799px) {
+    section {
+        margin:1.5em 0; }
+    ol {
+        padding-bottom:68%; }
+    ol li {
+        left:calc(var(--index)*100%);
+        padding:0 0.1em;
+        transform:translateX(calc(var(--checked)*-100%)); }
+    main menu {
+        display:flex; }
+    main menu li {
+        width:calc(100%/var(--amount) - 1%); }
+    main menu label {
+        height:4em; }
+}
+@media (min-width:800px) {
+    section {
+        perspective:1500px;
+        margin:0 auto 70px auto;
+        --screen:100vw;
+        --width:calc(740/800*var(--screen));
+        --extend:calc((140*var(--amount) - 160)*var(--screen)/1000);
+        width:var(--width);height:calc(0.625*var(--width));
+        perspective-origin:50% calc(500px + var(--screen)/2 - 30px*var(--amount));
+        -webkit-perspective-origin:50% calc(500px + var(--screen)/2 - 30px*var(--amount)); }
+    ol {
+        --spin:calc(360deg/var(--amount)*(var(--checked) - 1));
+        transform:translateZ(calc(-1*var(--extend))) rotateY(calc(-1*var(--spin)));
+        transform-style:preserve-3d; }
+    ol li {
+        --position:calc(360deg/var(--amount)*(var(--index) - 1));
+        transform:rotateY(var(--position)) translateZ(var(--extend)); }
+    nav menu.carousel {
+        display:flex; }
+    nav menu.carousel label {
+        margin:0 .2em; }
+}
+@media (min-width:1200px) {
+    section {--screen:1200px;} }
+menu {
+    padding:0;margin:.5em auto;
+    justify-content:space-evenly; }
+menu label {
+    display:flex;justify-content:center;align-items:center;
+    height:3em;
+    border-radius:0.5em;border:0.1em solid #BBB;
+    padding:0 0.3em; }
+menu li[is] label {
+    border-color:var(--theme); }
+label img {
+    height:2.35rem; }

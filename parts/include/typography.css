@@ -1,0 +1,279 @@
+/*symbol spacing*/
+h2 {
+    --adj:0em;
+    line-height:calc(1.3em + var(--adj));
+}
+h2.kanji {
+    --adj:.15em; }
+:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
+    --adj:.13em; }
+:-webkit-any(#W) h2 {
+    --adj:.05em; }
+:-webkit-any(#α,#β) h2 {
+    --adj:-.1em; }
+    
+:-webkit-any(#SgV) h2 {
+    padding-right:.2em;
+}
+a[id^='1']:not([id='11']):not(.single) h2,
+:-webkit-any(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
+#dC,#dF,#oE,#eF,#RL,#ML,#HK,#GPr) h2 {
+    padding-right:.05em;
+}
+:-webkit-any(.layer[id$='2'],#Hn,#Op,#Rb,#Sp) h2 {
+    padding-right:0;
+}
+:-webkit-any(#Cn,#Om,#Sw,#Wd,#Wh,a[id='00'],
+#S2,#V2,#W2,#aB,#kD,
+#zA,#aH,#Db,#SP,#BP,#GD,#WB) h2 {
+    padding-right:0;
+    padding-left:.03em;
+}
+:-webkit-any(#Ab,#Tw,#Vn,#Ym,#Zn,
+#A2,#J2,#X2,#Y2,#Z2) h2 {
+    padding-right:0;
+    padding-left:.05em;
+}
+
+h2:not(.single)::first-letter {
+    letter-spacing:0em;
+}
+:-webkit-any(#Ab,#Dr,#Gn,#Hy,#Hr,#Kp,#Rb,#Rg,#Sp,#Sw,#Vn,#αn,
+#B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,
+#oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP,#GP,#RU) h2::first-letter {
+    letter-spacing:-.025em;
+}
+:-webkit-any(#Wh,a[id^='1']:not(.single),a[id$=′]:not([rel=high]),
+a[id='2D'],a[id='2B'],.driver[id^='+'],
+#M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,
+#gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,#GPr,#HK,#ML,
+a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
+    letter-spacing:-.05em !important;
+}
+:-webkit-any(#Hn,#Mb,#Mr,#Op,#Wd,a[id$=m],#GPr,
+#mG,#SgV) h2::first-letter {
+    letter-spacing:-.075em;
+}
+:-webkit-any(#Om,a[id='1′']) h2::first-letter {
+    letter-spacing:-.1em;
+}
+:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
+    letter-spacing:-.03em;
+    margin-left:-.07em;margin-right:.07em;
+}
+#GPr h2 {
+    letter-spacing:-.05em;
+    padding-right:.1em;
+}
+#SgV h2 {
+    letter-spacing:-.12em;
+}
+a[id$='+'] h2 {
+    padding-left:.1em;
+}
+#Hy2 h2 {
+    margin-left:.1em;
+}
+:-webkit-any(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 {
+    letter-spacing:-.03em;
+    margin-left:var(--left);
+}
+:-webkit-any(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 sup {
+    line-height:.3em;
+}
+a[id$='2'].layer6c h2 sup {
+    line-height:.7em;
+}
+:-webkit-any(a[id^=DC],a[id^=DZ],#DRF,#Lc2) h2 sup {
+    margin-left:.03em;
+}
+#GDV h2 sup {
+    margin-left:-.03em;
+}
+a[id^=DG],a[id^=DC],a[id^=DR],#GDV {
+    --left:.1em; }
+a[id^=DZ] {
+    --left:.15em; }
+    
+a[id$='+'] sup {
+    font-size: 0.55em;
+    margin-left: -0.2em;
+    vertical-align: 1em;
+    line-height:.95em;
+}
+#∞L sup {
+    font-size: 0.5em;
+    margin-left: -0.3em;
+    vertical-align: 1.15em;
+    line-height:0;
+}
+
+/*text spacing*/
+.catalog>a {
+    --m:-0.5em;--can:-0.7em;
+}
+.name .left {
+    margin-right:.2em;
+    text-align:center;
+}
+a[rel=layer6s] .name .left {
+    margin-right:0;
+}
+.right .chi {
+    margin:0 -0.2em 0 var(--m); 
+}
+.layer .chi,.long .chi {
+    margin:0 -0.3em 0 var(--m); 
+}
+.left .can {
+    margin:0 var(--can); 
+}
+.layer .can,.long .can {
+    margin:0 var(--can); 
+}
+:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV) .can {
+    margin-left:-.2em; }
+:-webkit-any(#DCF,#DRF,#DGF,#DZF) .can {
+    margin-left:-.3em; }
+#GDV .bottom,#DCF .bottom {
+    margin-left:-.1em; }
+    
+.bottom[style] .jap {
+    letter-spacing:calc(-1em*var(--space));
+}
+.bottom[style] .chi {
+    letter-spacing:calc(-2em*var(--space)/3);
+    margin-left:-.6em;
+}
+:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) .can {
+    margin-right:calc(var(--can) - .1em);
+}
+:-webkit-any(#wV,#bX,#mG,#gK,#sΩ,#DCF) .eng {
+    letter-spacing:-.01em;
+}
+:-webkit-any(#sΩ,#闇α) .eng {
+    letter-spacing:-.02em;
+}
+#闇α .can {
+    letter-spacing:-.01em;
+    margin-right:calc(var(--can) - .2em);
+}
+:-webkit-any(#LL,#GDV) .eng {
+    letter-spacing:-.04em; }
+:-webkit-any(#LL,#GDV) .can {
+    letter-spacing:-.03em;
+    margin-right:calc(var(--can) - .2em); }
+:-webkit-any(#Sr,#nL,#Q2,#Pα) .eng {
+    letter-spacing:-.05em; }
+:-webkit-any(#Sr,#nL,#Q2,#Pα) .can {
+    letter-spacing:-.04em;
+    margin-right:calc(var(--can) - .2em); }
+    
+#光α .eng {
+    letter-spacing:-.075em; }
+#光α .can {
+    letter-spacing:-.065em;
+    margin-right:calc(var(--can) - .25em); }
+#SgV .eng {
+    letter-spacing:-.085em; }
+#SgV .can {
+    letter-spacing:-.075em;
+    margin-right:calc(var(--can) - .25em); }
+
+.left[style] .jap {
+    letter-spacing:calc(-1em*var(--space)/10);
+}
+.right[style] .eng {
+    letter-spacing:calc(-1em*var(--space)/30);
+}
+.right[style] .chi {
+    letter-spacing:calc(-1em*var(--space)/40);
+    margin-left:calc(var(--m) - 1em*var(--space)/20);
+}
+@supports (-webkit-touch-callout:none) {
+.right .eng {
+    margin:0 -.05em; }
+.right[style] .eng {
+    letter-spacing:calc(-1em*var(--space)/25); }
+}
+
+:-webkit-any(#Ev,#Dm,#J.layer5b) .left {
+    margin-left:-.15em; }
+#K.layer5b .left {
+    margin-left:-.1em; }
+:-webkit-any(#I.layer5b,#J.layer5b,#K.layer5b) .left {
+    margin-right:.15em; }
+#I.layer5b .chi {
+    margin-left:calc(var(--m) - .1em); }
+
+#Dm .jap::first-letter {
+    letter-spacing:-0.22em; }
+#Ev .jap::first-letter {
+    letter-spacing:-0.1em; }
+#Hy.layer6c .jap::first-letter {
+    letter-spacing:-.07em; }
+    
+:-webkit-any(#Vl.layer6c,#V.layer5c) .eng {
+    letter-spacing:0; }
+#X.driver .jap {
+    letter-spacing:-.07em; }
+#Y.driver .jap {
+    letter-spacing:-.08em; }
+#I.disk .chi {
+    letter-spacing:-.01em; }
+    
+:-webkit-any(a[rel=dash],a[rel=high]) .name {
+    line-height:1.1em;
+    display:block;
+}
+:-webkit-any(a[rel=dash],a[rel=high]) .name sup {
+    line-height:0;
+}
+:-webkit-any(a[rel=dash],a[rel=high]) .eng {
+    font-size:0.9em;
+    margin-left:0.1em;
+}
+:-webkit-any(#Ds,#Qc,#Xc,#Zn)[rel=dash] h2::first-letter {
+    letter-spacing:-.025em;
+}
+a[rel=high] h2::first-letter {
+    letter-spacing:-.05em;
+}
+a[rel=high] h2 {
+    letter-spacing:-.05em;
+}
+:-webkit-any(#HB)[rel=high] h2::first-letter {
+    letter-spacing:-.1em;
+}
+a[rel=dash] h2 {
+    letter-spacing:calc(1em*var(--space));
+    padding-left:calc(1em*var(--space) + .05em);
+}
+#Z[rel=dash]~a h2 {
+    padding-right:calc(-1em*var(--space) - .025em);
+}
+a[rel=dash] h2.single {
+    --space:-.025;}
+#T[rel=dash] h2 {
+    --space:0; }
+:-webkit-any(#Jl,#Ul,#Vl)[rel=dash] h2  {
+    --space:-.025; }
+:-webkit-any(#B,#H,#L,#U,#X,#Xc)[rel=dash] h2 {
+    --space:-.05 !important; }
+:-webkit-any(#Q,#Ev,#Ig,#Mr,#Qc)[rel=dash] h2  {
+    --space:-.075 !important; }
+:-webkit-any(#A,#Ds)[rel=dash] h2 {
+    --space:-.1 !important; }
+:-webkit-any(#Kp,#Op,#Sp,#Ch,#Zn)[rel=dash] h2  {
+    --space:-.15; }
+:-webkit-any(#Hn,#Rb)[rel=dash] h2  {
+    --space:-.175; }
+:-webkit-any(#Dm)[rel=dash] h2  {
+    --space:-.25; }
+:-webkit-any(#Zt,#Xc,#Zn)[rel=dash] h2 {
+    padding-left:.1em; }
+
+#α[rel=dash] h2 {
+    --adj:0em; }
+#Ul[rel=dash] .jap {
+    letter-spacing:-.13em; }

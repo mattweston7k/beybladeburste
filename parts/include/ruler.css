@@ -1,0 +1,153 @@
+:host label,:host label::before,span::before {
+    display:flex;align-items:center;justify-content:center;
+}
+:host,div {
+    display:flex;
+}
+label,label::after,div {
+    transition:.5s;
+}
+:host {
+    position:fixed;left:0;bottom:0;
+    font-size:.8em;
+    z-index:5;
+}
+label {
+    font-size:2em;
+}
+label::before,label::after {
+    border-color:hsl(var(--c),var(--s),55%);
+    color:hsl(var(--c),var(--s),55%);background:hsl(var(--c),var(--s),90%);
+}
+label::before {
+    content:'\f24e';
+    border-radius:10em;border:0.1rem solid;
+    width:1.8em;height:1.8em;
+    z-index:1;
+}
+label::after {
+    content:'';font-size:0;
+    width:0;
+}
+#show:checked+label::after {
+    content:'重量級別對應';font-size:0.5em;
+    margin-left:-0.5em;
+    width:8em;padding:0.3em 0;
+    border:0.1rem solid;border-top-right-radius:5em;border-bottom-right-radius:5em;
+}
+
+div {
+    background:hsla(var(--c),var(--s),calc(var(--b) + 5%),0.9);
+}
+div,data {
+    position:relative;
+}
+label,div::before,div::after,data:last-child::after,span,span::before {
+    position:absolute;
+}
+data::before {
+    content:attr(value);
+    font-weight:bold;font-size:1.25em;
+}
+:host([group=layer4]) span, :host([group=layer5]) span {
+    color:hsl(0,100%,calc(85% - var(--root-b)/3));
+}
+:host([scale='w+7']) span[fusion]::after {
+    color:hsl(0,100%,calc(85% - var(--root-b)/3));
+    font-style:italic;
+}
+:host([group=layer4]) data[value='9']~data,
+:host([group=layer5]) data[value='9']~data {
+    color:hsl(270,100%,calc(90% - var(--root-b)/3));
+}
+span::before {
+    content:'';
+    width:.3em;height:.3em;
+    background:var(--on);
+    border-radius:3em;
+}
+data:last-child::after {
+    content:'克';
+    font-size:.8em;
+}
+span {
+    color:hsl(var(--c),80%,calc(80% - var(--b)/3));
+}
+span[fusion]::after {
+    content:attr(fusion);
+    color:hsl(calc((var(--c) + 230)/2),70%,calc(80% - var(--b)/3));
+}
+
+@media (orientation:landscape) and (min-width:750px) {
+    :host {
+        width:100%;--h:3.4rem; }
+    label[for='show'] {
+        left:0;bottom:100%; }
+    div {
+        width:100%;height:var(--h);
+        padding:.5rem .5rem 0 .5rem; }
+    #show~* {
+        transform:translate(0,var(--h)); }
+    #show:checked~* {
+        transform:translate(0,0); }
+    div::before {
+        content:'\f104';left:.35rem;top:.13rem; }
+    div::after {
+        content:'\f105';right:.35rem;top:.13rem; }
+    data {
+        width:20%;height:1.5rem;
+        line-height:2em;
+        border-top:1px solid;
+    }
+    data:not(:last-of-type) {
+        border-right:1px solid; }
+    data:last-of-type::after {
+        right:0;top:100%; }
+    span {
+        left:100%;bottom:0;
+        transform:translate(calc(.5px - 50%),100%);
+        white-space:nowrap;
+    }
+    span[fusion]::after {
+        content:'\00a0\00a0'attr(fusion); }
+    span::before {
+        left:50%;transform:translate(-50%,-.1em); }
+}
+@media (orientation:portrait),(max-width:749px) {
+    :host {
+        --w:5.1rem;height:calc(100% - 4.25rem); }
+    label {
+        bottom:0;left:100%; }
+    div {
+        width:var(--w);
+        padding:.75rem 0 .75rem .6rem;
+        flex-direction:column-reverse;justify-content:center; }
+    #show~* {
+        transform:translate(calc(-1*var(--w)),0); }
+    #show:checked~* {
+        transform:translate(0,0); }
+    div::before {
+        content:'\f106';left:.37rem;top:.3rem; }
+    div::after {
+        content:'\f107';left:.37rem;bottom:.3rem; }
+    data {
+        display:flex;justify-content:center;align-items:center;
+        height:20%;width:2rem;
+        border-left:1px solid;
+    }
+    data:not(:last-of-type) {
+        border-top:1px solid; }
+    data:last-of-type::after {
+        top:50%;right:-110%;transform:translate(0%,-50%); }
+    span {
+        display:grid;
+        text-align:left;line-height:.9rem;
+        top:0;left:2.4rem;
+        transform:translate(0,calc(-.5px - 50%));
+    }
+    span::before {
+        top:50%;transform:translate(-.6em,-50%); }
+}
+@media (orientation:landscape) and (max-width:749px) {
+    :host {height:100%;}
+}

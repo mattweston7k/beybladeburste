@@ -1,14 +1,299 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<title>Title</title>
-<h1 onclick="DB.del()">DEL</h1>
-<main>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="hsl(45,90%,50%)">
+<link rel="apple-touch-icon" href="favicon.ico">
+<link rel="manifest" href="data:application/manifest+json,{&quot;short_name&quot;:&quot;非官方資訊站&quot;,&quot;name&quot;:&quot;爆旋陀螺 擊爆戰魂｜戰鬥陀螺 爆烈世代｜非官方資訊站&quot;,&quot;description&quot;:&quot;陀螺資訊翻譯 整理 檢索&quot;,&quot;background_color&quot;:&quot;hsl(45,90%,50%)&quot;,&quot;theme_color&quot;:&quot;hsl(45,90%,50%)&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;https://beyblade.epizy.com/favicon.ico&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;sizes&quot;:&quot;512x512&quot;}],&quot;display&quot;:&quot;standalone&quot;,&quot;scope&quot;:&quot;https://beyblade.epizy.com/&quot;,&quot;start_url&quot;:&quot;https://beyblade.epizy.com/&quot;}">
+<link rel="stylesheet" href="/include/common.css">
+<script src="/include/common.js"></script>
+
+<script src="include/catalog.js"></script>
+<link rel="stylesheet" href="include/catalog.css">
+<link rel="preload" href="include/typography.css" as="style" onload="this.rel='stylesheet'">
+
+<nav></nav>
+<main hidden>
+    <h5></h5>
     <details>
-        <summary></summary>
+        <summary data-icon=""></summary>
         <article></article>
     </details>
+    <div class="filter"></div>
     <section class="catalog"></section>
 </main>
-<script src="../db.js"></script>
-<script src="parts.js"></script>
-<script src="catalog.js"></script>
+<main hidden>
+    <div class='tips'>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
+    <article>
+        <embed src="include/parts.svg">
+        <section class="layer" style="height:32%"></section>
+        <section class="disk" style="height:23%;top:40%"></section>
+        <section class="driver" style="height:29%;top:71%">
+            <div style="width:4em;left:0;bottom:1em;">
+                <a href='?dash' data-icon='⌇'><svg viewBox='0 0 22 22'><use href='#round'/></svg></a>
+                <a href='?high' data-icon='⇪'><svg viewBox='0 0 22 22'><use href='#round'/></svg></a>
+            </div>
+            <div style="width:9.3em;height:4.5em;right:0;bottom:-3em">
+                <a href='?driver4'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 4</a>
+                <a href='?driver3'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 3</a>
+                <a href='?driver2'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 2</a>
+                <a href='?driver1'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 1</a>
+            </div>
+        </section>
+    </article>
+    <svg style='display:none'>
+        <rect id='click' x='0' y='0' width='60' height='22' rx='11' ry='11' />
+        <rect id='round' x='0' y='0' width='22' height='22' rx='11' ry='11' />
+        <path id='connect' d='M 0,0 l 15,30 l -15,30'/>
+    </svg>
+
+    <a href='?layer6s' title='Chassis'></a>
+    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
+    <a href='?layer6r' title='Ring'></a>
+    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
+    <a href='?layer6c' title='Chip'></a>
+    <a href='?remake'></a>
+    <a href='?layer5'></a>
+    <a href='?layer5b' title='Base'></a>
+    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
+    <a href='?layer5w' title='Weight'></a>
+    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
+    <a href='?layer5c' title='Chip'></a>
+    <a href='?layer4'></a>
+    <a href='?layer3'></a>
+    <a href='?layer2'></a>
+    <a href='?layer1'></a>
+
+
+
+    <a href='?disk3'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Disk 3</a>
+    <a href='?disk2'><svg viewBox='0 0 60 22'><path d='M 11,0 a 11,11,0,0,0,0,22 h 46 l 11,-11 l -11,-11 Z'/></svg>Core Disk</a>
+    <a href='?frame'><svg viewBox='0 0 60 22'><path d='M 49,0 a 11,11,0,0,1,0,22 h -51 l 11,-11 l -11,-11 Z'/></svg>Frame</a>
+    <a href='?disk1'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Disk 1</a>
+</main>
+<script src="include/parts.js"></script>
+<script>
+const title = {layer6r: 'Ring', layer6s: 'Chassis', layer6c: 'Chip', layer5w: 'Weight', layer5b: 'Base', layer5c: 'Chip'};
+nav.create();
+if (Parts.group) {
+    Parts.load();
+    Q('main:first-of-type').hidden = false;
+} else {
+    L(() => Q('style[media]').removeAttribute('media'));
+    Q('main:last-of-type').hidden = false;
+
+    const move = ['0', '-22.5', '-35.5', '-58'];
+    Q('label[for=layerR]').setAttribute('data-move', move[1]);
+    Q('label[for^=layer]', label => label.onclick = () => {
+        const clicked = label.getAttribute('data-move');
+        Q('.layer .window').style.setProperty(`--slide`, `${clicked}em`);
+        Q('label[for=layerL]').setAttribute('data-move', move[move.indexOf(clicked) - 1] || 'null');
+        Q('label[for=layerR]').setAttribute('data-move', move[move.indexOf(clicked) + 1] || 'null');
+    });
+}
+</script>
+<style media="max-width: 1px">
+    article {
+        position:relative;
+        margin-top:3em;padding-bottom:71%;
+    }
+    embed {
+        left:50%;top:0;transform:translate(-50%,0);
+        max-width:50em;
+    }
+    article>* {
+        position:absolute;
+        width:100%;
+    }
+    article div {
+        position:absolute;
+        display:flex;justify-content:space-between;align-items:center;
+        flex-wrap:wrap;
+    }
+
+    figure {
+        position:relative;
+        width:8em;height:8em;
+        background:linear-gradient(to right,hsl(var(--c),var(--s),calc(var(--b)/1.5 + 25%)),hsl(var(--c),var(--s),calc(var(--b)/1.5 + 20%)));
+        margin:0 -1em 0 0;padding:1em;
+        border-radius:10em;
+        box-shadow:0.5em -0.5em 0.5em hsla(0,0%,0%,0.4);
+    }
+    figure span {
+        position:absolute;z-index:3;
+        left:50%;top:50%;transform:translate(-50%,-50%);
+        color:hsl(var(--c),100%,70%);
+        white-space:nowrap;
+    }
+    main [data-icon]::after {
+        content:attr(data-icon);
+    }
+    main [data-icon='⌇']::after {
+        color:gold;
+    }
+    main [data-icon='⇪']::after {
+        color:magenta;
+    }
+    main a[data-icon]::after {
+        font-size:1.5em;
+    }
+
+    figure::before {
+        content:'';display:block;
+        background:white;
+        width:6em;height:6em;
+        border-radius:10em;
+        box-shadow:inset 0.5em -0.5em 0.5em hsla(0,0%,0%,0.4);
+    }
+    figure::after {
+        content:'';
+        width:85%;height:85%;
+        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        background-size:70%;
+        filter:brightness(0%) drop-shadow(0.2em -0.2em 0.15em hsla(0,0%,0%,0.4));
+    }
+    section a {
+        font-size:.7em;
+        position:relative;
+    }
+    section:not(.layer) a {
+        width:6.5em;height:2.2em;
+        z-index:1;
+        display:inline-flex;align-items:center;justify-content:center;
+        border-radius:10em;
+    }
+    section:not(.layer) a,section:not(.layer) a:hover {
+        filter:drop-shadow(0 0 0.1rem hsl(var(--c),calc(var(--s)*2),80%)) drop-shadow(0 0 0.3rem hsl(var(--c),calc(var(--s)*1.5),70%)) !important;
+    }
+    .layer a,.day section a {
+        filter:drop-shadow(0.25rem -0.25rem 0.2rem hsla(0,0%,0%,0.4)) !important;
+    }
+    .layer a:hover,.day section a:hover {
+        filter:brightness(120%) drop-shadow(0.25rem -0.25rem 0.2rem hsla(0,0%,0%,0.4)) !important;
+    }
+    .driver a[data-icon] {
+        width:2.2em !important;
+    }
+
+    /*sliding*/
+    main label[for$=L]::before {
+        content:'\f0d9';
+    }
+    main label[for$=R]::before {
+        content:'\f0da';
+    }
+    main label {
+        position:absolute;top:-1.3em;font-size:2.5em;
+        color:hsl(var(--c),80%,50%);text-shadow:0.1em -0.1em 0.15em hsla(0,0%,0%,0.4);
+    }
+    main label:last-of-type {
+        right:0.2em;
+    }
+    main label:nth-last-of-type(2) {
+        right:1em;
+    }
+    section .window>* {
+        transition:transform 0.5s,opacity 0.5s;
+        transform:translate(var(--slide));
+    }
+    label[data-move=null],main input:checked+label {
+        pointer-events:none;
+        color:hsl(var(--c),30%,80%);
+    }
+    #diskR:checked~.window a:nth-of-type(1),
+    #diskL:checked~.window a:nth-last-of-type(1),
+    #driverR:checked~.window a:nth-of-type(-n+2),
+    #driverL:checked~.window a:nth-last-of-type(-n+2) {
+        opacity:0;
+    }
+    #diskR:checked~.window {
+        --slide:-7em;
+    }
+    #driverR:checked~.window {
+        --slide:-14.5em;
+    }.layer a,figure::after {
+         background-repeat:no-repeat;
+         background-position:center;
+     }
+    .layer a {
+        min-width:calc(3.2em/0.7);min-height:calc(3.2em/0.7);
+        margin:0 0.55em;
+        background-size:contain;
+    }
+    .layer a[title] {
+        display:flex;align-items:flex-end;justify-content:flex-end;
+    }
+    .layer a[title]::after {
+        content:attr(title);
+        font-size:0.8rem;color:white;letter-spacing:-0.03em;
+        margin-right:.2em;
+    }
+
+    /*svg*/
+    .layer svg {
+        height:3.5em;
+        font-size:0.7em;
+        margin:0 0.1em;
+    }
+    path {
+        stroke-width:0.3em;stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
+        stroke-linecap:round;
+        fill:transparent;
+    }
+    .layer~section a[href] {
+        width:6.25em;
+    }
+    .layer~section svg {
+        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        width:100%;
+        z-index:-1;
+    }
+    .disk path,rect {
+        stroke:hsl(var(--c),var(--s),calc(90% - var(--b)/2));stroke-width:0.1em;
+        fill:none;
+    }
+    .day .disk svg>*,.day rect {
+        fill:hsl(var(--c),var(--s),75%);
+    }
+
+    .layer a[href*='layer6'] {
+        background-image:url('/img/system-layer6.png');
+        min-width:6.6em;
+        margin:0 .3em 0 -.3em;
+    }
+    .layer a[href*='layer6']:first-of-type {
+        margin:0 .3em 0 0;
+    }
+    .layer a[href*='remake'] {
+        background-image:url('/img/system-remake.png');
+    }
+    .layer a[href*='layer5'] {
+        background-image:url('/img/system-layer5.png');
+        min-width:5.5em;
+    }
+    .layer a[href$='layer5'] {
+        background-image:url('/img/system-layer5m.png');
+        min-width:6.7em;
+    }
+    .layer a:nth-last-of-type(4) {
+        background-image:url('/img/system-layer4.png');
+    }
+    .layer a:nth-last-of-type(3) {
+        background-image:url('/img/system-layer3.png');
+    }
+    .layer a:nth-last-of-type(2) {
+        background-image:url('/img/system-layer2.png');
+    }
+    .layer a:nth-last-of-type(1) {
+        background-image:url('/img/system-layer1.png');
+    }
+    .layer>figure::after {
+        background-image:url('/parts/layer/Bγ.png');
+    }
+    .disk>figure::after {
+        background-image:url('/parts/disk/Wh.png');
+    }
+    .driver>figure::after {
+        background-image:url('/parts/driver/Zn.png');
+    }
+</style>
+

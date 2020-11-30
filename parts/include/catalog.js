@@ -4,12 +4,12 @@ function Catalog(part) {
         heavy: deck ? 'fusion' : null,
         set heaviness(classes) {
             if (this.heavy !== null) return;
-            this.heavy = classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : '';
+            this.heavy = classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : classes.length > 0 ? '' : null;
         },
         get url() {
             const query = [['hue', this.hue], ['heavy', this.heavy]].filter(([p, v]) => v !== null);
             const mode = Q('html').classList.contains('day') ? 'day' : 'night'
-            return `/parts/require/${mode}.svg?` + query.map(q => q.join('=')).join('&') + (type ? `#${type + (stat?.length || 5)}` : ``)
+            return `/parts/include/bg.svg?${mode}&` + query.map(q => q.join('=')).join('&') + (type ? `#${type + (stat?.length || 5)}` : ``)
         },
         get hue() {
             return {
@@ -103,23 +103,23 @@ function Catalog(part) {
             </dl>`;
         }
     }
-    const element = attr => {
+    const anchor = attr => {
         const part = document.createElement('a');
         const descF = group => ({
             dash: `內藏強化彈簧的【${sym.replace('′', '')}】driver。`,
             high: `高度增加的【${sym.replace(/^H/, '')}】driver。`
         })[group] || desc || '';
         part.innerHTML = `
-            <img src='${this.bg.url}'>` + (attr.rel ? `
+            <embed src='${this.bg.url}'>` + (attr.rel ? `
             <div class='info'>` + this.code.symbol + this.code.name + `</div>
             <div class='content'>` + this.code.content(this.weight.classes) + `</div>
-            <div class='desc'>` + descF(group) + `</div>` : ``);
+            <p class='desc'>` + descF(group) + `</p>` : ``);
         Object.entries(attr).forEach(([a, v]) => v ? part[a] = v : null);
         return part;
     }
 
     if (sym == null)
-        return Q('.catalog').appendChild(element({classList: 'none'}));
+        return Q('.catalog').appendChild(anchor({classList: 'none'}));
     if (deck)
         Parts.fusion = true;
 
@@ -129,7 +129,7 @@ function Catalog(part) {
 
     this.bg.heaviness = this.weight.classify(this.bg) || [];
 
-    return Q('.catalog').appendChild(element({
+    return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
         href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=` + encodeURIComponent(sym),
         rel: group,
@@ -137,8 +137,8 @@ function Catalog(part) {
     }));
 }
 const any = prefix =>
-    caches.open('cache').then(c => c.match(new Request('/parts/require/typography.css'))).then(r => r.text()).catch(() =>
-        fetch('/parts/require/typography.css').then(r => r.text())).then(css => Q('head').insertAdjacentHTML('beforeend', '<style>' + css.replace(/-webkit-any/g, prefix) + '</style>'));
+    caches.open('cache').then(c => c.match(new Request('/parts/include/typography.css'))).then(r => r.text()).catch(() =>
+        fetch('/parts/include/typography.css').then(r => r.text())).then(css => Q('head').insertAdjacentHTML('beforeend', '<style>' + css.replace(/-webkit-any/g, prefix) + '</style>'));
 try {
     document.querySelector(':-webkit-any(#A)')
 } catch (e) {

@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <title>Title</title>
-
-<table>
-    <tr is="product-row">
-        <td data-part="test">0</td>
-        <td data-part="test">1</td>
-    </tr>
-    <tr is="product-row">
-        <td data-part="test">2</td>
-        <td data-part="test">3</td>
-    </tr>
-</table>
+<script src="../db.js"></script>
+<script src="image.js"></script>
 <script src="row.js"></script>
+
+<table></table>
+<script>
+    //DB.getNames();
+    DB.get('html', 'prod', ev => ev.target.result ?
+    //fetch('../update/prod.json').then(r=>r.json()).then(prods=>prods.forEach(prod=>new Row(prod)));
+</script>
