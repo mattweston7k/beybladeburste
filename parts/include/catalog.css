@@ -102,7 +102,7 @@ figure {
 #fixed:checked~main .catalog>a {
     display:inline-block !important;
 }
-.catalog a {
+.catalog>a {
     display:inline-block;
     min-width:15em;max-width:15em;
     min-height:15em;max-height:15em;

@@ -29,35 +29,6 @@
     }
     #now article img {width: 49%;max-width: 12em;}
 </style>
-<script>
-    const newBey = (date, cat, name, desc, search, video, searchable = true) => {
-        const t = Q('template').content.cloneNode(true);
-        t.querySelector('time').innerHTML = date;
-        t.querySelector('h5').innerHTML = cat;
-        t.querySelector('h4').innerHTML = name;
-        t.querySelector('div').insertAdjacentHTML('afterbegin', desc);
-        const a = t.querySelector('div a');
-        if (!video || !searchable)
-            a.remove();
-        else {
-            a.href += search;
-            a.onclick = () => gtag('event', search, {'event_category': 'utube'});
-        }
-        video ? t.querySelector('iframe').src += video : t.querySelector('iframe').remove();
-        const colors = {
-            Starter: 'hsl(200,70%,60%)',
-            Booster: 'hsl(10,70%,60%)',
-            Random: 'hsl(0,0%,90%)',
-            Set: 'hsl(250,70%,70%)',
-            '套裝': 'hsl(250,70%,70%)',
-            '新': 'hsl(0,0%,60%)'
-        };
-        t.querySelector('article').style.setProperty('--c', 'hsl(45,70%,60%)');
-        Object.keys(colors).forEach(c =>
-            cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null);
-        Q('#now fieldset').appendChild(t);
-    };
-</script>
 
 <header>
     <article>
@@ -131,7 +102,7 @@
     })();
 </script>
 
-<section class='news' id='now'>
+<section id='now'>
     <fieldset>
         <h3><a>最</a><a>新</a><a>商</a><a>品</a></h3>
         <template>
@@ -146,6 +117,34 @@
             </article>
         </template>
         <script>
+            const newBey = (date, cat, name, desc, search, video, searchable = true) => {
+                const t = Q('template').content.cloneNode(true);
+                t.querySelector('time').innerHTML = date;
+                t.querySelector('h5').innerHTML = cat;
+                t.querySelector('h4').innerHTML = name;
+                t.querySelector('div').insertAdjacentHTML('afterbegin', desc);
+                const a = t.querySelector('div a');
+                if (!video || !searchable)
+                    a.remove();
+                else {
+                    a.href += search;
+                    a.onclick = () => gtag('event', search, {'event_category': 'utube'});
+                }
+                video ? t.querySelector('iframe').src += video : t.querySelector('iframe').remove();
+                const colors = {
+                    Starter: 'hsl(200,70%,60%)',
+                    Booster: 'hsl(10,70%,60%)',
+                    Random: 'hsl(0,0%,90%)',
+                    Set: 'hsl(250,70%,70%)',
+                    '套裝': 'hsl(250,70%,70%)',
+                    '新': 'hsl(0,0%,60%)'
+                };
+                t.querySelector('article').style.setProperty('--c', 'hsl(45,70%,60%)');
+                Object.keys(colors).forEach(c =>
+                    cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null);
+                Q('#now fieldset').appendChild(t);
+            };
+
             newBey('2020-12-26', 'B-176 Random Booster Vol.23（攻擊型）', '', '');
             newBey('2020-12-30', '', 'メタルファイトベイブレード 2020 爆セット　Metal Fight Beyblade 2020 Baku Set',
                 `<ul><li>五款 2010 年推出的陀螺之 Burst 復刻版<li>今次 Clear Wheel 可從 Metal Wheel 拆除，如 10 年前一樣進行模式切換／改造！</ul>`);

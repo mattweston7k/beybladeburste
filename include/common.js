@@ -1,5 +1,7 @@
+let Parts = {};
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
+const count = el => document.querySelectorAll(el).length;
 const cookie = document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});
 const query = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v}), {});
 const groups = [
@@ -35,7 +37,7 @@ const nav = {
     create: (links = ['home', 'prize'], texts = []) =>
         Q('nav').insertAdjacentHTML('beforeend', `
             <ul class=links>` + (Parts.group ? nav.next() : links.map((l, i) => nav.link(l, texts[i])).join('')) + `</ul>`
-            + (Parts.group ? nav.part : /products/.test(window.location) ? nav.prod : '') + nav.menu),
+            + (Parts.group ? nav.part : /products\/(index.html)?$/.test(window.location.pathname ) ? nav.prod : '') + nav.menu),
 
     link: (h, text) => `<a href=${nav.hrefs[h] || h}${nav.icons[h] ? ` data-icon=${nav.icons[h]}` : ''}>${nav.icons[h] ? '' : text == 'parts' ? nav.parts : text}</a>`,
 
@@ -115,20 +117,16 @@ const DB = {
             )
         ).then(handler);
     },
-    fetch(update) {
-        return Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null)));
-    },
-    put(store, [key, value], tran) {
-        (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key);
-    },
-    get(store, key, tran, callback = ev => console.log(ev.target.result)) {
-        const handler = () => (tran || DB.db.transaction(store)).objectStore(store).get(key);
-        return DB.open(handler);
-    },
-    getNames(tran) {
-        const handler = () => DB.get('json', 'names', tran).onsuccess = ev => names = ev.target.result;
-        DB.open(handler);
-    },
+    fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null))),
+
+    put: (store, [key, value], tran) => (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
+
+    query: (store, key, tran) => (tran || DB.db.transaction(store)).objectStore(store).get(key),
+
+    get: (store, key, tran, callback = ev => console.log(ev.target.result)) => DB.open(() => DB.query(store, key, tran).onsuccess = callback),
+
+    getNames: tran => DB.open(() => DB.query('json', 'names', tran).onsuccess = ev => names = ev.target.result),
+
     getParts(group, callback = reqs => reqs.map(req => req.onsuccess = () => console.log(req.result))) {
         const handler = () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
@@ -138,7 +136,7 @@ const DB = {
             tran.objectStore('json').index('group').openCursor(group).onsuccess = ev => {
                 const cursor = ev.target.result;
                 if (!cursor)
-                    return Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))).then(reqs => callback(reqs, parts));
+                    return Promise.all([['order', group], ['html', group]].map(p => DB.query(...p, tran))).then(reqs => callback(reqs, parts));
                 const [sym, comp] = cursor.primaryKey.split('.');
                 parts[sym] = Parts.attach([sym, comp], cursor.value);
                 cursor.continue();

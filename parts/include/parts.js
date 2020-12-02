@@ -1,4 +1,4 @@
-const Parts = {
+Parts = {
     group: groups.flat().filter(g => Object.keys(query).includes(g))[0],
     detach({sym, comp, ...part}) {
         ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);

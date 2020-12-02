@@ -20,13 +20,13 @@ class Part {
 class Layer extends Part {
     constructor(sym, upperFusion) {super(sym, upperFusion);}
 
-    none = "<td><s>ꕕ</s><td colspan><td colspan class='right'></td>";
+    none = () => "<td><s>ꕕ</s><td colspan><td colspan class='right'></td>";
 
     symCode = this.sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : this.sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
 
     baseORring(sym) {
         if (sym == '/')
-            return this.none;
+            return Part.none();
         if (this.system == 'GT')
             return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;&nbsp;${sym}`, false);
         if (this.system == 'SP')
@@ -34,7 +34,7 @@ class Layer extends Part {
     }
     chip(sym) {
         if (sym == '/')
-            return this.none;
+            return Part.none();
         if (this.system == 'GT')
             return super.code(`${sym}.layer5c`, '<s>&gt;</s>' + sym.replace('Δ','D'), sym == 'Δ');
         if (this.system == 'SP')
@@ -52,7 +52,7 @@ class Layer extends Part {
     }
     code() {
         if (this.sym == '/')
-            return Part.none();
+            return this.none();
         const [body, chip, key] = this.sym.split('.');
         if (!key)
             return super.code(`${this.sym}.layer`, this.symCode, this.sym == 'nL');
@@ -74,8 +74,12 @@ class Row extends HTMLTableRowElement {
     constructor(p) {
         super();
         p ? this.create(p) : null;
+        this.connectedCallback();
     }
-    connectedCallback = () => setTimeout(() => this.querySelectorAll('td[data-part]').forEach(td => td.onclick = () => Cell.preview(td)));
+    connectedCallback = () => setTimeout(() => {
+        this.fill(['eng', 'chi']);
+        this.querySelectorAll('td[data-part]').forEach(td => td.onclick = () => Cell.preview(td))
+    })
 
     create([no, type, abbr, append]) {
         const attr = {
@@ -97,13 +101,12 @@ class Row extends HTMLTableRowElement {
 
         this.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba') + '</td>'
             + layer.code() + (driver.fusion ? driver.code() + Part.none(driver.sym) : disk.code() + driver.code());
-        Row.fill(['eng', 'chi'], this);
         append ? this.append(append) : null;
         this.attribute(attr);
-        document.querySelector('table').appendChild(this);
+        document.querySelector('tbody').appendChild(this);
     }
-    static fill(lang, tr) {
-        (tr || document).querySelectorAll('td[data-part]').forEach(td => {
+     fill(lang) {
+        this.querySelectorAll('td[data-part]').forEach(td => {
             let {dash, high, core, parts: [sym, comp]} = Cell.decompose(td);
             if (/^layer(5w|6s)$/.test(comp))
                 return;
@@ -126,7 +129,7 @@ class Row extends HTMLTableRowElement {
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.setAttribute(a, v) : null);
         this.rare(no);
-        //this.hidden = !Row.SP && Table.limit;
+        this.hidden = !Row.SP && Table.limit;
     }
     rare(no) {
         if ([100, 117, 129].map(n => `B-${n}`).includes(no))
@@ -175,7 +178,31 @@ const Cell = {
         };
     },
     preview(td) {
-        console.log(Cell.decompose(td, true));
+        Q('.catalog>*', el => el.remove());
+        Q('#popup').click();
+        if (td.hasAttribute('data-url')) {
+            let href = td.getAttribute('data-url');
+            Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
+        }
+
+        Q('label[for=popup] img').src = '';
+        const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
+        const links = (comp, group, sym) => {
+            Q('.catalog>a:last-of-type').removeAttribute('href');
+            const temp = Q('template').content.cloneNode(true);
+            temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(sym) ? 'more' : comp, sym);
+            temp.querySelector('a[href]').href = `/parts/?part=${group}#${sym}`;
+            /^(layer|remake)/.test(group) ?
+                temp.querySelector('img').src = `/img/system-${group.replace(/^layer5$/, 'layer5m').replace(/(layer\d)[^m]$/, '$1')}.png` :
+                temp.querySelector('img').remove();
+            Q('.catalog').insertBefore(temp, Q('.catalog>a:last-of-type'));
+        }
+        parts.filter(p => p).forEach(([sym, comp]) =>
+            DB.get('json', `${sym}.${comp}`, null, ev => {
+                Catalog(Parts.attach([sym, comp], ev.target.result));
+                links(comp, ev.target.result.group, sym);
+            })
+        );
     },
     code(lang, td, sym, comp, core, dash, high) {
         const i = ['eng', 'chi', 'jap'].findIndex(l => l == lang);

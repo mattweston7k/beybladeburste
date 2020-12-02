@@ -1,0 +1,18 @@
+[
+  ["B-175","B","Th.Lc2.! 皇 Dr"],
+  ["B-174.1","St","Br.Hy2.! 超 Xc′+X",{"chip":"MGC","mode":"+X"}],["B-174.2","St","Vl.Hl2.! 王 Zn′+Z",{"chip":"MGC","mode":"+Z"}],
+  ["B-173.1","RB","I.Ac.1B / Dm′",{"mode":"sw"}],["B-173.2","RB","I.Ac.1D 7_ Lp",{"mode":"sh"}],["B-173.3","RB H","S.St.1S 6_ X′"],["B-173.4","RB H","A.Dr.幻 Wh Rs"],
+  ["B-173.5","RB H","hS Ω Un"],["B-173.6","RB H","dH 1′_ HB′"],["B-173.7","RB H","DGV 2E Et",{"more":"+sw"}],["B-173.8","RB H","DRV 0_ HJ′",{"more":"+sh"}],
+  ["B-172","B","W.Sp.2B / U′"],
+  ["BBG-37","L","L.Ɐ.! Pr Qc′"],
+  ["B-171.1","St","T.Dr.1A / Cm"],["B-171.2","St H","C.St.1D α′_ H′"],["B-171.3","St H","N.Db.極 11_ Wv"],
+  ["B-170.1","RB","D.Db.1D 4T Mr′"],["B-170.2","RB","A.Db.1S 5_ F′"],["B-170.3","RB H","K.Ff.1S 8′_ D"],["B-170.4","RB H","C.P.双 7_ At"],
+  ["B-170.5","RB H","aK 10_ R"],["B-170.6","RB H","eF Wh Ds"],["B-170.7","RB H","BP 00_ α′"],["B-170.8","RB H","DZV 0_ Ch′"],
+  ["B-169","S","V.Lc.2D / Mb"],
+  ["B-168","B","R.Ln.3A / Ds′"],["B-167","B","M.Ff.2S / Nt"],
+  ["B-164.1","RB","C.St.1D Hr Un"],["B-164.2","RB H","G.Hy.1D 7B S"],["B-164.3","RB H","C.Rg.1S 0_ A′"],["B-164.4","RB H","T.Db.幻 2G Lw"],
+  ["B-164.5","RB H","N.B.滅 10_ Un"],["B-164.6","RB H","U.S.斬 Ω Qc′"],["B-164.7","RB H","EA Vn Mr′"],["B-164.8","RB H","FS 00_ Kp′"],
+  ["B-163","B","B.Vl.2A / Ev′"],
+  ["B-162.1","St H","S.Hy.1A / Xc"],["B-162.2","St H","K.Hl.1B / Zn"],
+  ["B-161","B","G.Rg.1S Wh R"],["B-160","B","K.Hl.1B / Zn"],["B-159","B","S.Hy.1A / Xc"]
+]
