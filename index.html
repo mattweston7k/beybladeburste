@@ -1,7 +1,213 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <meta charset="UTF-8">
-<title>Title</title>
-<h1 onclick="DB.del()">DEL</h1>
-<script src="db.js"></script>
-<script src="/parts/include/parts.js"></script>
-<script>DB.open()</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="hsl(45,90%,50%)">
+<link rel="apple-touch-icon" href="favicon.ico">
+<link rel=manifest
+      href='data:application/manifest+json,{"short_name":"非官方資訊站","name":"爆旋陀螺 擊爆戰魂｜戰鬥陀螺 爆烈世代｜非官方資訊站","description":"陀螺資訊翻譯 整理 檢索","background_color":"hsl(45,90%,50%)","theme_color":"hsl(45,90%,50%)","icons":[{"src":"https://beyblade.epizy.com/favicon.ico","type":"image/png","sizes":"512x512"}],"display":"standalone","scope":"https://beyblade.epizy.com/","start_url":"https://beyblade.epizy.com/"}'>
+
+<link rel=stylesheet href="/include/common.css">
+<script src="include/common.js"></script>
+<script src="parts/include/parts.js"></script>
+<script>
+    window.addEventListener('beforeinstallprompt', e => e.preventDefault());
+    navigator.serviceWorker.register('/worker.js');
+</script>
+
+<link rel=preload href="/include/fonts/fa-solid-900.woff2" as="font" crossorigin>
+<meta name="description" content="最新日本陀螺情報、所有部件（攻擊環 結晶盤 輪盤 軸心 底盤）圖鑑、限量產品，都一應俱全。">
+<meta name="og:description" content="最新日本陀螺情報、所有部件（攻擊環 結晶盤 輪盤 軸心 底盤）圖鑑、限量產品，都一應俱全。">
+<meta property="og:image" content="https://www.beyblade.jp/sparking/wp-content/themes/sparking/img/top/visual__character.png">
+<title>戰鬥陀螺 爆烈世代 ￭ Beyblade Burst ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト</title>
+<link rel="stylesheet" href="index.css">
+<style>
+    menu > svg {--r: 105;}
+    @keyframes movingR { to {stroke-dashoffset: 45.8;} }
+    @keyframes movingL {
+        from {stroke-dashoffset: 45.8;}
+        to {stroke-dashoffset: -146.4;}
+    }
+    #now article img {width: 49%;max-width: 12em;}
+</style>
+<script>
+    const newBey = (date, cat, name, desc, search, video, searchable = true) => {
+        const t = Q('template').content.cloneNode(true);
+        t.querySelector('time').innerHTML = date;
+        t.querySelector('h5').innerHTML = cat;
+        t.querySelector('h4').innerHTML = name;
+        t.querySelector('div').insertAdjacentHTML('afterbegin', desc);
+        const a = t.querySelector('div a');
+        if (!video || !searchable)
+            a.remove();
+        else {
+            a.href += search;
+            a.onclick = () => gtag('event', search, {'event_category': 'utube'});
+        }
+        video ? t.querySelector('iframe').src += video : t.querySelector('iframe').remove();
+        const colors = {
+            Starter: 'hsl(200,70%,60%)',
+            Booster: 'hsl(10,70%,60%)',
+            Random: 'hsl(0,0%,90%)',
+            Set: 'hsl(250,70%,70%)',
+            '套裝': 'hsl(250,70%,70%)',
+            '新': 'hsl(0,0%,60%)'
+        };
+        t.querySelector('article').style.setProperty('--c', 'hsl(45,70%,60%)');
+        Object.keys(colors).forEach(c =>
+            cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null);
+        Q('#now fieldset').appendChild(t);
+    };
+</script>
+
+<header>
+    <article>
+        <img alt='BBB' src='https://www.beyblade.jp/sparking/wp-content/themes/sparking/img/common/logo_small.png'>
+        <hgroup>
+            <h1>戰鬥陀螺 爆烈世代｜爆旋陀螺 擊爆戰魂</h1>
+            <h2>非官方資訊站</h2>
+            <h1>Beyblade Burst</h1>
+            <h2>Unofficial information Site</h2>
+        </hgroup>
+    </article>
+</header>
+
+<section id='contents'>
+    <svg style='display:none'>
+        <defs>
+            <polygon id='hexa' stroke-width='0.3' points='10,0 5,-8.66 -5,-8.66 -10,0 -5,8.66 5,8.66'/>
+            <g id='gear' stroke-width='2'>
+                <circle cx='0' cy='0' r='10' fill='hsla(0,0%,0%,0.2)'/>
+                <circle cx='0' cy='0' r='50' fill='none'/>
+            </g>
+        </defs>
+    </svg>
+    <menu>
+        <svg viewBox='-10 -10 20 20'><use href='#hexa'/></svg>
+        <svg viewBox='-10 -10 20 20'><use href='#hexa'/></svg>
+        <li><a><span>教學<br>Guide</span></a></li>
+        <li><a><span>研究<br>Studies</span></a></li>
+        <li><a><span>圖片<br>Images</span></a></li>
+        <li><a href='parts/'><span>部件<br>Parts</span></a></li>
+        <li><a href='products/'><span>商品<br>Products</span></a></li>
+        <li><a href='prize.php'><span>景品<br>Prizes</span></a></li>
+        <span id="db" data-icon="" hidden><script>DB.open()</script></span>
+    </menu>
+    <a href='https://beyblade.takaratomy.co.jp/' target='_blank'>往官方網站<br>To official site<br>(Takara Tomy)</a>
+    <div class='fb'>
+        <span>地區官方消息</span>
+        <a data-icon='' href='https://m.facebook.com/tclubfanshk1/' target='_blank'>T CLUB<br>2020</a>
+        <a data-icon='' href='https://m.facebook.com/Beyblade2016/' target='_blank'>戰鬥陀螺 TW</a>
+    </div>
+</section>
+
+<script>
+    const gears = g => {
+        const polar = (m, angle) => [m * Math.cos(angle), m * Math.sin(angle)];
+        const [l, s, t] = [3.5 * g, 3.4 * g - 8, Math.PI / (50 + 2.5 * g)];
+        for (let i = 1; i <= g; i++) {
+            [lx, ly] = polar(l, Math.PI / g * (2 * i - 1) + t);
+            [lxn, lyn] = polar(l, Math.PI / g * 2 * i - t);
+            [sx, sy] = polar(s, Math.PI / g * (2 * i) + t / 2);
+            [sxn, syn] = polar(s, Math.PI / g * (2 * i + 1) - t / 2);
+
+            i == 1 ? points = "M " : points += " L ";
+            points += `${lx},${ly} A ${l},${l},0,0,1,${lxn},${lyn}
+               L ${sx},${sy} A ${s},${s},0,0,1,${sxn},${syn}`;
+        }
+        let gear = document.createElementNS('http://www.w3.org/2000/svg', "path");
+        gear.setAttribute("d", points + 'Z');
+        return gear;
+    }
+    (() => {
+        Q("#gear").append(gears(20));
+        Q('menu a', a => a.insertAdjacentHTML('afterbegin', "<svg viewBox='-65 -65 130 130'><use href='#gear'/></svg>"));
+
+        [315, 15, 255, 135, 195, 75].forEach((color, i) => {
+            let link = Q(`menu li:nth-of-type(${i + 1})`);
+            link.style.left = (50 * Math.cos(Math.PI / 3 * i) + 50) + '%';
+            link.style.top = (50 * Math.sin(Math.PI / 3 * i) + 50) + '%';
+            link.style.setProperty('--c', color);
+        })
+    })();
+</script>
+
+<section class='news' id='now'>
+    <fieldset>
+        <h3><a>最</a><a>新</a><a>商</a><a>品</a></h3>
+        <template>
+            <article>
+                <time></time>
+                <h5></h5>
+                <h4></h4>
+                <div>
+                    <a data-icon='' href='https://www.youtube.com/results?q=' target='_blank'></a>
+                </div>
+                <iframe src='https://www.youtube.com/embed/' allowfullscreen></iframe>
+            </article>
+        </template>
+        <script>
+            newBey('2020-12-26', 'B-176 Random Booster Vol.23（攻擊型）', '', '');
+            newBey('2020-12-30', '', 'メタルファイトベイブレード 2020 爆セット　Metal Fight Beyblade 2020 Baku Set',
+                `<ul><li>五款 2010 年推出的陀螺之 Burst 復刻版<li>今次 Clear Wheel 可從 Metal Wheel 拆除，如 10 年前一樣進行模式切換／改造！</ul>`);
+            newBey('2021-01', 'B-177 Booster（防禦型）', '', '<ul><li>Legend Bladers 之一</ul>');
+            newBey('2021-02', 'B-178 Random Booster Vol.24', '', '');
+            newBey('2021-03', 'B-179 Booster', '', '');
+            Q('#now article:last-child').insertAdjacentHTML('afterend', '<h4 style="font-size:1.25em;text-align:left;display:block;margin-bottom:.5em">新系列開始！</h4>')
+            newBey('2021-04', 'B-180 Booster', '', '');
+            newBey('', 'B-181 Random Booster Vol.25', '', '');
+            newBey('', 'B-182 對戰盤套裝', '', '');
+            newBey('', 'B-183 新對戰盤', '', '');
+            newBey('', 'B-184 新發射器', '', '');
+            newBey('2021-05', 'B-185 Booster', '', '');
+        </script>
+    </fieldset>
+</section>
+
+<section id="refresh">
+    <span data-icon=""></span>
+    <h5>如在商品／部件頁遇上問題，請把左圖拖至右圖</h5>
+    <span data-icon=""></span>
+    <script>
+        (() => {
+            const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
+            db.onpointerdown = pressed => {
+                db.style.transition = null;
+                document.onpointermove = moving => {
+                    db.style.transform = `translateX(${moving.clientX - pressed.clientX}px)`;
+                    trash.style.color = moving.clientX > trash.getBoundingClientRect().x ? 'chartreuse' : null;
+                }
+            }
+            document.onpointerup = ev => {
+                if (document.onpointermove == null)
+                    return;
+                if (ev.clientX < trash.getBoundingClientRect().x) {
+                    db.style.transform = null;
+                    db.style.transition = 'transform .5s';
+                } else {
+                    DB.db.close();
+                    DB.del().onsuccess = () => {
+                        window.onbeforeunload = () => window.scrollTo(0, 0);
+                        window.location.reload();
+                    }
+                }
+                document.onpointermove = null;
+            }
+        })();
+    </script>
+</section>
+
+<footer>
+    對於本網所載資料的準確性或完整性，製作者不會作任何保證或聲明，或因提供或使用此網資料而直接或間接引致的任何損失、損壞或傷害，負上任何責任。
+    <br>Developed and Designed by Veiga (MKK). 2017-2021.
+</footer>
+
+<style>
+    #contents {
+        background: linear-gradient(hsla(0, 0%, 0%, 0.7), hsla(0, 0%, 0%, 0.7)), url('bg.jpg') no-repeat 60% 0%;
+        background-size: 150%;
+    }
+    #now {
+        background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.5)), url('https://beyblade.jp/campaign/5th/img/story_bg_pc.jpg') no-repeat 50%;
+        background-size: cover;
+    }
+</style>

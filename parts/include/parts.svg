@@ -37,9 +37,6 @@ document.querySelector('#driver').setAttribute('d',`M ${startX},${startY} L ${10
 
 document.querySelector('svg').setAttribute('viewBox',`${100-initX},${initY},${initX-100+initX},${tip-dy+r-initY}`);
 </script-->
-<script>
-  document.querySelectorAll('#layer,#disk,#driver').forEach(g => g.onclick = () => window.location.hash = '#' + g.id);
-</script>
 <style>
 * {
   fill:hsl(0,0%,50%);

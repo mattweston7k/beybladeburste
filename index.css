@@ -1,0 +1,267 @@
+*,*::before,*::after {
+    line-height:1.5em;
+}
+#popup+label div {
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    background:white;
+    width:95%;max-width:600px;
+    max-height:90%;overflow-y:scroll;
+    margin:0 auto;padding:1em 1em;
+    text-align:left;
+}
+#popup+label h6 {
+    width:100%;
+    border-bottom:0.1em solid;
+    font-style:italic;text-align:right;
+}
+#popup+label h6+p {
+    margin-top:.5em;
+}
+
+section,header {
+    border-bottom:0.2em solid var(--theme);
+    background-size:cover;background-position:center;
+    padding:0.2em 0.6em;
+}
+header {
+    padding:0.5em;
+}
+header article {
+    display:flex;justify-content:space-between;align-items:center;
+    margin:0 auto;
+}
+header img {
+    width:10em;
+}
+header hgroup {
+    text-align:right;
+}
+
+#contents {
+    position:relative;
+}
+a[href*='takaratomy'],.fb {
+    position:absolute;top:1em;
+    border-radius:0.8em;
+    background:hsla(160,0%,100%,0.2);
+    padding:0.5em;
+}
+a[href*='takaratomy'] {
+    right:1em;
+}
+.fb {
+    left:1em;
+}
+@media (min-width:1030px) {
+    a[href*='takaratomy'] {right:calc(50% - 500px);}
+    .fb {left:calc(50% - 500px);} 
+}
+.fb a {
+    display:flex;align-items:center;
+    text-align:left;
+    margin-top:0.2em;
+}
+.fb a::before {
+    content:attr(data-icon);
+    margin-right:0.15em;line-height:1;
+}
+
+menu {
+    position:relative;
+    margin:2.5em auto;
+    width:14em;height:14em;
+}
+menu li,menu a span {
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+}
+menu li {
+    width:4.5em;height:4.5em;
+}
+menu li a {
+    width:100%;height:100%;
+    display:block;
+}
+menu a[href] svg {
+    fill:hsla(0,0%,0%,0.1);stroke:hsl(var(--c),100%,75%);
+    filter:drop-shadow(0 0 0.1em hsl(var(--c),100%,75%)) drop-shadow(0 0 0.2em hsl(var(--c),100%,65%)) drop-shadow(0 0 0.4em hsl(var(--c),100%,55%));
+}
+menu:not([href]) svg {
+    fill:rgba(0,0,0,.1);stroke:grey;
+}
+menu a[href] span {
+    color:hsl(var(--c),100%,90%);
+    -webkit-text-stroke:hsl(var(--c),100%,80%) 0.02em;
+}
+menu a:not([href]) span {
+    color:white;
+}
+menu a:not([href]):not([title])::before {
+    content:'已關閉';
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%) rotate(30deg);
+    z-index:5;
+    width:100%;
+    line-height:2em;
+    white-space:nowrap;color:black;
+    background:linear-gradient(to right,rgba(255,255,255,.0),rgba(255,255,255,.3) 10%,rgba(255,255,255,.6) 50%,rgba(255,255,255,.3) 90%,rgba(255,255,255,0) 100%);
+    border-top:.1em solid hsl(var(--c),50%,50%);border-bottom:.1em solid hsl(var(--c),50%,50%);
+}
+menu>svg:first-of-type { 
+    stroke:hsl(var(--r),100%,70%);fill:none;
+    filter:drop-shadow(0 0 0.1em hsl(var(--r),100%,60%)) drop-shadow(0 0 0.15em hsl(var(--r),100%,50%)) drop-shadow(0 0 0.3em hsl(var(--r),100%,40%));
+}
+menu>svg:last-of-type { 
+    stroke:hsl(var(--r),100%,90%);fill:none;
+    filter:drop-shadow(0 0 0.15em hsl(var(--r),100%,80%)) drop-shadow(0 0 0.25em hsl(var(--r),100%,70%)) drop-shadow(0 0 0.5em hsl(var(--r),100%,60%));
+    stroke-dasharray:5;stroke-dashoffset:2.5;
+    stroke-linecap:round;
+    position:absolute;top:0%;left:0%;
+    will-change:stroke-dashoffset;
+}
+
+menu a[href] use {
+    animation:rotatingR 3s ease-out forwards; }
+menu>svg:last-of-type {
+    animation:movingR 3s ease-out forwards; }
+menu:hover a[href] use,menu:focus-within a[href] use {
+    animation:rotatingL 20s forwards;}
+menu:hover>svg:last-of-type,menu:focus-within>svg:last-of-type {
+    animation:movingL 20s forwards; }
+@keyframes rotatingL {
+    to {transform:rotate(-1079deg);} }
+@keyframes rotatingR {
+    to {transform:rotate(359deg);} }
+
+article,fieldset {
+    max-width:1000px;
+}
+article>*,hgroup>* {
+    display:block;
+}
+fieldset {
+    position: relative;
+    border:none;
+    margin: 3.5em auto 1em auto; padding: 2.5em 0 0 0;
+}
+#now article {
+    margin-bottom:1em; padding-left:.5em;
+    border-left:.1em solid var(--c);
+}
+h3 {
+    position:absolute;top:-2.5em;
+    margin-left:0.2em;
+    display:flex;
+}
+h3 a {
+    margin:0 0.02em;
+}
+
+ul {
+    margin:0;
+    padding-left:1em;
+}
+ul ul {
+    padding-left:.5em;
+}
+#now div li:last-of-type {
+    width:calc(100% - 3em);
+}
+
+h2,a[href*='takaratomy'],.fb,time,h5
+{color:var(--theme);-webkit-text-fill-color:var(--theme)}
+#now h4,#now h4+ul li,#now a
+{color:hsl(var(--glow),100%,70%);-webkit-text-fill-color:hsl(var(--glow),100%,70%);}
+#now a:link,fieldset a[href]:not([href*='youtube']),label[for='feedback']
+{color:chartreuse;-webkit-text-fill-color: chartreuse}
+
+#now h4+div {
+    position:relative;
+    margin-top:.2em;
+}
+#now a[href*=youtube] {
+    position:absolute;right:0;bottom:-0.8em;
+}
+#now a[href*=youtube]::before {
+    content:attr(data-icon);
+}
+iframe {
+    margin-top:0.5em;
+    width:22.304em;max-width:100%;
+    height:calc(22.304em*9/16);
+    border:none;
+}
+#db {
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+}
+#refresh {
+    user-select:none;
+    display:flex;justify-content:flex-end;align-items:center;
+}
+#refresh span[data-icon]::before {
+    content:attr(data-icon);
+    font-size:5rem;
+}
+#refresh span[style*=translate]:first-child {
+    color:var(--theme);
+}
+#refresh span:first-child {z-index:2;}
+#refresh span:last-child {z-index:1;}
+#refresh h5 {
+    margin:0 1em;
+}
+
+footer {
+    background-color:grey;
+    padding:0.5em;
+    color:white;
+    border:none;
+}
+
+/*text-art*/
+#now {
+    --glow:170;
+    color:white;
+}
+h3 {
+    color:hsl(var(--glow),100%,70%);
+    text-shadow:0.08em 0.08em 0 hsl(var(--glow),100%,100%), 0 0 1em hsl(var(--glow),100%,70%), 0 0 2em hsl(var(--glow),100%,50%);
+    transform:skew(0,-7deg);
+}
+#now h3 a:nth-child(1) {
+    transform:translateY(0.3em);font-size:2.5em; }
+#now h3 a:nth-child(2) {
+    transform:translateY(-0.3em);font-size:4em; }
+#now h3 a:nth-child(3) {
+    transform:translateY(0.7em);font-size:1.5em; }
+#now h3 a:nth-child(4) {
+    transform:translateY(0.1em);font-size:3em; }
+
+/*font-size*/
+footer
+{font-size:0.5em;}
+a[href*='takaratomy']
+{font-size:0.7em;}
+h1
+{font-size:0.75em;}
+time,h5,fieldset li,.fb
+{font-size:0.8em;}
+menu a span,.fb a
+{font-size:0.85em;}
+h3,h2:last-of-type,#popup+label h6+p
+{font-size:0.9em;}
+h4
+{font-size:1.05em;}
+h2:first-of-type,#popup+label h6
+{font-size:1.2em;}
+h4+div a::before
+{font-size:2em;}
+.fb a::before
+{font-size:2.75em;}
+
+@media (min-width:700px)
+{body {font-size:26px;}}
+@media (max-width:630px) and (orientation:portrait) {
+    a[href*='takaratomy'] {left:1em;bottom:1em;top:initial;width:9em;}
+    menu {margin:2.5em 2.5em 2.5em auto;}
+}

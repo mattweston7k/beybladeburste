@@ -23,7 +23,7 @@ const twilight = () => {
     let [from, to] = ['day', 'night'];
     if (Q('html').classList.contains('day'))
         [from, to] = [to, from];
-    Q('.catalog>a', a => a.style.backgroundImage = a.style.backgroundImage.replace(from, to));
+    Q('.catalog>a object', obj => obj.data = obj.data.replace(from, to));
     setCookie();
 };
 
@@ -70,10 +70,7 @@ const nav = {
 let names;
 const DB = {
     db: null,
-    del() {
-        indexedDB.deleteDatabase('db');
-        console.log('Deleted')
-    },
+    del: () => indexedDB.deleteDatabase('db'),
     init(open) {
         DBview.init();
         ['html', 'json', 'order'].forEach(store => open.result.createObjectStore(store));
@@ -90,29 +87,36 @@ const DB = {
         }
         open.onsuccess = () => {
             DB.db = open.result;
+            DB.db.onerror = DBview.error;
             return firstTime || !handler ? null : handler();
         }
+        open.onerror = DBview.error;
     },
-    cache(handler) {
-        fetch('/update/names.json').then(r => r.json()).then(j => DB.put('json', ['names', j]));
-        DB.fetch().then(res => {
-            const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-            res.forEach(([json, group]) => {
-                if (!json) return;
-                const {info, parts} = json;
-                info ? DB.put('html', [group, info], tran) : null;
-                DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
-                parts.filter(part => part && typeof part == 'object').forEach(part =>
-                    DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
-                // if (group == 'layer5')
-                //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
-                DBview.update();
-                console.log(group + ' cached');
-            });
-        }).then(handler);
+    cache(handler, update = groups.flat()) {
+        fetch('/update/names.json').then(r => r.json()).then(j => {
+            DB.put('json', ['names', j]);
+            DBview.update();
+        });
+        DB.fetch(update).then(res =>
+            res.forEach(([r, group]) =>
+                r.then(json => {
+                    if (!json) return;
+                    const {info, parts} = json;
+                    const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
+                    info ? DB.put('html', [group, info], tran) : null;
+                    DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+                    parts.filter(part => part && typeof part == 'object').forEach(part =>
+                        DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
+                    // if (group == 'layer5')
+                    //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
+                    DBview.update();
+                    console.log(group + ' cached');
+                })
+            )
+        ).then(handler);
     },
-    fetch() {
-        return Promise.all(groups.flat().map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null)));
+    fetch(update) {
+        return Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null)));
     },
     put(store, [key, value], tran) {
         (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key);
@@ -144,15 +148,34 @@ const DB = {
     }
 }
 const DBview = {
-    get progress() {
-        return document.querySelector('progress');
+    get search() {
+        return document.querySelector('#db');
     },
+    progress: 0,
+    total: groups.flat().length + 1,
+    figure: null,
+    links: null,
     init() {
-        document.body.insertAdjacentHTML('beforeend', '<progress value=0></progress>');
-        DBview.progress.hidden = false;
-        DBview.progress.max = groups.length + 1;
+        Q('#db').hidden = false;
+        this.figure ??= this.search;
+        this.figure.title = '首次訪問 預備中⋯⋯'
+        this.links = document.querySelectorAll('a[href="parts/"],a[href="products/"]');
+        this.links.forEach(a => {
+            a.title = a.href;
+            a.removeAttribute('href');
+        });
+        this.figure?.style.setProperty('--p', '0%');
     },
     update() {
-        DBview.progress.value++;
+        this.progress++;
+        this.figure?.style.setProperty('--p', this.progress / this.total * 100 + '%');
+        if (this.progress == this.total) {
+            this.links.forEach(a => a.href = a.title);
+            this.figure.title = '成功！';
+        }
+    },
+    error: ev => {
+        this.figure.title = /^\/(index\.html)?$/.test(window.location.pathname) ?
+            ev.target.errorCode || '不支援' : '請先前往首頁';
     }
 }

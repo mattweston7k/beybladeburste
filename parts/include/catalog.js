@@ -110,7 +110,7 @@ function Catalog(part) {
             high: `高度增加的【${sym.replace(/^H/, '')}】driver。`
         })[group] || desc || '';
         part.innerHTML = `
-            <embed src='${this.bg.url}'>` + (attr.rel ? `
+            <object data='${this.bg.url}'></object>` + (attr.rel ? `
             <div class='info'>` + this.code.symbol + this.code.name + `</div>
             <div class='content'>` + this.code.content(this.weight.classes) + `</div>
             <p class='desc'>` + descF(group) + `</p>` : ``);

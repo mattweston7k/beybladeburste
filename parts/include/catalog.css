@@ -111,7 +111,7 @@ figure {
     box-shadow:0 0 .3em .03em hsl(0,0%,50%);
     position:relative;
 }
-.catalog embed {
+.catalog object {
     position:absolute;width:100%;height:100%;
     z-index:-1;
 }
