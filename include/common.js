@@ -18,86 +18,6 @@ let Parts = {
     },
     group: groups.flat().filter(g => Object.keys(query).includes(g))[0]
 };
-const Cookie = {
-    get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
-    set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
-    getHistory: item => JSON.parse(Cookie.get.history)[item],
-    setHistory: item => {
-        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
-            Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
-    },
-    setOptions: () => {
-        Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
-        Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
-        Q('[name=mag]:checked') ? Cookie.set('magBut', Q('[name=mag]:checked').id) : null;
-    },
-    notification: notify => document.cookie = `notify=${notify}; path=/`,
-};
-
-(() => {
-    const pages = (Cookie.get.notify || '').split(',');
-    const gs = pages.filter(g => groups.flat().includes(g));
-    if (/^\/(index.html)?$/.test(window.location.pathname)) {
-        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
-        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
-    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
-        L(() => gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify')));
-    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
-        Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
-
-    if (Cookie.get.mode == 'day') {
-        Q('html').classList.add('day');
-        L(() => Q('#day') ? Q('#day').checked = true : null);
-    } else
-        L(() => Q('#day') ? Q('#day').checked = false : null);
-})();
-
-const twilight = () => {
-    Q('html').classList.toggle('day');
-    let [from, to] = ['day', 'night'];
-    if (Q('html').classList.contains('day'))
-        [from, to] = [to, from];
-    Q('.catalog>a object', obj => obj.data = obj.data.replace(from, to));
-    Cookie.setOptions();
-};
-
-const nav = {
-    icons: {home: '', menu: '', prod: '', prize: '', back: ''},
-    hrefs: {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'},
-    create: (links = ['home', 'prize'], texts = []) => {
-        nav.ul('link', links, texts);
-        Parts.group ? nav.ul('part') : /^\/products\/(index.html)?$/.test(window.location.pathname) ? nav.ul('prod') : '';
-        nav.ul('menu');
-    },
-    ul: (menu, ...p) => {
-        const ul = document.createElement('ul');
-        ul.innerHTML = nav[menu](...p);
-        ul.classList.add(menu);
-        Q('nav').appendChild(ul);
-    },
-    link: (links, texts) => Parts.group ? nav.next() : nav.href(links[0], texts[0]) + nav.href(links[1], texts[1]),
-    next: () => {
-        let [i, g] = [, Parts.group];
-        const gs = groups.find(gs => (i = gs.indexOf(g)) >= 0);
-        const next = gs[++i % gs.length];
-        const inside = /^(layer|remake)/.test(next) ? nav.system(next) : next;
-        return nav.href('menu') + `<a href=?${next}${title[next] ? ` title=${title[next]}` : ''}>${inside}</a>`;
-    },
-
-    href: (l, t) => `<a href=${nav.hrefs[l] || l}` + (nav.icons[l] ? ` data-icon=${nav.icons[l]}></a>` : `>${t == 'parts' ? nav.parts : t}</a>`),
-    parts: '<img src=/parts/include/parts.svg#whole alt=parts>',
-    system: group => `<img src=/img/system-${group.replace(/(\d).$/, '$1')}.png alt=${group}>`,
-    prod: () => `
-        <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
-        <li><data></data><span>結果<br>results</span><button data-icon= onclick='Table.reset();this.disabled=true' disabled>重設 Reset</button></li>`,
-    part: () => `
-        <li><data></data><label for=fixed class=toggle></label></li>    
-        <li class=mag><input type=range min=0.55 max=1.45 value step=0.05></li>`,
-    menu: () => `
-        <li><input type=checkbox id=day onchange=twilight()><label for=day class=toggle data-icon=''></label></li>
-        <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`
-}
-
 let names;
 const DB = {
     db: null,
@@ -195,6 +115,91 @@ const DB = {
         }
         return DB.open(handler);
     }
+}
+window.addEventListener('beforeinstallprompt', e => e.preventDefault());
+navigator.serviceWorker.register('/worker.js').then(() => {
+    if (!Q('head meta'))
+        fetch('/include/head.html').then(r => r.text()).then(html => {
+            document.head.insertAdjacentHTML('afterbegin', html);
+            DB.open(() => DB.put('html', ['head', html]));
+        });
+});
+const Cookie = {
+    get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
+    set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
+    getHistory: item => JSON.parse(Cookie.get.history)[item],
+    setHistory: item => {
+        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
+            Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
+    },
+    setOptions: () => {
+        Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
+        Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
+        Q('input[name=mag]:checked') ? Cookie.set('magBut', Q('input[name=mag]:checked').id) : null;
+    },
+    notification: notify => document.cookie = `notify=${notify}; path=/`,
+};
+(() => {
+    const pages = (Cookie.get.notify || '').split(',');
+    const gs = pages.filter(g => groups.flat().includes(g));
+    if (/^\/(index.html)?$/.test(window.location.pathname)) {
+        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
+        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
+    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
+        L(() => gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify')));
+    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
+        Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
+
+    if (Cookie.get.mode == 'day') {
+        Q('html').classList.add('day');
+        L(() => Q('#day') ? Q('#day').checked = true : null);
+    } else
+        L(() => Q('#day') ? Q('#day').checked = false : null);
+})();
+const twilight = () => {
+    Q('html').classList.toggle('day');
+    let [from, to] = ['day', 'night'];
+    if (Q('html').classList.contains('day'))
+        [from, to] = [to, from];
+    Q('.catalog>a object', obj => obj.data = obj.data.replace(from, to));
+    Cookie.setOptions();
+};
+
+const nav = {
+    icons: {home: '', menu: '', prod: '', prize: '', back: ''},
+    hrefs: {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'},
+    create: (links = ['home', 'prize'], texts = []) => {
+        nav.ul('link', links, texts);
+        Parts.group ? nav.ul('part') : /^\/products\/(index.html)?$/.test(window.location.pathname) ? nav.ul('prod') : '';
+        nav.ul('menu');
+    },
+    ul: (menu, ...p) => {
+        const ul = document.createElement('ul');
+        ul.innerHTML = nav[menu](...p);
+        ul.classList.add(menu);
+        Q('nav').appendChild(ul);
+    },
+    link: (links, texts) => Parts.group ? nav.next() : nav.href(links[0], texts[0]) + nav.href(links[1], texts[1]),
+    next: () => {
+        let [i, g] = [, Parts.group];
+        const gs = groups.find(gs => (i = gs.indexOf(g)) >= 0);
+        const next = gs[++i % gs.length];
+        const inside = /^(layer|remake)/.test(next) ? nav.system(next) : next;
+        return nav.href('menu') + `<a href=?${next}${title[next] ? ` title=${title[next]}` : ''}>${inside}</a>`;
+    },
+
+    href: (l, t) => `<a href=${nav.hrefs[l] || l}` + (nav.icons[l] ? ` data-icon=${nav.icons[l]}></a>` : `>${t == 'parts' ? nav.parts : t}</a>`),
+    parts: '<img src=/parts/include/parts.svg#whole alt=parts>',
+    system: group => `<img src=/img/system-${group.replace(/(\d).$/, '$1')}.png alt=${group}>`,
+    prod: () => `
+        <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
+        <li><data></data><span>結果<br>results</span><button data-icon= onclick='Table.reset();this.disabled=true' disabled>重設 Reset</button></li>`,
+    part: () => `
+        <li><data></data><label for=fixed class=toggle></label></li>    
+        <li class=mag><input type=range min=0.55 max=1.45 value step=0.05></li>`,
+    menu: () => `
+        <li><input type=checkbox id=day onchange=twilight()><label for=day class=toggle data-icon=''></label></li>
+        <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`
 }
 class Indicator extends HTMLElement {
     constructor() {

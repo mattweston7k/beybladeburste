@@ -78,7 +78,7 @@ class Row extends HTMLTableRowElement {
     }
     connectedCallback = () => setTimeout(() => {
         this.fill(['eng', 'chi']);
-        this.querySelectorAll('[data-part],[data-url]').forEach(td => td.onclick = () => Cell.preview(td))
+        this.querySelectorAll('td').forEach(td => td.onclick = () => Cell.preview(td))
     })
 
     create([no, type, abbr, append]) {
@@ -184,7 +184,6 @@ const Cell = {
             let href = td.getAttribute('data-url');
             return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
-
         Q('label[for=popup] img').src = '';
         const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
         const links = (comp, group, sym) => {

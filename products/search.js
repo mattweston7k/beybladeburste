@@ -2,7 +2,7 @@ const Search = {
     regex: [],
     reset() {
         this.precise = this.entered;
-        this.free = this.esc(Q('[name=free]').value);
+        this.free = this.esc(Q('input[name=free]').value);
         this.regex = [];
         this.dash = this.high = false;
         this.more = '';
