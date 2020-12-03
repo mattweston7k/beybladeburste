@@ -127,7 +127,7 @@ navigator.serviceWorker.register('/worker.js').then(() => {
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
-    getHistory: item => JSON.parse(Cookie.get.history || '')[item],
+    getHistory: item => JSON.parse(Cookie.get.history || '[]')[item],
     setHistory: item => {
         if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
             Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
