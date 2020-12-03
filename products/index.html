@@ -1,84 +1,71 @@
 <!DOCTYPE HTML>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="hsl(45,90%,50%)">
-<script>
-    const DBinitialize=()=>{
-        db=open.result;
-        const tables={html:'page',json:'info',order:'page'};
-        Object.keys(tables).filter(data=>![...db.objectStoreNames].includes(data)).forEach(data=>
-            db.createObjectStore(data));
-        open.transaction.objectStore('json').createIndex('group','group');
-        return open.transaction;
-    };
-</script>
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name=theme-color content="hsl(45,90%,50%)">
 <script src="/include/common.js"></script>
 <link rel=stylesheet href="/include/common.css">
 <link rel=preload href="/include/fonts/fa-solid-900.woff2" as=font crossorigin>
 <title>陀螺商品 ￭ Products ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ Beyblade Burst ￭ ベイブレードバースト</title>
-<script async src="/parts/include/catalog.js"></script>
-<script async src="/parts/include/parts.js"></script>
-<link rel=preload href="/parts/include/catalog.css" as=style onload=this.rel="stylesheet">
-<link rel=preload href="/parts/include/typography.css" as="style" onload="this.rel='stylesheet'">
-<link rel="stylesheet" href="products.css"/>
+<link rel=stylesheet href="products.css"/>
 <style></style>
 
-<nav><script>nav.create(['home','/parts'],['','parts'])</script></nav>
-<input type='radio' name='system' id='sparking' data-part='[["Chip","layer6c"],["Ring","layer6r"],["Chassis","layer6s"]]' checked>
-<input type='radio' name='system' id='GT' data-part='[["Chip","layer5c"],["Base","layer5b"],["Weight","layer5w"]]'>
+<nav><script>nav.create(["home","/parts"],["","parts"])</script></nav>
+<input type=radio name=system id=sparking data-part='[["Chip","layer6c"],["Ring","layer6r"],["Chassis","layer6s"]]' checked>
+<input type=radio name=system id=GT data-part='[["Chip","layer5c"],["Base","layer5b"],["Weight","layer5w"]]'>
 <main>
+    <db-status></db-status>
     <form>
-        <svg style='display:none'>
-            <polygon id='link' points='0,-100 -86.603,-50 -86.603,50 86.603,50 86.603,-50' stroke-width='4'/>
+        <svg style="display:none">
+            <polygon id=link points="0,-100 -86.603,-50 -86.603,50 86.603,50 86.603,-50" stroke-width="4"/>
         </svg>
         <div>
-            <a href='https://beyblade.takaratomy.co.jp/products' target='_blank' rel='noreferrer'>
-                <svg viewBox='-86.603 -100 173.205 150'><use xlink:href='#link'/></svg>
-                <span data-icon=''>官方<br>商品頁面</span>
+            <a href="https://beyblade.takaratomy.co.jp/products" target=_blank rel=noreferrer>
+                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link"/></svg>
+                <span data-icon="">官方<br>商品頁面</span>
             </a>
-            <a href='brochure.php'>
-                <svg viewBox='-86.603 -100 173.205 150'><use xlink:href='#link' transform='rotate(180 0 -25)'/></svg>
-                <span data-icon=''>官方<br>陀螺介紹</span>
+            <a href="brochure.php">
+                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link" transform="rotate(180 0 -25)"/></svg>
+                <span data-icon="">官方<br>陀螺介紹</span>
             </a>
         </div>
         <details>
-            <summary><span>精準檢索Precise search</span><button type=button data-icon='' onclick="Search.read('form')"></button></summary>
+            <summary><span>精準檢索Precise search</span><button type=button data-icon="" onclick="Search.read("form")"></button></summary>
             <fieldset>
-                <p class='layer'>
-                    <label for='sparking'><img src='../img/system-layer6.png'></label>
-                    <label for='GT'><img src='../img/system-layer5.png'></label>
-                    <label for='chip'>Chip</label>
-                    <input type='text' name='layer6c' id='chip' placeholder='g/V/s'><br>
-                    <label for='main'>Ring</label>
-                    <input type='text' name='layer6r' id='main' placeholder='g/V/s'><br>
-                    <label for='weight'>Chassis</label>
-                    <input type='text' name='layer6s' id='weight' placeholder='1a/1s/斬'>
+                <p class=layer>
+                    <label for=sparking><img src="../img/system-layer6.png"></label>
+                    <label for=GT><img src="../img/system-layer5.png"></label>
+                    <label for=chip>Chip</label>
+                    <input type=text name="layer6c" id=chip placeholder="g/V/s"><br>
+                    <label for=main>Ring</label>
+                    <input type=text name="layer6r" id=main placeholder="g/V/s"><br>
+                    <label for=weight>Chassis</label>
+                    <input type=text name="layer6s" id=weight placeholder="1a/1s/斬">
                 </p>
-                <p class='layer'>
-                    <label for='layer'>Layer</label>
-                    <input type='text' name='layer' id='layer' placeholder='L2/GV/br'>
+                <p class=layer>
+                    <label for=layer>Layer</label>
+                    <input type=text name=layer id=layer placeholder="L2/GV/br">
                 </p>
-                <p class='disk'>
-                    <label for='disk'>Disk</label>
-                    <input type='text' name='disk' id='disk' placeholder='G/4/2v'><br>
-                    <label for='frame'>Frame</label>
-                    <input type='text' name='frame' id='frame' placeholder='g/V/s'>
+                <p class=disk>
+                    <label for=disk>Disk</label>
+                    <input type=text name=disk id=disk placeholder="G/4/2v"><br>
+                    <label for=frame>Frame</label>
+                    <input type=text name=frame id=frame placeholder="g/V/s">
                 </p>
-                <p class='driver'>
-                    <label for='driver'>Driver</label>
-                    <input type='text' name='driver' id='driver' placeholder='at/m/RB'>
+                <p class=driver>
+                    <label for=driver>Driver</label>
+                    <input type=text name=driver id=driver placeholder="at/m/RB">
                 </p>
-                <input type='text' name='more' hidden>
+                <input type=text name=more hidden>
             </fieldset>
         </details>
         <div>
-            <a href='launchers.html'>
-                <svg viewBox='-86.603 -100 173.205 150'><use xlink:href='#link'/></svg>
-                <span data-icon=''>各款<br>發射器</span>
+            <a href="launchers.html">
+                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link"/></svg>
+                <span data-icon="">各款<br>發射器</span>
             </a>
             <a>
-                <svg viewBox='-86.603 -100 173.205 150'><use xlink:href='#link' transform='rotate(180 0 -25)'/></svg>
-                <span data-icon=''>更多<br>限定商品</span>
+                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link" transform="rotate(180 0 -25)"/></svg>
+                <span data-icon="">更多<br>限定商品</span>
             </a>
         </div>
     </form>
@@ -86,41 +73,41 @@
     <details>
         <summary>顯示／隱藏　Show / Hide</summary>
         <div>
-            <label for='RLG' class='RL'>Layer 扭蛋<br>Random Layer Gacha</label>
-            <label for='L' class='L'>限定商品<br>Limited merchandise</label>
-            <label for='jap'>日文名稱<br>Japanese names</label>
-            <label for='eng'>英文名稱<br>English names</label>
+            <label for=RLG class=RL>Layer 扭蛋<br>Random Layer Gacha</label>
+            <label for=L class=L>限定商品<br>Limited merchandise</label>
+            <label for=jap>日文名稱<br>Japanese names</label>
+            <label for=eng>英文名稱<br>English names</label>
         </div>
     </details>
     <details>
         <summary>隱藏異色版陀螺　Hide recolored Beys in</summary>
         <div>
-            <label for='RB' class='RB H'>隨機抽包<br>Random Boosters</label>
-            <label for='B' class='B H'>獨立陀螺<br>Boosters</label>
-            <label for='St' class='St H'>組合<br>Sets</label>
-            <label for='RL' class='RL H'>隨機 Layer<br>Random Layer</label>
+            <label for=RB class="RB H">隨機抽包<br>Random Boosters</label>
+            <label for=B class="B H">獨立陀螺<br>Boosters</label>
+            <label for=St class="St H">組合<br>Sets</label>
+            <label for=RL class="RL H">隨機 Layer<br>Random Layer</label>
         </div>
     </details>
-    <table id='myTable'>
+    <table id=myTable>
         <caption class=loading>
             <span>已顯示Showing</span>
-            <img src='/img/system-layer6.png'>
+            <img src="/img/system-layer6.png">
             <data></data>
             <button onclick="Table.entire()">顯示全部 Show all</button>
         </caption>
         <thead hidden>
-        <tr class='comp'>
+        <tr class=comp>
             <th rowspan=2>No</th>
-            <th colspan=3 class='layer'>Layer / <br>Base / Ring</th>
-            <th colspan=3 class='layer'>Chip</th>
-            <th class='layer'></th>
-            <th colspan=3 class='disk'>Disk<br> (＋Frame)</th>
-            <th colspan=3 class='driver'>Driver</th>
+            <th colspan=3 class=layer>Layer / <br>Base / Ring</th>
+            <th colspan=3 class=layer>Chip</th>
+            <th class=layer></th>
+            <th colspan=3 class=disk>Disk<br> (＋Frame)</th>
+            <th colspan=3 class=driver>Driver</th>
         </tr>
-        <tr class='note'>
+        <tr class=note>
             <th colspan=7>
-                    <span><img src='chips.svg#MGC'>：使用 Metal God Chip / Chip Core
-                    <br><img src='chips.svg#LC'>：附有 Level Chip</span>
+                    <span><img src="chips.svg#MGC">：使用 Metal God Chip / Chip Core
+                    <br><img src="chips.svg#LC">：附有 Level Chip</span>
             </th>
             <th colspan=3>「_」：不隨附、<br>但可裝 Frame</th>
             <th colspan=3><ruby>「′」<rt>dash</rt></ruby>：含強彈簧</th>
@@ -129,10 +116,10 @@
         <tbody></tbody>
     </table>
 
-    <input type='checkbox' id='popup'>
-    <label for='popup'>
+    <input type=checkbox id=popup>
+    <label for=popup>
         <img>
-        <div class='catalog'></div>
+        <div class=catalog></div>
         <template>
             <div>
                 <a onclick data-icon=""></a>
@@ -142,11 +129,17 @@
     </label>
 </main>
 
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js'></script>
-<script src='search.js'></script>
-<script src='image.js'></script>
-<script src='row.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="search.js"></script>
+<script src="image.js"></script>
+<script src="row.js"></script>
 <script src="/include/tablesorter.js"></script>
+
+<script async src="/parts/include/parts.js"></script>
+<script async src="/parts/include/catalog.js"></script>
+<link rel=preload href="/parts/include/catalog.css" as=style onload=this.rel='stylesheet'>
+<link rel=preload href="/parts/include/typography.css" as=style onload=this.rel='stylesheet'>
+
 <script>
     DB.getNames();
     const Table = {
@@ -162,34 +155,34 @@
                 })
             );
         },
-        fetch() {
-            DB.get('html', 'old-prod', null, ev => {
+        fetch(flush) {
+            DB.get('html', 'old-prod', null, o => {
                 Table.loading(true);
                 Promise.all([
                     fetch('/update/product-new.json').then(r => r.json()),
-                    ev.target.result ? null : fetch('/update/product-old.json').then(r => r.json())
+                    !flush && o.target.result ? o.target.result : fetch('/update/product-old.json').then(r => r.json())
                 ]).then(([n, o]) => {
                     Row.SP = true;
-                    [...n, ...o].forEach(p => new Row(p));
+                    [...n, ...typeof o == 'object' ? o : []].forEach(p => new Row(p));
                 }).then(() => {
-                    Table.save(ev.target.result);
+                    Table.save(o.target.result);
                     Table.loading(false);
                 });
             })
         },
         save(result) {
             DB.put('html', ['new-prod', Table.sanitize('tbody tr:not([hidden])')]);
+            cookie.setHistory('products');
             if (!result)
                 DB.put('html', ['old-prod', Table.sanitize('tbody tr[hidden]')]);
             else
                 Q('tbody').insertAdjacentHTML('beforeend', Table.limit ? result.replace(/<tr/g, '<tr hidden') : result);
-            document.cookie = `history[products]=${new Date().getTime()};max-age=22222222;path=/`;
         },
         sanitize: elements => {
             const temp = document.createElement('template');
             temp.innerHTML = [...document.querySelectorAll(elements)].map(tr => tr.outerHTML).join('');
             temp.content.querySelectorAll('td.left, td.right').forEach(td => td.innerHTML = td.innerHTML.replace(/.*?(<sub>.*?<\/sub>).*?/, '$1'));
-            return temp.innerHTML.replace(/(<\/t[d|r]>|\s{2,}|\=""|hidden|\s(?=>))/g, '');
+            return temp.innerHTML.replace(/(<\/t[d|r]>|\s{2,}|=""|hidden|\s(?=>))/g, '');
         },
         loading(loading) {
             Q('input[type=text]', input => {
@@ -224,13 +217,13 @@
                 window.history.pushState('', '', '/products/');
             [...document.querySelectorAll('th')].some(th => th.getAttribute('aria-sort') != 'none') ?
                 Table.paste() : Q('tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
-            Q('html, body', el => el.scrollTop(0));
+            Q('html, body', el => el.scrollTop = 0);
             Q('caption').classList.remove('searching');
             Q('nav data[value]').removeAttribute('value');
             Q('[name=free]').value = '';
         },
         column(lang) {
-            (lang == 'eng' ? [5, 1] : lang == 'cjk' ? [1, 5] : [2, 4]).forEach((c, i) =>
+            ({eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4]).forEach((c, i) =>
                 Q(`td[colspan]:nth-child(${i + 3})`, td => td.setAttribute('colspan', c)));
         },
         flush(update = true) {
@@ -242,7 +235,7 @@
                 $("table").trigger('update', [false]);
         }
     }
-    Table.paste();
+    window.location.hash.length > 1 ? Table.fetch(window.location.hash == '#flush') : Table.paste();
     window.onresize = () => Table.flush(false);
 
     (() => {
@@ -269,5 +262,5 @@
     };
     Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
 
-    Q('input[type=text]', input => input.onkeypress = ev => ev.code == 13 ? Search.read('form') : null);
+    Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.read('form') : null);
 </script>

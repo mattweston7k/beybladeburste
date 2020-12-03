@@ -38,7 +38,7 @@ function Catalog(part) {
             let code = sym
                 .replace(/^([dlr]α).$/, '$1')
                 .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
-                .replace(/^(.{2,}?)(2|\+)$/, '$1<sup>$2</sup>')
+                .replace(/^(.{2,}?)([2+])$/, '$1<sup>$2</sup>')
                 .replace(/^\+(?=s[wh])/, '');
             if (sym == 'BA')
                 code = '';

@@ -7,11 +7,14 @@
 <link rel="stylesheet" href="/include/common.css">
 <script src="/include/common.js"></script>
 
+<script src="include/parts.js"></script>
 <script src="include/catalog.js"></script>
 <link rel="stylesheet" href="include/catalog.css">
 <link rel="preload" href="include/typography.css" as="style" onload="this.rel='stylesheet'">
 
-<nav><script>nav.create()</script></nav>
+<nav><script>const title = {layer6r: 'Ring', layer6s: 'Chassis', layer6c: 'Chip', layer5w: 'Weight', layer5b: 'Base', layer5c: 'Chip'};
+nav.create()</script></nav>
+<db-status></db-status>
 <main hidden>
     <h5></h5>
     <details>
@@ -70,13 +73,10 @@
     <a href='?frame'><svg viewBox='0 0 60 22'><path d='M 49,0 a 11,11,0,0,1,0,22 h -51 l 11,-11 l -11,-11 Z'/></svg>Frame</a>
     <a href='?disk1'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Disk 1</a>
 </main>
-<script src="include/parts.js"></script>
 <script>
-const title = {layer6r: 'Ring', layer6s: 'Chassis', layer6c: 'Chip', layer5w: 'Weight', layer5b: 'Base', layer5c: 'Chip'};
-if (Parts.group) {
-    Parts.load();
+if (Parts.group)
     Q('main:first-of-type').hidden = false;
-} else {
+else {
     L(() => Q('style[media]').removeAttribute('media'));
     Q('main:last-of-type').hidden = false;
 

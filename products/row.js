@@ -62,7 +62,7 @@ class Layer extends Part {
     }
 }
 class Disk extends Part {
-    constructor(sym) {super(sym);}     // sort 0                     alphabet disk
+    constructor(sym) {super(sym);}              // sort 0                          alphabet disk
     symCode = this.sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');
 }
 class Driver extends Part {
@@ -78,7 +78,7 @@ class Row extends HTMLTableRowElement {
     }
     connectedCallback = () => setTimeout(() => {
         this.fill(['eng', 'chi']);
-        this.querySelectorAll('td[data-part]').forEach(td => td.onclick = () => Cell.preview(td))
+        this.querySelectorAll('[data-part],[data-url]').forEach(td => td.onclick = () => Cell.preview(td))
     })
 
     create([no, type, abbr, append]) {
@@ -105,7 +105,7 @@ class Row extends HTMLTableRowElement {
         this.attribute(attr);
         document.querySelector('tbody').appendChild(this);
     }
-     fill(lang) {
+    fill(lang) {
         this.querySelectorAll('td[data-part]').forEach(td => {
             let {dash, high, core, parts: [sym, comp]} = Cell.decompose(td);
             if (/^layer(5w|6s)$/.test(comp))
@@ -118,7 +118,7 @@ class Row extends HTMLTableRowElement {
         const {mode, chip, more} = append;
         const add = (td, code) => td.insertAdjacentHTML('beforeend', code);
         if (chip)
-            add(this.cell(['layer6c', 'layer']), `<img src=chips.svg#${chip}>`);
+            add(this.cell(['layer6c', 'layer']), `<img src=chips.svg#${chip} alt=${chip}>`);
         if (/^s[wh]$/.test(mode))
             add(this.cell(['layer6r']), `<sub>${mode}</sub>`);
         else if (/^\+/.test(mode))
@@ -182,7 +182,7 @@ const Cell = {
         Q('#popup').click();
         if (td.hasAttribute('data-url')) {
             let href = td.getAttribute('data-url');
-            Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
+            return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
 
         Q('label[for=popup] img').src = '';

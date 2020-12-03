@@ -293,6 +293,9 @@ input[type='range']::-moz-range-thumb {
 main {
     padding:5em 0 1em 0;
 }
+db-status:not([hidden])~main {
+    padding-top:1em;
+}
 
 #popup+label {
     display:none;
@@ -310,33 +313,6 @@ main {
 #popup+label>img:not([src='']) {
     max-width:min(35em,95%);max-height:150%;
     margin:1em;
-}
-
-#contents menu a[href]::before,.window a::before {
-    font-size:2em;
-    position:absolute;top:50%;left:-5%;
-    transform: translate(0%,-80%) rotate(-30deg);
-    z-index:2;
-}
-#db {
-    background:radial-gradient(circle at center calc(34% - 242/100*var(--p)),hsla(0,0%,100%,.2) 70%, var(--on) 70%);
-    background-clip:text;
-    -webkit-background-clip:text;
-}
-#db[style*='100'] {
-    background:chartreuse;
-    background-clip:text;
-    -webkit-background-clip:text;
-}
-#db::before {
-    content:attr(data-icon);
-    font-size:5rem;color:transparent;
-}
-#db::after {
-    content:attr(title);color:white;text-align:center;
-    width:5em;
-    background:hsla(0,0%,0%,.2);
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
 }
 
 .groups h2 {
@@ -504,3 +480,11 @@ nav span,form summary,caption,caption data::after,.tips
 {--c:230;--s:var(--root-s);--b:calc(var(--root-b) + 5%);}
 .driver
 {--c:320;--s:var(--root-s);--b:var(--root-b);}
+
+.notify::before {
+    content:'❗';
+    font-size:2em;
+    position:absolute;top:50%;left:-5%;
+    transform:translate(0%,-80%) rotate(-30deg);
+    z-index:2;
+}

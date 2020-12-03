@@ -1,13 +1,5 @@
 Parts = {
-    group: groups.flat().filter(g => Object.keys(query).includes(g))[0],
-    detach({sym, comp, ...part}) {
-        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
-        return {...part, names: part.names?.can ? {can: part.names.can} : {}};
-    },
-    attach([sym, comp], part) {
-        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
-        return {...part, sym: sym, comp: comp};
-    },
+    ...Parts,
     load() {
         Parts.before();
         DB.getParts(Parts.group, ([order, info], parts) => {
@@ -90,19 +82,19 @@ const Tools = {
     magnify() {
         const slider = () => {
             const slider = Q("input[type='range']");
-            slider.value = cookie.magBar || 1;
+            slider.value = cookie.get.magBar || 1;
             Q(".catalog").style.fontSize = slider.value + "em";
             slider.oninput = function () {
                 Q(".catalog").style.fontSize = this.value + "em";
-                setCookie();
+                cookie.setOptions();
             };
         }
         const buttons = () => {
             const level = 3;
             Q('nav').insertAdjacentHTML('beforebegin', [...Array(level).keys()].map(i => `<input type=radio name=mag id=mag${i+1}>`).join('') +
                 "<input type=checkbox id=fixed>");
-            Q('input[name=mag]', input => input.onchange = setCookie);
-            Q('#' + (cookie.magBut || 'mag2')).checked = true;
+            Q('input[name=mag]', input => input.onchange = cookie.setOptions);
+            Q('#' + (cookie.get.magBut || 'mag2')).checked = true;
             Q('nav .mag').insertAdjacentHTML('beforeend', [...Array(level).keys()].map(i => `<label for=mag${i+1}></label>`).join(''));
         }
         buttons();

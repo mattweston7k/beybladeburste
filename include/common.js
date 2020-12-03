@@ -1,32 +1,64 @@
-let Parts = {};
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
-const cookie = document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});
 const query = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v}), {});
 const groups = [
     ['remake', 'layer6s', 'layer6r', 'layer6c', 'layer5b', 'layer5c', 'layer5w', 'layer5', 'layer4', 'layer3', 'layer2', 'layer1'],
     ['disk3', 'disk2', 'frame', 'disk1'],
-    ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1']];
-
-if (cookie.mode == 'day') {
-    Q('html').classList.add('day');
-    L(() => Q('#day') ? Q('#day').checked = true : null);
-} else
-    L(() => Q('#day') ? Q('#day').checked = false : null);
-
-const setCookie = () => {
-    document.cookie = `mode=${Q('html').classList.contains('day') ? 'day' : ''};max-age=22222222;path=/`;
-    Q('input[type=range]') ? document.cookie = `magBar=${Q('input[type=range]').value};max-age=22222222;path=/` : null;
-    Q('[name=mag]:checked') ? document.cookie = `magBut=${Q('[name=mag]:checked').id};max-age=22222222;path=/` : null;
+    ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1']
+];
+let Parts = {
+    detach({sym, comp, ...part}) {
+        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
+        return {...part, names: part.names?.can ? {can: part.names.can} : {}};
+    },
+    attach([sym, comp], part) {
+        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
+        return {...part, sym: sym, comp: comp};
+    },
+    group: groups.flat().filter(g => Object.keys(query).includes(g))[0]
 };
+
+const cookie = {
+    get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
+    set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
+    getHistory: item => JSON.parse(cookie.get.history)[item],
+    setHistory: item => {
+        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
+            cookie.set('history', JSON.stringify({...JSON.parse(cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
+    },
+    setOptions: () => {
+        cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
+        Q('input[type=range]') ? cookie.set('magBar', Q('input[type=range]').value) : null;
+        Q('[name=mag]:checked') ? cookie.set('magBut', Q('[name=mag]:checked').id) : null;
+    },
+    notification: notify => document.cookie = `notify=${notify}; path=/`,
+};
+(() => {
+    const pages = (cookie.get.notify || '').split(',');
+    const gs = pages.filter(g => groups.flat().includes(g));
+    if (/^\/(index.html)?$/.test(window.location.pathname)) {
+        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
+        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
+    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
+        L(() => gs.forEach(g => Q(`a[href='?${g}']`).classList.add('notify')));
+    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
+        cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
+
+    if (cookie.get.mode == 'day') {
+        Q('html').classList.add('day');
+        L(() => Q('#day') ? Q('#day').checked = true : null);
+    } else
+        L(() => Q('#day') ? Q('#day').checked = false : null);
+})();
+
 const twilight = () => {
     Q('html').classList.toggle('day');
     let [from, to] = ['day', 'night'];
     if (Q('html').classList.contains('day'))
         [from, to] = [to, from];
     Q('.catalog>a object', obj => obj.data = obj.data.replace(from, to));
-    setCookie();
+    cookie.setOptions();
 };
 
 const nav = {
@@ -44,8 +76,9 @@ const nav = {
     next: () => {
         let [i, g] = [, Parts.group];
         const gs = groups.find(gs => (i = gs.indexOf(g)) >= 0);
-        const inside = /^(layer|remake)/.test(g) ? `<img src=/img/system-${g.replace(/(\d).$/, '$1')}.png>` : g;
-        return nav.link('menu') + `<a href=?${gs[++i % gs.length]}${title[g] ? ` title=${title[g]}` : ''}>${inside}</a>`;
+        const next = gs[++i % gs.length];
+        const inside = /^(layer|remake)/.test(next) ? `<img src=/img/system-${next.replace(/(\d).$/, '$1')}.png alt=${next}>` : next;
+        return nav.link('menu') + `<a href=?${next}${title[next] ? ` title=${title[next]}` : ''}>${inside}</a>`;
     },
 
     prod: `
@@ -55,7 +88,7 @@ const nav = {
     </ul>`,
     part: `
     <ul class=parts>
-        <li><data></data><label for=fixed class=toggle></label></li>
+        <li><data></data><label for=fixed class=toggle></label></li>    
         <li class=mag><input type=range min="0.55" max="1.45" value step="0.05">
     </ul>`,
     menu: `
@@ -73,8 +106,9 @@ let names;
 const DB = {
     db: null,
     del: () => indexedDB.deleteDatabase('db'),
+    get indicator() {return Q('db-status');},
     init(open) {
-        DBview.init();
+        DB.indicator.init();
         ['html', 'json', 'order'].forEach(store => open.result.createObjectStore(store));
         open.transaction.objectStore('json').createIndex('group', 'group');
         return open.transaction;
@@ -89,33 +123,54 @@ const DB = {
         }
         open.onsuccess = () => {
             DB.db = open.result;
-            DB.db.onerror = DBview.error;
-            return firstTime || !handler ? null : handler();
+            DB.db.onerror = ev => DB.indicator.error(ev);
+            if (firstTime)
+                return;
+            return /^\/(index.html)?$/.test(window.location.pathname) ? DB.check(handler) : handler ? handler() : null;
         }
-        open.onerror = DBview.error;
+        open.onerror = ev => DB.indicator.error(ev);
     },
-    cache(handler, update = groups.flat()) {
-        fetch('/update/names.json').then(r => r.json()).then(j => {
-            DB.put('json', ['names', j]);
-            DBview.update();
-        });
+    check(handler) {
+        fetch('/update/-time.json').then(r => r.json()).then(j => {
+            const updates = [], notify = [];
+            Object.entries(j).forEach(([item, [time, major]]) => {
+                if (new Date(time).getTime() / 1000 > cookie.getHistory(item)) {
+                    item == 'products' ? DB.indicator.prod() : updates.push(item);
+                    major ? notify.push(item) : null;
+                }
+            });
+            if (updates.length > 0) {
+                DB.indicator.init(true);
+                cookie.notification(notify);
+                return DB.cache(handler, updates);
+            }
+            return handler ? handler() : null;
+        }).catch(er => DB.indicator.error(er));
+    },
+    cache(handler, update = [...groups.flat(), 'names']) {
+        DB.indicator.total = update.length;
         DB.fetch(update).then(res =>
             res.forEach(([r, group]) =>
                 r.then(json => {
                     if (!json) return;
-                    const {info, parts} = json;
-                    const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-                    info ? DB.put('html', [group, info], tran) : null;
-                    DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
-                    parts.filter(part => part && typeof part == 'object').forEach(part =>
-                        DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
+                    if (group == 'names') {
+                        DB.put('json', ['names', json]);
+                        names = json;
+                    } else {
+                        const {info, parts} = json;
+                        const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
+                        info ? DB.put('html', [group, info], tran) : null;
+                        DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+                        parts.filter(part => part && typeof part == 'object').forEach(part =>
+                            DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
+                    }
                     // if (group == 'layer5')
                     //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
-                    DBview.update();
-                    console.log(group + ' cached');
+                    DB.indicator.update();
+                    cookie.setHistory(group);
                 })
             )
-        ).then(handler);
+        ).catch(er => DB.indicator.error(er)).then(handler);
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null))),
 
@@ -145,35 +200,81 @@ const DB = {
         return DB.open(handler);
     }
 }
-const DBview = {
-    get search() {
-        return document.querySelector('#db');
-    },
-    progress: 0,
-    total: groups.flat().length + 1,
-    figure: null,
-    links: null,
-    init() {
-        Q('#db').hidden = false;
-        this.figure ??= this.search;
-        this.figure.title = '首次訪問 預備中⋯⋯'
+class Indicator extends HTMLElement {
+    constructor() {
+        super();
+        this.progress = 0;
+        this.attachShadow({mode: 'open'}).innerHTML = `
+        <style>
+            :host([hidden]) {display:none;}
+            :host-context(body) {margin:5em 0 0 0;}
+            :host-context(main) {margin:0 0 .5em 0;}
+            :host-context(menu) {
+                margin:0;
+                position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+            }
+            :host {
+                position:relative;
+                background:radial-gradient(circle at center var(--p),hsla(0,0%,100%,.2) 70%, var(--on) 70%);
+                background-clip:text;
+                -webkit-background-clip:text;
+                display:inline-block;min-height:5rem;
+            }
+            :host([style*='--c']) {
+                background:var(--c);
+                background-clip:text;
+                -webkit-background-clip:text;
+            }
+            p {
+                position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+                color:white;font-size:1rem;font-family:Sans-Serif;
+                margin:0;
+                background:hsla(0,0%,0%,.2);                
+                width:5rem;
+            }
+            :host::before {
+                font-size:5rem;color:transparent;
+                content:'';font-family:'Font Awesome 5 Free';
+            }
+        </style>
+        <p></p>`;
+    }
+    connectedCallback() {
+        this.hidden = true;
+        DB.open(Parts.group ? Parts.load : null);
+    }
+    static observedAttributes = ['progress', 'status'];
+    attributeChangedCallback(attr, o, n) {
+        if (attr == 'progress')
+            this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
+        else if (attr == 'status')
+            this.style.setProperty('--c', {success: 'chartreuse', error: 'red'}[n]);
+    }
+    init(update = false) {
+        this.hidden = false;
         this.links = document.querySelectorAll('a[href="parts/"],a[href="products/"]');
         this.links.forEach(a => {
             a.title = a.href;
             a.removeAttribute('href');
         });
-        this.figure?.style.setProperty('--p', '0%');
-    },
+        this.shadowRoot.querySelector('p').innerHTML = update ? '更新中' : '首次訪問 預備中⋯⋯';
+        this.setAttribute('progress', 0);
+    }
     update() {
         this.progress++;
-        this.figure?.style.setProperty('--p', this.progress / this.total * 100 + '%');
+        this.setAttribute('progress', this.progress / this.total * 100);
         if (this.progress == this.total) {
             this.links.forEach(a => a.href = a.title);
-            this.figure.title = '成功！';
+            this.setAttribute('status', 'success');
+            this.shadowRoot.querySelector('p').innerHTML = '更新成功';
         }
-    },
-    error: ev => {
-        this.figure.title = /^\/(index\.html)?$/.test(window.location.pathname) ?
-            ev.target.errorCode || '不支援' : '請先前往首頁';
     }
+    error(p) {
+        this.hidden = false;
+        this.setAttribute('status', 'error');
+        this.shadowRoot.querySelector('p').innerHTML = /^\/(index\.html)?$/.test(window.location.pathname) ?
+            p.target?.errorCode || p || '不支援' : '請先前往首頁';
+    }
+    prod = () => Q('a[href="products/"]').href += '#update';
 }
+customElements.define('db-status', Indicator);

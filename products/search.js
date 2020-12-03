@@ -20,7 +20,7 @@ const Search = {
     },
     get clicked() {
         return window.location.search.substring(1).split('&').map(q => q.split('='))
-            .filter(([param, v]) => param.length > 1)
+            .filter(([p, v]) => p.length > 1)
             .reduce((inputs, [comp, sym]) => ({...inputs, [comp]: this.esc(decodeURIComponent(sym))}), {});
     },
     search: {
@@ -36,7 +36,7 @@ const Search = {
 
             Search.dash = /′/.test(Search.free) || /[^\d]′/.test(Search.free);
             Search.high = /high/i.test(Search.free);
-            const test = (sym, name, comp) => new RegExp('^' + Search.free + '$', 'i').test(sym) ||
+            const test = (sym, name, comp) => new RegExp(`^${Search.free}$`, 'i').test(sym) ||
                 (/^[0-9A-zαβΩΔ]{1,2}(′|\\\+)?$/.test(Search.free) ? false : name.some(n => new RegExp(Search.free, 'i').test(n)));
 
             let target = {};
@@ -47,7 +47,7 @@ const Search = {
                 if (Search.free)
                     for (let [sym, name] of Object.entries(list))
                         if (test(sym, name, comp))
-                            target[comp] = [...target[comp], sym.replace('+', '\\+')];
+                            target[comp].push(sym.replace('+', '\\+'));
             }
             if (/[\dα′]+[A-Zα_]/i.test(Search.free))
                 target.layer6s = target.disk = [Search.free.replace(/([A-z])/, l => l.toUpperCase())];
@@ -100,7 +100,7 @@ const Search = {
     find() {
         Q('tbody tr', tr => tr.hidden = !Search.match(tr));
         Search.result();
-        Q('html, body', el => el.scrollTop(Q('table').offsetTop));
+        Q('html, body', el => el.scrollTop = Q('table').offsetTop);
     },
     match(tr) {
         const no = tr.getAttribute('data-no');

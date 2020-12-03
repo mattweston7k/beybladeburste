@@ -8,7 +8,6 @@
 
 <link rel=stylesheet href="/include/common.css">
 <script src="include/common.js"></script>
-<script src="parts/include/parts.js"></script>
 <script>
     window.addEventListener('beforeinstallprompt', e => e.preventDefault());
     navigator.serviceWorker.register('/worker.js');
@@ -61,7 +60,7 @@
         <li><a href='parts/'><span>部件<br>Parts</span></a></li>
         <li><a href='products/'><span>商品<br>Products</span></a></li>
         <li><a href='prize.php'><span>景品<br>Prizes</span></a></li>
-        <span id="db" data-icon="" hidden><script>DB.open()</script></span>
+        <db-status />
     </menu>
     <a href='https://beyblade.takaratomy.co.jp/' target='_blank'>往官方網站<br>To official site<br>(Takara Tomy)</a>
     <div class='fb'>
