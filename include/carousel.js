@@ -21,7 +21,7 @@ function Carousel(img,label) {
     };
     return (()=>{
         Q('main').insertAdjacentHTML('beforeend',carousel());
-        Q('nav .links').insertAdjacentHTML('afterend',labels());
+        Q('nav .link').insertAdjacentHTML('afterend',labels());
         Q('body').insertAdjacentHTML('afterbegin',inputs());
         Q('input[name=pages]', (input,i)=>input.addEventListener('change',()=>target(i+1)));
         Q('#p1').click();

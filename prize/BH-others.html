@@ -1,0 +1,226 @@
+
+<!DOCTYPE HTML>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="hsl(45,90%,50%)">
+<script src="/include/common.js"></script>
+<link rel=stylesheet href="/include/common.css">
+<link rel=preload href="/include/fonts/fa-solid-900.woff2" as=font crossorigin>
+<style>
+    summary {
+        height:5em;
+    }
+    h3 {
+        line-height:4em;
+    }
+    .groups summary picture {
+        margin-right:.2em;
+        background:none;
+        border:none;
+        filter:brightness(0%);
+        border-radius:initial;
+    }
+    h4 {
+        display:block;
+        text-align:right;
+        margin:1em 0 .5em 1em;
+    }
+    h4:first-of-type {
+        margin-top:1.5em;
+    }
+    h4::after {
+        content:attr(data-icon);
+        margin-left:.3em;
+        color:var(--theme);
+    }
+    .groups ul {
+        list-style:none;
+        padding:0;margin:0;
+        display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start;
+    }
+    .groups li {
+        border:.1em solid var(--theme);border-radius:6em;
+        padding:0 .5em;margin:.3em 0 .8em .6em;
+        white-space:nowrap;
+        text-align:right;font-size:1.1em;
+        width:47%;max-width:9.5em;
+        position:relative;
+    }
+    .groups li:hover {
+        cursor:pointer;
+    }
+    h5 {
+        float:left;
+    }
+
+    .tight {
+        font-size:.9em;letter-spacing:-.04em;
+    }
+    time {
+        font-family:ANC;font-size:smaller;
+    }
+    cite {
+        position:absolute;top:2.5em;left:-.5em;
+        font-size:.6em;
+    }
+    #popup+label img:not(:only-child) {
+        max-width:8em;
+        margin:0;
+    }
+</style>
+
+<nav><script>nav.create(['home','prize'])</script></nav>
+<main>
+    <article class='groups'>
+        <details>
+            <summary>
+                <h3>Driver
+                    <picture><img src='/parts/driver/Ch.png' alt=Driver></picture>
+                </h3>
+            </summary>
+            <h4 data-icon=''>購物贈品</h4>
+            <ul>
+                <li data-url='img/wp/20200312/campaign.jpg'>
+                    <h5>H Z C P</h5><time>2020-03</time>
+                </li>
+                <li data-url='img/wp/190722_001.png'>
+                    <h5>Ch</h5><time>2019-08</time>
+                </li>
+                <li data-url='img/wp/190315/190315_pos.jpg'>
+                    <h5>Sp L Fl M</h5><time>2019-03</time>
+                </li>
+                <li data-url='img/wp/180313/180315_ev001.jpg'>
+                    <h5>Q Z E N</h5><time>2018-03</time>
+                </li>
+                <li data-url='img/wp/geki_campaign_catch.png'>
+                    <h5>A F S D</h5><time>2017-07</time>
+                </li>
+                <li data-url='category/img/1703_cp_01.jpg'>
+                    <h5>J Z R P</h5><time>2017-03</time>
+                </li>
+                <li data-url='category/img/special/special_vol11_img1.png'>
+                    <h5>B Z E M</h5><time>2016-07</time>
+                </li>
+                <li data-url='img/wp/20160114_driver_0${i}.jpg'>
+                    <h5>A F S D</h5><time>2016-01</time>
+                </li>
+            </ul>
+            <h4 data-icon=''>大會積分兌換</h4>
+            <ul>
+                <li data-url='category/img/champ/gift_20200227_extreme.png'>
+                    <h5>X&prime;</h5><time>2020-05</time>
+                </li>
+                <li data-url='img/wp/190315/gt_pre01.jpg'>
+                    <h5>Ds&prime;</h5><time>2019-05</time>
+                </li>
+            </ul>
+            <h4 data-icon=''>コロコロ雜誌應募</h4>
+            <ul>
+                <li data-url='https://corocoro.jp/wp-content/uploads/2018/07/cnw180420_103-1-300x218.jpg'>
+                    <h5>A D</h5><time>2018-05</time>
+                </li>
+                <li data-url='img/wp/20191130/ultimate.png'>
+                    <h5>Ul</h5><time>2017-09</time>
+                </li>
+            </ul>
+        </details>
+        <details>
+            <summary>
+                <h3>Disk / Frame
+                    <picture><img src='/parts/disk/Wh.png' alt=Disk></picture>
+                </h3>
+            </summary>
+            <h4 data-icon=''>購物贈品</h4>
+            <ul>
+                <li data-url='img/wp/190620/20190620_001.jpg'>
+                    <h5>St <small>disk</small></h5><time>2019-07</time>
+                </li>
+                <li data-url='img/wp/20191130/gold.png'>
+                    <h5>M <small>frame</small></h5><time>2018-12</time>
+                    <cite>《超 Ƶ 覚醒ガイド》</cite>
+                </li>
+                <li data-url='img/wp/god_campaign_catch.png'>
+                    <h5>G <small>frame</small></h5><time>2017-04</time>
+                </li>
+                <li data-url='/parts/frame/S.png'>
+                    <h5>S <small>frame</small></h5><time>2017-03</time>
+                    <cite>《ゴッドヴァルキリー完成ガイド》</cite>
+                </li>
+            </ul>
+            <h4 data-icon=''>大會積分兌換</h4>
+            <ul>
+                <li data-url='category/img/champ/gift_20200227_wheel.png'>
+                    <h5>Wh <small>disk</small></h5><time>2020-09</time>
+                </li>
+                <li data-url='img/wp/180313/battle_02.jpg'>
+                    <h5>U <small>frame</small></h5><time>2018-06</time>
+                </li>
+            </ul>
+            <h4 data-icon=''>コロコロ雜誌應募</h4>
+            <ul>
+                <li data-url='https://www.suruga-ya.jp/database/pics_light/game/607132305.jpg'>
+                    <h5>H <small>frame</small></h5><time>2018-10</time>
+                </li>
+            </ul>
+        </details>
+        <details>
+            <summary>
+                <h3>Chip
+                    <picture><img src='/prize/part-lc-r.png' alt=Chip></picture>
+                </h3>
+            </summary>
+            <h4 data-icon=''>購物贈品</h4>
+            <ul>
+                <li data-url='/prize/part-lc-r.png'>
+                    <h5>Level Chip</h5><time>2018-11</time>
+                    <cite>１月号《コロコロイチバン》</cite>
+                </li>
+                <li data-url='/prize/part-lc-y.png'>
+                    <h5>Level Chip</h5><time>2018-06</time>
+                    <cite>《超 Ƶ 不死身ガイド》</cite>
+                </li>
+                <li data-url='https://corocoro.jp/wp-content/uploads/2018/07/cnw1226_02.jpg'>
+                    <h5 class='tight'>撃 God Chip</h5><time>2017-12</time>
+                    <cite>《ベイブレード全ベイ神鑑ガイド》</cite>
+                </li>
+                <li data-url='img/wp/campaign_20171225.png'>
+                    <h5 class='tight'>撃 God Chip</h5><time>2017-12</time>
+                </li>
+            </ul>
+            <h4 data-icon=''>大會比賽勝利／積分兌換</h4>
+            <ul>
+                <li data-url='category/img/champ/20181225_05.png'>
+                    <h5>Level Chip</h5><time>2019-01</time>
+                </li>
+                <li data-url='category/img/champ/20180515_00_2.jpg'>
+                    <h5>Level Chip</h5><time>2018-06</time>
+                </li>
+                <li data-url='img/wp/180313/battle_01.jpg'>
+                    <h5>Level Chip</h5><time>2018-05</time>
+                </li>
+                <li data-url='img/wp/180306/g4_battle_0${a}.jpg'>
+                    <h5>Level Chip</h5><time>2018-04</time>
+                </li>
+            </ul>
+        </details>
+    </article>
+    <input type='checkbox' id='popup'>
+    <label for='popup'><img></label>
+</main>
+<script>
+    Q('li[data-url]', li => li.onclick = () => {
+        Q('label[for=popup]').innerHTML = '';
+        if (/\$\{i\}/.test(li.getAttribute('data-url')))
+            [1, 2, 3, 4].map(i => image(li.getAttribute('data-url').replace('${i}', i)));
+        else if (/\$\{a\}/.test(li.getAttribute('data-url')))
+            ['a', 'b', 'c'].map(a => image(li.getAttribute('data-url').replace('${a}', a)));
+        else
+            image(li.getAttribute('data-url'));
+        Q('#popup').checked = true;
+    });
+    const image = url => {
+        const img = document.createElement('img');
+        img.src = /^(http|\/)/.test(url) ? url : 'https://beyblade.takaratomy.co.jp/' + url;
+        Q('label[for=popup]').appendChild(img);
+    }
+</script>

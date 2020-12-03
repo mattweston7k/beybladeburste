@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="hsl(45,90%,50%)">
+
+<script src="/include/common.js"></script>
+<link rel=stylesheet href="/include/common.css">
+<link rel=preload href="/include/fonts/fa-solid-900.woff2" as=font crossorigin>
+<title>Prize ￭ 景品 ｜ Beyblade Burst ￭ ベイブレードバースト</title>
+<link rel="stylesheet" href="/include/carousel.css">
+<script src='/include/carousel.js'></script>
+<nav><script>nav.create(['home', 'prod'])</script></nav>
+<main>
+    <div class='tips'>要查看非 Layer 的景品，請<a href='BH-others.html'>按此</a></div>
+</main>
+<script>
+    const systems = [...Array(6).keys()].reverse().map(i => i + 1);
+    new Carousel(systems.map(i => `Prize${i}-min.jpg`), systems.map(i => `/img/system-layer${i}.png`));
+</script>

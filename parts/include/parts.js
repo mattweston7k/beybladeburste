@@ -22,9 +22,9 @@ Parts = {
     count() {
         if (document.querySelectorAll('.catalog>a').length < 28)
             Q('label[for=fixed]').remove();
-        Q('nav .parts data').value = document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length;
+        Q('nav .part data').value = document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length;
         if (/^(driver3|dash)$/.test(Parts.group))
-            Q('nav .parts data').setAttribute('data-extra', '+4');
+            Q('nav .part data').setAttribute('data-extra', '+4');
     },
     target() {
         let target = window.location.hash.substring(1);
@@ -82,19 +82,19 @@ const Tools = {
     magnify() {
         const slider = () => {
             const slider = Q("input[type='range']");
-            slider.value = cookie.get.magBar || 1;
+            slider.value = Cookie.get.magBar || 1;
             Q(".catalog").style.fontSize = slider.value + "em";
             slider.oninput = function () {
                 Q(".catalog").style.fontSize = this.value + "em";
-                cookie.setOptions();
+                Cookie.setOptions();
             };
         }
         const buttons = () => {
             const level = 3;
             Q('nav').insertAdjacentHTML('beforebegin', [...Array(level).keys()].map(i => `<input type=radio name=mag id=mag${i+1}>`).join('') +
                 "<input type=checkbox id=fixed>");
-            Q('input[name=mag]', input => input.onchange = cookie.setOptions);
-            Q('#' + (cookie.get.magBut || 'mag2')).checked = true;
+            Q('input[name=mag]', input => input.onchange = Cookie.setOptions);
+            Q('#' + (Cookie.get.magBut || 'mag2')).checked = true;
             Q('nav .mag').insertAdjacentHTML('beforeend', [...Array(level).keys()].map(i => `<label for=mag${i+1}></label>`).join(''));
         }
         buttons();

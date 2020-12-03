@@ -172,7 +172,7 @@
         },
         save(result) {
             DB.put('html', ['new-prod', Table.sanitize('tbody tr:not([hidden])')]);
-            cookie.setHistory('products');
+            Cookie.setHistory('products');
             if (!result)
                 DB.put('html', ['old-prod', Table.sanitize('tbody tr[hidden]')]);
             else

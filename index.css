@@ -193,7 +193,6 @@ iframe {
 }
 
 #refresh {
-    user-select:none;
     display:flex;justify-content:flex-end;align-items:center;
 }
 #refresh span[data-icon]::before {
@@ -206,6 +205,7 @@ iframe {
 #refresh span:first-child {z-index:2;}
 #refresh span:last-child {z-index:1;}
 #refresh h5 {
+    z-index:-1;
     margin:0 1em;
 }
 
