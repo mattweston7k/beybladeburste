@@ -50,10 +50,9 @@ const DB = {
         fetch('/update/-time.json').then(r => r.json()).then(j => {
             const updates = [], notify = [];
             Object.entries(j).forEach(([item, [time, major]]) => {
-                if (new Date(time).getTime() / 1000 > Cookie.getHistory(item)) {
-                    item == 'products' ? DB.indicator.prod() : updates.push(item);
-                    major ? notify.push(item) : null;
-                }
+                const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
+                oldUser ? item == 'products' ? DB.indicator.prod() : updates.push(item) : null;
+                oldUser && major || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000 ? notify.push(item) : null;
             });
             if (updates.length > 0) {
                 DB.indicator.init(true);
