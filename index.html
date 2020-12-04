@@ -152,13 +152,16 @@
         (() => {
             const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
             db.onpointerdown = pressed => {
+                pressed.preventDefault();
                 db.style.transition = null;
                 document.onpointermove = document.ontouchmove = moving => {
+                    moving.preventDefault();
                     db.style.transform = `translateX(${(moving.clientX || moving.targetTouches[0].pageX) - pressed.clientX}px)`;
                     trash.style.color = (moving.clientX || moving.targetTouches[0].pageX) > trash.getBoundingClientRect().x ? 'lime' : null;
                 }
             }
             document.onpointerup = document.ontouchend = lifted => {
+                lifted.preventDefault();
                 if (document.onpointermove == null)
                     return;
                 if ((lifted.clientX || lifted.targetTouches[0].pageX) < trash.getBoundingClientRect().x) {
