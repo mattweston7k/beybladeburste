@@ -154,14 +154,14 @@
             db.onpointerdown = pressed => {
                 db.style.transition = null;
                 document.onpointermove = document.ontouchmove = moving => {
-                    db.style.transform = `translateX(${moving.clientX - pressed.clientX}px)`;
-                    trash.style.color = moving.clientX > trash.getBoundingClientRect().x ? 'lime' : null;
+                    db.style.transform = `translateX(${moving.clientX || moving.targetTouches[0].pageX - pressed.clientX}px)`;
+                    trash.style.color = moving.clientX || moving.targetTouches[0].pageX > trash.getBoundingClientRect().x ? 'lime' : null;
                 }
             }
             document.onpointerup = document.ontouchend = ev => {
                 if (document.onpointermove == null)
                     return;
-                if (ev.clientX < trash.getBoundingClientRect().x) {
+                if (ev.clientX || ev.targetTouches[0].pageX < trash.getBoundingClientRect().x) {
                     db.style.transform = null;
                     db.style.transition = 'transform .5s';
                 } else
