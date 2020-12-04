@@ -53,7 +53,7 @@ const DB = {
         open.onerror = ev => DB.indicator.error(ev);
     },
     check(handler) {
-        fetch('/update/-time.json').then(r => r.json()).then(j => {
+        fetch('/update/-time.json?' + Math.random()).then(r => r.json()).then(j => {
             const updates = [], notify = [];
             Object.entries(j).forEach(([item, [time, major]]) => {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
