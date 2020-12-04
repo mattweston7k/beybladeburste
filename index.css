@@ -200,17 +200,16 @@ iframe {
     content:attr(data-icon);
     font-size:5rem;
 }
-#refresh span[style*=translate]:first-child {
+#refresh span[style*=translate]:first-of-type {
     color:var(--theme);
 }
-#refresh span:first-child {
+#refresh span:first-of-type {
     position:absolute;
-    right:23.5em;
+    right:17.5em;
 }
-#refresh span:last-child {z-index:1;}
 #refresh h5 {
-    z-index:-1;
     margin:0 1em;
+    width:13em;
 }
 #refresh h5[title]::after {
     content:attr(title);font-size:2em;

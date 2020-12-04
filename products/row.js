@@ -2,11 +2,11 @@ class Part {
     constructor(sym, fusion = false) {
         [this.sym, this.fusion] = [sym, fusion];
     }
-    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), sym = this.symCode, fusion = this.fusion) {
+    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
         if (this.sym == '/')
             return Part.none();
         const colspan = /layer$/.test(part) ? ' colspan' : '';
-        return `<td data-part='${part}'>${sym}<td${colspan} class=left><td${colspan} class='right${fusion ? ' fusion' : ''}'>`;
+        return `<td data-part='${part}'>${symCode}<td${colspan} class=left><td${colspan} class='right${fusion ? ' fusion' : ''}'>`;
     }
     static none = sym => `<td><s>${sym || 'ꕕ'}</s><td><td class='right'>`;
 }
