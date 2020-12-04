@@ -153,12 +153,12 @@
             const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
             db.onpointerdown = pressed => {
                 db.style.transition = null;
-                document.onpointermove = moving => {
+                document.onpointermove = document.ontouchmove = moving => {
                     db.style.transform = `translateX(${(moving.clientX || moving.targetTouches[0].pageX) - pressed.clientX}px)`;
                     trash.style.color = (moving.clientX || moving.targetTouches[0].pageX) > trash.getBoundingClientRect().x ? 'lime' : null;
                 }
             }
-            document.onpointerup = lifted => {
+            document.onpointerup = document.ontouchend = lifted => {
                 if (document.onpointermove == null)
                     return;
                 if ((lifted.clientX || lifted.targetTouches[0].pageX) < trash.getBoundingClientRect().x) {
@@ -169,7 +169,7 @@
                         window.onbeforeunload = () => window.scrollTo(0, 0);
                         window.location.reload();
                     }, ev => Q('#refresh h5').title = ev.type);
-                document.onpointermove = null;
+                document.onpointermove = document.ontouchmove = null;
             }
         })();
     </script>
