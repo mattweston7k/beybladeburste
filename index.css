@@ -194,6 +194,7 @@ iframe {
 
 #refresh {
     display:flex;justify-content:flex-end;align-items:center;
+    position:relative;
 }
 #refresh span[data-icon]::before {
     content:attr(data-icon);
@@ -202,7 +203,10 @@ iframe {
 #refresh span[style*=translate]:first-child {
     color:var(--theme);
 }
-#refresh span:first-child {z-index:2;}
+#refresh span:first-child {
+    position:absolute;
+    right:23.5em;
+}
 #refresh span:last-child {z-index:1;}
 #refresh h5 {
     z-index:-1;
