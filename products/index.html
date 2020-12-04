@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <script src=/include/common.js></script>
 <title>陀螺商品 ￭ Products ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ Beyblade Burst ￭ ベイブレードバースト</title>
-<link rel=stylesheet href="products.css"/>
+<link rel=stylesheet href=products.css/>
 <style></style>
 
 <nav><script>nav.create(["home","/parts"],["","parts"])</script></nav>
@@ -11,56 +11,52 @@
     <db-status></db-status>
     <form>
         <svg style="display:none">
-            <polygon id=link points="0,-100 -86.603,-50 -86.603,50 86.603,50 86.603,-50" stroke-width="4"/>
+            <polygon id=link points="0,-100 -86.603,-50 -86.603,50 86.603,50 86.603,-50" stroke-width=4 />
         </svg>
         <div>
-            <a href="https://beyblade.takaratomy.co.jp/products" target=_blank rel=noreferrer>
-                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link"/></svg>
-                <span data-icon="">官方<br>商品頁面</span>
+            <a href=https://beyblade.takaratomy.co.jp/products target=_blank rel=noreferrer>
+                <svg viewBox="-86.603 -100 173.205 150"><use href=#link /></svg>
+                <span data-icon=>官方<br>商品頁面</span>
             </a>
-            <a href="brochure.php">
-                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link" transform="rotate(180 0 -25)"/></svg>
-                <span data-icon="">官方<br>陀螺介紹</span>
+            <a href=brochure.php>
+                <svg viewBox="-86.603 -100 173.205 150"><use href=#link transform="rotate(180 0 -25)" /></svg>
+                <span data-icon=>官方<br>陀螺介紹</span>
             </a>
         </div>
         <details>
-            <summary><span>精準檢索Precise search</span><button type=button data-icon="" onclick=Search.read("form")></button></summary>
+            <summary><span>精準檢索Precise search</span><button type=button data-icon= onclick=Search.read("form")></button></summary>
             <fieldset>
                 <p class=layer>
-                    <label for=sparking><img src="../img/system-layer6.png"></label>
-                    <label for=GT><img src="../img/system-layer5.png"></label>
+                    <label for=sparking><img src=../img/system-layer6.png></label>
+                    <label for=GT><img src=../img/system-layer5.png></label>
                     <label for=chip>Chip</label>
-                    <input type=text name="layer6c" id=chip placeholder="g/V/s"><br>
+                    <input type=text name=layer6c id=chip placeholder=g/V/s><br>
                     <label for=main>Ring</label>
-                    <input type=text name="layer6r" id=main placeholder="g/V/s"><br>
+                    <input type=text name=layer6r id=main placeholder=g/V/s><br>
                     <label for=weight>Chassis</label>
-                    <input type=text name="layer6s" id=weight placeholder="1a/1s/斬">
-                </p>
+                    <input type=text name=layer6s id=weight placeholder=1a/1s/斬>
                 <p class=layer>
                     <label for=layer>Layer</label>
-                    <input type=text name=layer id=layer placeholder="L2/GV/br">
-                </p>
+                    <input type=text name=layer id=layer placeholder=L2/GV/br>
                 <p class=disk>
                     <label for=disk>Disk</label>
-                    <input type=text name=disk id=disk placeholder="G/4/2v"><br>
+                    <input type=text name=disk id=disk placeholder=G/4/2v><br>
                     <label for=frame>Frame</label>
-                    <input type=text name=frame id=frame placeholder="g/V/s">
-                </p>
+                    <input type=text name=frame id=frame placeholder=g/V/s>
                 <p class=driver>
                     <label for=driver>Driver</label>
-                    <input type=text name=driver id=driver placeholder="at/m/RB">
-                </p>
+                    <input type=text name=driver id=driver placeholder=at/m/RB>
                 <input type=text name=more hidden>
             </fieldset>
         </details>
         <div>
-            <a href="launchers.html">
-                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link"/></svg>
-                <span data-icon="">各款<br>發射器</span>
+            <a href=launchers.html>
+                <svg viewBox="-86.603 -100 173.205 150"><use href=#link /></svg>
+                <span data-icon=>各款<br>發射器</span>
             </a>
             <a>
-                <svg viewBox="-86.603 -100 173.205 150"><use xlink:href="#link" transform="rotate(180 0 -25)"/></svg>
-                <span data-icon="">更多<br>限定商品</span>
+                <svg viewBox="-86.603 -100 173.205 150"><use href=#link transform="rotate(180 0 -25)"/></svg>
+                <span data-icon=>更多<br>限定商品</span>
             </a>
         </div>
     </form>
@@ -86,27 +82,24 @@
     <table id=myTable>
         <caption class=loading>
             <span>已顯示Showing</span>
-            <img src="/img/system-layer6.png">
+            <img src=/img/system-layer6.png>
             <data></data>
-            <button onclick="Table.entire()">顯示全部 Show all</button>
+            <button onclick=Table.entire()>顯示全部 Show all</button>
         </caption>
         <thead hidden>
         <tr class=comp>
-            <th rowspan=2>No</th>
-            <th colspan=3 class=layer>Layer / <br>Base / Ring</th>
-            <th colspan=3 class=layer>Chip</th>
-            <th class=layer></th>
-            <th colspan=3 class=disk>Disk<br> (＋Frame)</th>
-            <th colspan=3 class=driver>Driver</th>
-        </tr>
+            <th rowspan=2>No
+            <th colspan=3 class=layer>Layer / <br>Base / Ring
+            <th colspan=3 class=layer>Chip
+            <th class=layer>
+            <th colspan=3 class=disk>Disk<br> (＋Frame)
+            <th colspan=3 class=driver>Driver
         <tr class=note>
             <th colspan=7>
-                    <span><img src="chips.svg#MGC">：使用 Metal God Chip / Chip Core
-                    <br><img src="chips.svg#LC">：附有 Level Chip</span>
-            </th>
-            <th colspan=3>「_」：不隨附、<br>但可裝 Frame</th>
-            <th colspan=3><ruby>「′」<rt>dash</rt></ruby>：含強彈簧</th>
-        </tr>
+                    <span><img src=chips.svg#MGC>：使用 Metal God Chip / Chip Core
+                    <br><img src=chips.svg#LC>：附有 Level Chip</span>
+            <th colspan=3>「_」：不隨附、<br>但可裝 Frame
+            <th colspan=3><ruby>「′」<rt>dash</rt></ruby>：含強彈簧
         </thead>
         <tbody></tbody>
     </table>
@@ -117,23 +110,23 @@
         <div class=catalog></div>
         <template>
             <div>
-                <a onclick data-icon=""></a>
-                <a href data-icon=""><img></a>
+                <a onclick data-icon=></a>
+                <a href data-icon=><img></a>
             </div>
         </template>
     </label>
 </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script src="search.js"></script>
-<script src="image.js"></script>
-<script src="row.js"></script>
-<script src="/include/tablesorter.js"></script>
+<script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js></script>
+<script src=search.js></script>
+<script src=image.js></script>
+<script src=row.js></script>
+<script src=/include/tablesorter.js></script>
 
-<script async src="/parts/include/parts.js"></script>
-<script async src="/parts/include/catalog.js"></script>
-<link rel=preload href="/parts/include/catalog.css" as=style onload=this.rel='stylesheet'>
-<link rel=preload href="/parts/include/typography.css" as=style onload=this.rel='stylesheet'>
+<script async src=/parts/include/parts.js></script>
+<script async src=/parts/include/catalog.js></script>
+<link rel=preload href=/parts/include/catalog.css as=style onload=this.rel='stylesheet'>
+<link rel=preload href=/parts/include/typography.css as=style onload=this.rel='stylesheet'>
 
 <script>
     const Table = {
@@ -257,6 +250,5 @@
         Table.flush(false);
     };
     Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
-
     Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.read('form') : null);
 </script>

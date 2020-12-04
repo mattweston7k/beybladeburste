@@ -23,10 +23,9 @@ self.addEventListener('install', ev =>
 );
 self.addEventListener('fetch', ev => ev.respondWith(
     caches.open('cache').then(cache => {
-        const url = ev.request.url;
+        const {url} = ev.request;
         return cache.match(ev.request, {ignoreSearch: true}).then(c =>
-            c && internal(url) && !noCache(url) && !justUpdated(url, c) ?
-                c : addHead(ev.request)
+            addHead(c && internal(url) && !noCache(url) && !justUpdated(url, c) ? c : ev.request)
         );
     })
 ));
@@ -46,12 +45,24 @@ async function addHead(req) {
         headers: res.headers
     });
 }
+let code;
 async function head() {
-    return new Promise(resolve => {
+    return code ? code : new Promise(resolve => {
         const open = indexedDB.open('db', 1);
+        const quit = () => {
+            open.result.close();
+            indexedDB.deleteDatabase('db');
+            resolve('');
+        };
+        open.onupgradeneeded = quit;
         open.onsuccess = () => {
-            const query = open.result.transaction('html').objectStore('html').get('head');
-            query.onsuccess = () => resolve(query.result);
+            try {
+                const query = open.result.transaction('html').objectStore('html').get('head');
+                open.result.close();
+                query.onsuccess = () => resolve(code = query.result || '');
+            } catch (e) {
+                quit();
+            }
         }
     })
 }

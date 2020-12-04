@@ -208,6 +208,10 @@ iframe {
     z-index:-1;
     margin:0 1em;
 }
+#refresh h5[title]::after {
+    content:attr(title);font-size:2em;
+    display:block;color:deeppink;-webkit-text-fill-color:deeppink;
+}
 
 footer {
     background-color:grey;

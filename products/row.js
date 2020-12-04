@@ -2,25 +2,19 @@ class Part {
     constructor(sym, fusion = false) {
         [this.sym, this.fusion] = [sym, fusion];
     }
-    code(dataPart, symCode, fusion) {
+    code(part = this.sym + '.' + this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
         if (this.sym == '/')
             return Part.none();
-        dataPart ??= this.sym + '.' + this.constructor.name.toLowerCase();
-        symCode ??= this.symCode;
-        fusion ??= this.fusion;
-
-        return `
-            <td data-part='${dataPart}'>${symCode}</td>
-            <td${/layer$/.test(dataPart) ? ' colspan' : ''} class='left'></td>
-            <td${/layer$/.test(dataPart) ? ' colspan' : ''} class='right${fusion ? ' fusion' : ''}'></td>`;
+        const colspan = /layer$/.test(part) ? ' colspan' : '';
+        return `<td data-part='${part}'>${symCode}<td${colspan} class=left><td${colspan} class='right${fusion ? ' fusion' : ''}'>`;
     }
-    static none = sym => `<td><s>${sym || 'ꕕ'}</s><td><td class='right'></td>`;
+    static none = sym => `<td><s>${sym || 'ꕕ'}</s><td><td class='right'>`;
 }
 
 class Layer extends Part {
     constructor(sym, upperFusion) {super(sym, upperFusion);}
 
-    none = () => "<td><s>ꕕ</s><td colspan><td colspan class='right'></td>";
+    none = () => "<td><s>ꕕ</s><td colspan><td colspan class='right'>";
 
     symCode = this.sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : this.sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
 
@@ -43,11 +37,11 @@ class Layer extends Part {
     weightORchassis(sym) {
         if (this.system == 'GT') {
             const code = {'/': '<s>¬龘</s>', '!': '<s>¬</s>🚫'}[sym];
-            return `<td${code ? '' : ` data-part='${sym}.layer5w'`}>${code || `<s>¬</s>${sym}`}</td>`;
+            return `<td${code ? '' : ` data-part='${sym}.layer5w'`}>${code || `<s>¬</s>${sym}`}`;
         }
         if (this.system == 'SP') {
             const code = {'!': '🚫'}[sym];
-            return `<td${this.fusion ? ' class=fusion' : ''}${code ? '' : ` data-part='${sym}.layer6s'`}>${code || sym}</td>`;
+            return `<td${this.fusion ? ' class=fusion' : ''}${code ? '' : ` data-part='${sym}.layer6s'`}>${code || sym}`;
         }
     }
     code() {
@@ -55,7 +49,7 @@ class Layer extends Part {
             return this.none();
         const [body, chip, key] = this.sym.split('.');
         if (!key)
-            return super.code(`${this.sym}.layer`, this.symCode, this.sym == 'nL');
+            return super.code();
 
         this.system = /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
         return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
@@ -99,7 +93,7 @@ class Row extends HTMLTableRowElement {
         else
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
-        this.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba') + '</td>'
+        this.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba')
             + layer.code() + (driver.fusion ? driver.code() + Part.none(driver.sym) : disk.code() + driver.code());
         append ? this.append(append) : null;
         this.attribute(attr);

@@ -155,7 +155,7 @@
                 db.style.transition = null;
                 document.onpointermove = moving => {
                     db.style.transform = `translateX(${moving.clientX - pressed.clientX}px)`;
-                    trash.style.color = moving.clientX > trash.getBoundingClientRect().x ? 'chartreuse' : null;
+                    trash.style.color = moving.clientX > trash.getBoundingClientRect().x ? 'lime' : null;
                 }
             }
             document.onpointerup = ev => {
@@ -164,13 +164,11 @@
                 if (ev.clientX < trash.getBoundingClientRect().x) {
                     db.style.transform = null;
                     db.style.transition = 'transform .5s';
-                } else {
-                    DB.db.close();
-                    DB.del().onsuccess = () => {
+                } else
+                    DB.del(() => {
                         window.onbeforeunload = () => window.scrollTo(0, 0);
                         window.location.reload();
-                    }
-                }
+                    }, ev => Q('#refresh h5').title = ev.type);
                 document.onpointermove = null;
             }
         })();

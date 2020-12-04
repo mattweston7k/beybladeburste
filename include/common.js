@@ -21,7 +21,13 @@ let Parts = {
 let names;
 const DB = {
     db: null,
-    del: () => indexedDB.deleteDatabase('db'),
+    del: (success = ev => console.log('DB deleted'), error = ev => console.log(ev)) => {
+        DB.db.close();
+        const del = indexedDB.deleteDatabase('db');
+        del.onsuccess = success;
+        del.onerror = del.onblocked = error;
+        return del;
+    },
     get indicator() {return Q('db-status');},
     init(open) {
         DB.indicator.init();
@@ -248,7 +254,7 @@ class Indicator extends HTMLElement {
         if (attr == 'progress')
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
         else if (attr == 'status')
-            this.style.setProperty('--c', {success: 'chartreuse', error: 'red'}[n]);
+            this.style.setProperty('--c', {success: 'lime', error: 'deeppink'}[n]);
     }
     init(update = false) {
         this.hidden = false;
