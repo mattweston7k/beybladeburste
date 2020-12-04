@@ -1,79 +1,71 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="hsl(45,90%,50%)">
-<link rel="apple-touch-icon" href="favicon.ico">
-<link rel="manifest" href="data:application/manifest+json,{&quot;short_name&quot;:&quot;非官方資訊站&quot;,&quot;name&quot;:&quot;爆旋陀螺 擊爆戰魂｜戰鬥陀螺 爆烈世代｜非官方資訊站&quot;,&quot;description&quot;:&quot;陀螺資訊翻譯 整理 檢索&quot;,&quot;background_color&quot;:&quot;hsl(45,90%,50%)&quot;,&quot;theme_color&quot;:&quot;hsl(45,90%,50%)&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;https://beyblade.epizy.com/favicon.ico&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;sizes&quot;:&quot;512x512&quot;}],&quot;display&quot;:&quot;standalone&quot;,&quot;scope&quot;:&quot;https://beyblade.epizy.com/&quot;,&quot;start_url&quot;:&quot;https://beyblade.epizy.com/&quot;}">
-<link rel="stylesheet" href="/include/common.css">
-<script src="/include/common.js"></script>
-
-<script src="include/parts.js"></script>
-<script src="include/catalog.js"></script>
-<link rel="stylesheet" href="include/catalog.css">
-<link rel="preload" href="include/typography.css" as="style" onload="this.rel='stylesheet'">
+<script src=/include/common.js></script>
 
 <nav><script>
     const title = {layer6r: 'Ring', layer6s: 'Chassis', layer6c: 'Chip', layer5w: 'Weight', layer5b: 'Base', layer5c: 'Chip'};
     nav.create()
 </script></nav>
 <db-status></db-status>
+
 <main hidden>
+    <script src=include/parts.js></script>
+    <script src=include/catalog.js></script>
+    <link rel=stylesheet href=include/catalog.css>
+    <link rel=preload href=include/typography.css as=style onload=this.rel=stylesheet>
     <h5></h5>
     <details>
-        <summary data-icon=""></summary>
+        <summary data-icon=></summary>
         <article></article>
     </details>
-    <div class="filter"></div>
-    <section class="catalog"></section>
+    <div class=filter></div>
+    <section class=catalog></section>
 </main>
 <main hidden>
-    <div class='tips'>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
+    <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
     <article>
-        <embed src="include/parts.svg">
-        <section class="layer" style="height:32%"></section>
-        <section class="disk" style="height:23%;top:40%"></section>
-        <section class="driver" style="height:29%;top:71%">
+        <embed src=include/parts.svg>
+        <section class=layer style="height:32%"></section>
+        <section class=disk style="height:23%;top:40%"></section>
+        <section class=driver style="height:29%;top:71%">
             <div style="width:4em;left:0;bottom:1em;">
-                <a href='?dash' data-icon='⌇'><svg viewBox='0 0 22 22'><use href='#round'/></svg></a>
-                <a href='?high' data-icon='⇪'><svg viewBox='0 0 22 22'><use href='#round'/></svg></a>
+                <a href=?dash data-icon=⌇><svg viewBox='0 0 22 22'><use href=#round /></svg></a>
+                <a href=?high data-icon=⇪><svg viewBox='0 0 22 22'><use href=#round /></svg></a>
             </div>
             <div style="width:9.3em;height:4.5em;right:0;bottom:-3em">
-                <a href='?driver4'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 4</a>
-                <a href='?driver3'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 3</a>
-                <a href='?driver2'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 2</a>
-                <a href='?driver1'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Driver 1</a>
+                <a href=?driver4><svg viewBox='0 0 60 22'><use href=#click /></svg>Driver 4</a>
+                <a href=?driver3><svg viewBox='0 0 60 22'><use href=#click /></svg>Driver 3</a>
+                <a href=?driver2><svg viewBox='0 0 60 22'><use href=#click /></svg>Driver 2</a>
+                <a href=?driver1><svg viewBox='0 0 60 22'><use href=#click /></svg>Driver 1</a>
             </div>
         </section>
     </article>
     <svg style='display:none'>
-        <rect id='click' x='0' y='0' width='60' height='22' rx='11' ry='11' />
-        <rect id='round' x='0' y='0' width='22' height='22' rx='11' ry='11' />
-        <path id='connect' d='M 0,0 l 15,30 l -15,30'/>
+        <rect id=click x=0 y=0 width=60 height=22 rx=11 ry=11 />
+        <rect id=round x=0 y=0 width=22 height=22 rx=11 ry=11 />
+        <path id=connect d='M 0,0 l 15,30 l -15,30'/>
     </svg>
 
-    <a href='?layer6s' title='Chassis'></a>
-    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
-    <a href='?layer6r' title='Ring'></a>
-    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
-    <a href='?layer6c' title='Chip'></a>
-    <a href='?remake'></a>
-    <a href='?layer5'></a>
-    <a href='?layer5b' title='Base'></a>
-    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
-    <a href='?layer5w' title='Weight'></a>
-    <svg viewBox='0 0 15 60'><use href="#connect"/></svg>
-    <a href='?layer5c' title='Chip'></a>
-    <a href='?layer4'></a>
-    <a href='?layer3'></a>
-    <a href='?layer2'></a>
-    <a href='?layer1'></a>
+    <a href=?layer6s title=Chassis></a>
+    <svg viewBox='0 0 15 60'><use href=#connect /></svg>
+    <a href=?layer6r title=Ring></a>
+    <svg viewBox='0 0 15 60'><use href=#connect /></svg>
+    <a href=?layer6c title=Chip></a>
+    <a href=?remake></a>
+    <a href=?layer5></a>
+    <a href=?layer5b title=Base></a>
+    <svg viewBox='0 0 15 60'><use href=#connect /></svg>
+    <a href=?layer5w title=Weight></a>
+    <svg viewBox='0 0 15 60'><use href=#connect /></svg>
+    <a href=?layer5c title=Chip></a>
+    <a href=?layer4></a>
+    <a href=?layer3></a>
+    <a href=?layer2></a>
+    <a href=?layer1></a>
 
-
-
-    <a href='?disk3'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Disk 3</a>
-    <a href='?disk2'><svg viewBox='0 0 60 22'><path d='M 11,0 a 11,11,0,0,0,0,22 h 46 l 11,-11 l -11,-11 Z'/></svg>Core Disk</a>
-    <a href='?frame'><svg viewBox='0 0 60 22'><path d='M 49,0 a 11,11,0,0,1,0,22 h -51 l 11,-11 l -11,-11 Z'/></svg>Frame</a>
-    <a href='?disk1'><svg viewBox='0 0 60 22'><use href='#click'/></svg>Disk 1</a>
+    <a href=?disk3><svg viewBox='0 0 60 22'><use href=#click /></svg>Disk 3</a>
+    <a href=?disk2><svg viewBox='0 0 60 22'><path d='M 11,0 a 11,11,0,0,0,0,22 h 46 l 11,-11 l -11,-11 Z'/></svg>Core Disk</a>
+    <a href=?frame><svg viewBox='0 0 60 22'><path d='M 49,0 a 11,11,0,0,1,0,22 h -51 l 11,-11 l -11,-11 Z'/></svg>Frame</a>
+    <a href=?disk1><svg viewBox='0 0 60 22'><use href=#click /></svg>Disk 1</a>
 </main>
 <script>
 if (Parts.group)
@@ -92,7 +84,7 @@ else {
     });
 }
 </script>
-<style media="max-width: 1px">
+<style media="max-width:1px">
     article {
         position:relative;
         margin-top:3em;padding-bottom:71%;
@@ -128,10 +120,10 @@ else {
     main [data-icon]::after {
         content:attr(data-icon);
     }
-    main [data-icon='⌇']::after {
+    main [data-icon=⌇]::after {
         color:gold;
     }
-    main [data-icon='⇪']::after {
+    main [data-icon=⇪]::after {
         color:magenta;
     }
     main a[data-icon]::after {
@@ -256,22 +248,22 @@ else {
         fill:hsl(var(--c),var(--s),75%);
     }
 
-    .layer a[href*='layer6'] {
+    .layer a[href*=layer6] {
         background-image:url('/img/system-layer6.png');
         min-width:6.6em;
         margin:0 .3em 0 -.3em;
     }
-    .layer a[href*='layer6']:first-of-type {
+    .layer a[href*=layer6]:first-of-type {
         margin:0 .3em 0 0;
     }
-    .layer a[href*='remake'] {
+    .layer a[href*=remake] {
         background-image:url('/img/system-remake.png');
     }
-    .layer a[href*='layer5'] {
+    .layer a[href*=layer5] {
         background-image:url('/img/system-layer5.png');
         min-width:5.5em;
     }
-    .layer a[href$='layer5'] {
+    .layer a[href$=layer5] {
         background-image:url('/img/system-layer5m.png');
         min-width:6.7em;
     }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<script src="/include/common.js"></script>
+<script src=/include/common.js></script>
 <title>戰鬥陀螺 爆烈世代 ￭ Beyblade Burst ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト</title>
-<link rel="stylesheet" href="index.css">
+<link rel=stylesheet href=index.css>
 <style>
     menu > svg {--r: 105;}
     @keyframes movingR { to {stroke-dashoffset: 45.8;} }
@@ -14,7 +14,7 @@
 
 <header>
     <article>
-        <img alt='BBB' src='https://www.beyblade.jp/sparking/wp-content/themes/sparking/img/common/logo_small.png'>
+        <img alt=BBB src='https://www.beyblade.jp/sparking/wp-content/themes/sparking/img/common/logo_small.png'>
         <hgroup>
             <h1>戰鬥陀螺 爆烈世代｜爆旋陀螺 擊爆戰魂</h1>
             <h2>非官方資訊站</h2>
@@ -24,32 +24,32 @@
     </article>
 </header>
 
-<section id='contents'>
+<section id=contents>
     <svg style='display:none'>
         <defs>
-            <polygon id='hexa' stroke-width='0.3' points='10,0 5,-8.66 -5,-8.66 -10,0 -5,8.66 5,8.66'/>
-            <g id='gear' stroke-width='2'>
-                <circle cx='0' cy='0' r='10' fill='hsla(0,0%,0%,0.2)'/>
-                <circle cx='0' cy='0' r='50' fill='none'/>
+            <polygon id=hexa stroke-width=0.3 points='10,0 5,-8.66 -5,-8.66 -10,0 -5,8.66 5,8.66'/>
+            <g id=gear stroke-width=2>
+                <circle cx=0 cy=0 r=10 fill=hsla(0,0%,0%,0.2) />
+                <circle cx=0 cy=0 r=50 fill=none />
             </g>
         </defs>
     </svg>
     <menu>
-        <svg viewBox='-10 -10 20 20'><use href='#hexa'/></svg>
-        <svg viewBox='-10 -10 20 20'><use href='#hexa'/></svg>
+        <svg viewBox='-10 -10 20 20'><use href=#hexa /></svg>
+        <svg viewBox='-10 -10 20 20'><use href=#hexa /></svg>
         <li><a><span>教學<br>Guide</span></a></li>
         <li><a><span>研究<br>Studies</span></a></li>
         <li><a><span>圖片<br>Images</span></a></li>
-        <li><a href='parts/'><span>部件<br>Parts</span></a></li>
-        <li><a href='products/'><span>商品<br>Products</span></a></li>
-        <li><a href='prize/'><span>景品<br>Prizes</span></a></li>
-        <db-status />
+        <li><a href=parts/><span>部件<br>Parts</span></a></li>
+        <li><a href=products/><span>商品<br>Products</span></a></li>
+        <li><a href=prize/><span>景品<br>Prizes</span></a></li>
+        <db-status></db-status>
     </menu>
-    <a href='https://beyblade.takaratomy.co.jp/' target='_blank'>往官方網站<br>To official site<br>(Takara Tomy)</a>
-    <div class='fb'>
+    <a href=https://beyblade.takaratomy.co.jp/ target=_blank>往官方網站<br>To official site<br>(Takara Tomy)</a>
+    <div class=fb>
         <span>地區官方消息</span>
-        <a data-icon='' href='https://m.facebook.com/tclubfanshk1/' target='_blank'>T CLUB<br>2020</a>
-        <a data-icon='' href='https://m.facebook.com/Beyblade2016/' target='_blank'>戰鬥陀螺 TW</a>
+        <a data-icon= href=https://m.facebook.com/tclubfanshk1/ target=_blank>T CLUB<br>2020</a>
+        <a data-icon= href=https://m.facebook.com/Beyblade2016/ target=_blank>戰鬥陀螺 TW</a>
     </div>
 </section>
 
@@ -73,7 +73,7 @@
     }
     (() => {
         Q("#gear").append(gears(20));
-        Q('menu a', a => a.insertAdjacentHTML('afterbegin', "<svg viewBox='-65 -65 130 130'><use href='#gear'/></svg>"));
+        Q('menu a', a => a.insertAdjacentHTML('afterbegin', "<svg viewBox='-65 -65 130 130'><use href=#gear /></svg>"));
 
         [315, 15, 255, 135, 195, 75].forEach((color, i) => {
             let link = Q(`menu li:nth-of-type(${i + 1})`);
@@ -84,7 +84,7 @@
     })();
 </script>
 
-<section id='now'>
+<section id=now>
     <fieldset>
         <h3><a>最</a><a>新</a><a>商</a><a>品</a></h3>
         <template>
@@ -93,9 +93,9 @@
                 <h5></h5>
                 <h4></h4>
                 <div>
-                    <a data-icon='' href='https://www.youtube.com/results?q=' target='_blank'></a>
+                    <a data-icon= href=https://www.youtube.com/results?q= target=_blank></a>
                 </div>
-                <iframe src='https://www.youtube.com/embed/' allowfullscreen></iframe>
+                <iframe src=https://www.youtube.com/embed/ allowfullscreen></iframe>
             </article>
         </template>
         <script>
@@ -144,10 +144,10 @@
     </fieldset>
 </section>
 
-<section id="refresh">
-    <span data-icon=""></span>
+<section id=refresh>
+    <span data-icon=></span>
     <h5>如在商品／部件頁遇上問題，請把左圖拖至右圖</h5>
-    <span data-icon=""></span>
+    <span data-icon=></span>
     <script>
         (() => {
             const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
