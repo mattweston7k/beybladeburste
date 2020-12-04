@@ -270,7 +270,7 @@ class Indicator extends HTMLElement {
         this.progress++;
         this.setAttribute('progress', this.progress / this.total * 100);
         if (this.progress == this.total) {
-            this.links.forEach(a => a.href = a.title);
+            this.links ? this.links.forEach(a => a.href = a.title) : null;
             this.setAttribute('status', 'success');
             this.shadowRoot.querySelector('p').innerHTML = '更新成功';
         }
