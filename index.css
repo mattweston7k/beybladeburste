@@ -1,6 +1,9 @@
 *,*::before,*::after {
     line-height:1.5em;
 }
+:root {
+    overscroll-behavior-x:none;
+}
 #popup+label div {
     position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
     background:white;
