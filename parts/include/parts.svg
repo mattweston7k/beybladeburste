@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="6,15,88,64.4600373359975" id="whole">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="6,15,88,64.4600373359975" id="whole">
 <g id="layer" style="--c:140">
   <path id="right" style="--c:140" d="M 89,15 A 2.658547158307394,2.658547158307394,0,0,1,91.20403548264626,19.145187862775206 L 80.50982966315146,35 L 60.509829663151464,35 L 74,15 Z"/>
   <polygon id="middle" style="--c:140" points="67,15 53.50982966315147,35 33.50982966315147,35 47,15"/>

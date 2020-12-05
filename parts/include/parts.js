@@ -13,7 +13,6 @@ Parts = {
     },
     after(info) {
         info ? Q('details article').innerHTML = info : Q('details').hidden = true;
-        console.log(document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length)
         Q('main h5').innerHTML = '　';
         Parts.target();
         Tools.ruler(Parts.group);

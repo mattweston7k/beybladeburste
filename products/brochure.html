@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<script src="/include/common.js"></script>
+<title>商品介紹 Product Brochure｜Beyblade Burst ベイブレードバースト</title>
+<style>
+    section img {
+        padding:0.2em;
+        width:50%;max-width:300px;
+        cursor:pointer;
+    }
+</style>
+<nav><script>nav.create(['prod','/parts'],[,'parts'])</script></nav>
+<main>
+    <section></section>
+</main>
+<script src='image.js'></script>
+<script>
+    const display = (from, to) => {
+        const link = 'https://beyblade.takaratomy.co.jp/category/img/products/';
+        for (let i = from; i >= to; i--)
+            Product.brochure(i).map(id => Q('section').insertAdjacentHTML('beforeend', `<img onclick=window.location=this.src onerror=this.style.display="none" src='${link}${id}'>`));
+    };
+    const ranges = [[180, 159], [158, 133], [132, 104], [103, 73], [71, 34], [31, 1]];
+    let bottom = 0;
+    display(...ranges[bottom]);
+    Q('body').onscroll = () => {
+        if (Q('html').scrollTop >= document.body.scrollHeight - window.innerHeight - 150) {
+            bottom++;
+            display(...ranges[bottom]);
+        }
+    };
+</script>
