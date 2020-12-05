@@ -201,24 +201,25 @@ iframe {
 #refresh h5 {
     display:block;
     font-size:1.3rem;
-    margin:.5em 0 .2em 0;
+    margin-top:.5em;
 }
 #refresh dl {
     display:flex;flex-wrap:wrap;
     justify-content:flex-end;align-items:flex-start;
+    margin-top:.2em
 }
 #refresh dl div {
-    width:33%;max-width:9em;
+    width:33%;max-width:7.9em;
     flex-wrap:wrap;
     border-right:.01em solid;
     padding:0 .4em;margin-top:.3em;
 }
 #refresh dl dt {
     display:block;
-    font-size:1rem;
+    font-size:.9rem;
 }
 #refresh dl dd {
-    font-size:.75rem;
+    font-size:.7rem;
 }
 #refresh div {
     display:flex;justify-content:flex-end;align-items:center;
@@ -239,7 +240,7 @@ iframe {
 }
 #refresh span:first-of-type {
     position:absolute;
-    right:17.5rem;
+    right:16.5rem;
 }
 #refresh h6 {
     margin:0 1em;
