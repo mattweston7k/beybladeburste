@@ -26,7 +26,7 @@ function caching(cache, url, response) {
     return response;
 }
 
-const goFetch = async ({url}) => await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'cors'}));
+const goFetch = async ({url}) => await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'no-cors'}));
 
 const addHead = async res => {
     if (!(res.headers.get("content-type")||'').includes("text/html"))
