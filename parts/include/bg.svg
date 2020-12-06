@@ -1,7 +1,7 @@
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'>
     <script>// <![CDATA[
     const q = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v || ''}), {});
-    const here = () => document.currentScript.parentNode;
+    const Q = el => document.querySelector(el);
     const add = (html, where) => where.insertAdjacentHTML('beforeend', html);
     const root = document.querySelector(':root');
     root.style.setProperty('--c', q.hue);
@@ -95,7 +95,7 @@
 
         <pattern id='top-art' width='150' height='1' patternTransform='scale(1.42857) skewX(45) translate(-25)' patternUnits='userSpaceOnUse'>
             <script>// <![CDATA[
-            [s, place] = [15, here()];
+            [s, place] = [15, Q('#top-art')];
             for (let i = 1; i <= 10; i++)
                 add(`<line x1='${(i-1/2)*s}' x2='${(i-1/2)*s}' y2='1' stroke-width='${s}' stroke='hsl(var(--c),var(--s),calc(${i%2===0? 10+i : 16.8+1.2*i }% + var(--base-b)))'/>`, place);
             // ]]></script>
@@ -116,7 +116,7 @@
 
         <g class='day'>
             <script>// <![CDATA[
-            place = here();
+            place = Q('g.day');
             types.forEach(t => add(`
             <linearGradient id='img-${t}' class='${t}' x1='0' y1='100%' x2='100%' y2='0'>
                 <stop offset='0%'/><stop offset='100%'/>
@@ -231,7 +231,7 @@
 
         <g id='dl-5'>
             <script>// <![CDATA[
-            place = here();
+            place = Q('#dl-5');
             stats.forEach((s, i) => {
                 const g = s == 'wei' && q.heavy != null ? (q.heavy || 'heavy')+'-5' : 'dd';
                 add(`<use href='#${g}' class='${s}' transform='translate(0,${step5*i})' fill='url(#dd-${s}-5)' />`, place);
@@ -240,7 +240,7 @@
         </g>
         <g id='dl-6'>
             <script>// <![CDATA[
-            place = here();
+            place = Q('#dl-6');
             stats.forEach((s, i) => {
                 const g = s == 'wei' && q.heavy != null ? (q.heavy || 'heavy')+'-6' : i%2 == 0 ? 'odd' : 'even';
                 add(`<use href='#${g}' class='${s}' transform='translate(0,${step6*i})' fill='url(#dd-${s}-6)' />`, place);
