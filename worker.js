@@ -26,10 +26,9 @@ function caching(cache, url, response) {
     return response;
 }
 
-async function goFetch({url}) {
-    return await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'cors'}));
-}
-async function addHead(res) {
+const goFetch = async ({url}) => await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'cors'}));
+
+const addHead = async res => {
     if (!(res.headers.get("content-type")||'').includes("text/html"))
         return res;
     return new Response(await head() + await res.text(), {
@@ -39,8 +38,8 @@ async function addHead(res) {
     });
 }
 let code;
-async function head() {
-    return code ? code : new Promise(resolve => {
+const head = async () =>
+    code ? code : new Promise(resolve => {
         const open = indexedDB.open('db', 1);
         const quit = () => {
             open.result.close();
@@ -58,4 +57,3 @@ async function head() {
             }
         }
     })
-}
