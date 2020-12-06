@@ -274,7 +274,7 @@ class Indicator extends HTMLElement {
         this.shadowRoot.querySelector('p').innerHTML = /^\/(index\.html)?$/.test(window.location.pathname) ?
             p.target?.errorCode || p || '不支援' : '請先前往首頁';
     }
-    prod = () => Q('a[href="products/"]').href += '#update';
+    prod() {Q('a[href="products/"]').href += '#update';}
 }
 Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);
