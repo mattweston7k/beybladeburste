@@ -1,3 +1,8 @@
+window.addEventListener('beforeinstallprompt', e => e.preventDefault());
+navigator.serviceWorker.register('/worker.js').then(() => {
+    if (!Q('head meta'))
+        fetch('/include/head.html').then(r => r.text()).then(html => document.head.insertAdjacentHTML('afterbegin', html));
+});
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
@@ -121,14 +126,6 @@ const DB = {
         return DB.open(handler);
     }
 }
-window.addEventListener('beforeinstallprompt', e => e.preventDefault());
-navigator.serviceWorker.register('/worker.js').then(() => {
-    if (!Q('head meta'))
-        fetch('/include/head.html').then(r => r.text()).then(html => {
-            document.head.insertAdjacentHTML('afterbegin', html);
-            DB.open(() => DB.put('html', ['head', html]));
-        });
-});
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
