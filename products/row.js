@@ -2,7 +2,7 @@ class Part {
     constructor(sym, fusion = false) {
         [this.sym, this.fusion] = [sym, fusion];
     }
-    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
+    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode(), fusion = this.fusion) {
         if (this.sym == '/')
             return Part.none();
         const colspan = /layer$/.test(part) ? ' colspan' : '';
