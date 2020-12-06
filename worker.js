@@ -26,8 +26,8 @@ function caching(cache, url, response) {
     return response;
 }
 
-async function goFetch(req) {
-    return await fetch(req.url + (!/\?/.test(req.url) && forceUpdate(req.url)? '?' + Math.random() : ''), {mode: 'cors'});
+async function goFetch({url}) {
+    return await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'cors'}));
 }
 async function addHead(res) {
     if (!(res.headers.get("content-type")||'').includes("text/html"))

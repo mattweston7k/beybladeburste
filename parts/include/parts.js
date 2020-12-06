@@ -45,7 +45,7 @@ customElements.define('weight-scale', class extends HTMLElement {
         this.shadow.innerHTML = this.css + '<input type="checkbox" id="show"><label for="show"></label><div></div>';
         this.hidden = true;
     }
-    css = ['/include/common.css', 'include/ruler.css'].map(c => `<link rel="stylesheet" href=${c}>`).join('');
+    css() {return ['/include/common.css', 'include/ruler.css'].map(c => `<link rel="stylesheet" href=${c}>`).join('');}
 
     connectedCallback() {
         const [min, max, group, scale] = ['min', 'max', 'group', 'scale'].map(a => this.getAttribute(a));
