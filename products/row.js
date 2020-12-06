@@ -14,9 +14,9 @@ class Part {
 class Layer extends Part {
     constructor(sym, upperFusion) {super(sym, upperFusion);}
 
-    none = () => "<td><s>ꕕ</s><td colspan><td colspan class='right'>";
+    static none() {return "<td><s>ꕕ</s><td colspan><td colspan class='right'>";}
 
-    symCode = this.sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : this.sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
+    symCode() {return this.sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : this.sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');}
 
     baseORring(sym) {
         if (sym == '/')
@@ -46,7 +46,7 @@ class Layer extends Part {
     }
     code() {
         if (this.sym == '/')
-            return this.none();
+            return Layer.none();
         const [body, chip, key] = this.sym.split('.');
         if (!key)
             return super.code();
@@ -57,11 +57,11 @@ class Layer extends Part {
 }
 class Disk extends Part {
     constructor(sym) {super(sym);}              // sort 0                          alphabet disk
-    symCode = this.sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');
+    symCode() {return this.sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');}
 }
 class Driver extends Part {
     constructor(sym, lowerFusion) {super(sym, lowerFusion);}
-    symCode = (this.fusion ? '&nbsp;' : '') + this.sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (this.sym == '∞' ? '&nbsp;' : '');
+    symCode() {return (this.fusion ? '&nbsp;' : '') + this.sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (this.sym == '∞' ? '&nbsp;' : '');}
 }
 
 class Row {
