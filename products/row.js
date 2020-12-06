@@ -8,7 +8,7 @@ class Part {
         const colspan = /layer$/.test(part) ? ' colspan' : '';
         return `<td data-part='${part}'>${symCode}<td${colspan} class=left><td${colspan} class='right${fusion ? ' fusion' : ''}'>`;
     }
-    static none = sym => `<td><s>${sym || 'ꕕ'}</s><td><td class='right'>`;
+    static none(sym) {return `<td><s>${sym || 'ꕕ'}</s><td><td class='right'>`};
 }
 
 class Layer extends Part {
@@ -64,17 +64,24 @@ class Driver extends Part {
     symCode = (this.fusion ? '&nbsp;' : '') + this.sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (this.sym == '∞' ? '&nbsp;' : '');
 }
 
-class Row extends HTMLTableRowElement {
+class Row {
     constructor(p) {
-        super();
+        this.tr = document.createElement('tr');
         p ? this.create(p) : null;
-        this.connectedCallback();
     }
-    connectedCallback = () => setTimeout(() => {
-        this.fill(['eng', 'chi']);
-        this.querySelectorAll('td').forEach(td => td.onclick = () => Cell.preview(td))
-    })
-
+    static connectedCallback(tr) {
+        Row.fill(['eng', 'chi'], tr);
+        tr.querySelectorAll('td').forEach(td => td.onclick = () => Cell.preview(td));
+    }
+    static fill(lang, tr) {
+        tr.querySelectorAll('td[data-part]').forEach(td => {
+            let {dash, high, core, parts: [sym, comp]} = Cell.decompose(td);
+            if (/^layer(5w|6s)$/.test(comp))
+                return;
+            const cells = Row.next2(td);
+            lang.forEach((l, i) => l ? Cell.code(l, cells[i], sym, comp, core, dash, high) : null);
+        });
+    }
     create([no, type, abbr, append]) {
         const attr = {
             'class': type,
@@ -93,20 +100,11 @@ class Row extends HTMLTableRowElement {
         else
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
-        this.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba')
+        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba')
             + layer.code() + (driver.fusion ? driver.code() + Part.none(driver.sym) : disk.code() + driver.code());
         append ? this.append(append) : null;
         this.attribute(attr);
-        document.querySelector('tbody').appendChild(this);
-    }
-    fill(lang) {
-        this.querySelectorAll('td[data-part]').forEach(td => {
-            let {dash, high, core, parts: [sym, comp]} = Cell.decompose(td);
-            if (/^layer(5w|6s)$/.test(comp))
-                return;
-            const cells = Row.next2(td);
-            lang.forEach((l, i) => l ? Cell.code(l, cells[i], sym, comp, core, dash, high) : null);
-        });
+        document.querySelector('tbody').appendChild(this.tr);
     }
     append(append) {
         const {mode, chip, more} = append;
@@ -121,15 +119,15 @@ class Row extends HTMLTableRowElement {
             Row.next2(this.cell(['layer6r', 'layer'])).forEach(td => add(td, `<b>${more}</b>`));
     }
     attribute({'data-no': no, ...attr}) {
-        Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.setAttribute(a, v) : null);
+        Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
         this.rare(no);
-        this.hidden = !Row.SP && Table.limit;
+        this.tr.hidden = !Row.SP && Table.limit;
     }
     rare(no) {
         if ([100, 117, 129].map(n => `B-${n}`).includes(no))
             this.cell(['layer']).style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
-            this.classList.add('GT');
+            this.tr.classList.add('GT');
         else [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
                 {n: [160], color: 'dodgerblue'},
@@ -141,10 +139,10 @@ class Row extends HTMLTableRowElement {
             ].forEach(({n, color}) =>
                 n.map(n => `B-${n}`).includes(no) ? this.cell(['layer6s', 'disk']).style.color = color : null);
     }
-    cell = tds => this.querySelector(`td[data-part$=${tds[0]}]`) || this.querySelector(`td[data-part$=${tds[1]}]`);
-    static next2 = td => [td.nextElementSibling, td.nextElementSibling.nextElementSibling];
-    static SP = true;
+    cell = tds => this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);
+    static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
+Row.SP = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
 const Cell = {

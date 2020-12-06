@@ -7,13 +7,13 @@
 
 <nav><script>
     const title = {layer6r: 'Ring', layer6s: 'Chassis', layer6c: 'Chip', layer5w: 'Weight', layer5b: 'Base', layer5c: 'Chip'};
-    nav.create()
+    nav.create();
 </script></nav>
 <db-status></db-status>
 
 <main hidden>
     <h5></h5>
-    <details>
+    <details hidden>
         <summary data-icon=></summary>
         <article></article>
     </details>
@@ -32,22 +32,28 @@
             <a href=?layer3><image href="/img/system-layer3.png" /></a>
             <a href=?layer2><image href="/img/system-layer2.png" /></a>
             <a href=?layer1><image href="/img/system-layer1.png" /></a>
-            <a href=?layer5b><image href="/img/system-layer5.png" x=20 /><text>Base</text></a>
-            <a href=?layer5w><image href="/img/system-layer5.png" x=50 /><text>Weight</text></a>
-            <a href=?layer5c><image href="/img/system-layer5.png" x=80 /><text>Chip</text></a>
-            <a href=?layer6s><image href="/img/system-layer6.png" x=13 /><text>Chassis</text></a>
-            <a href=?layer6r><image href="/img/system-layer6.png" x=43 /><text>Ring</text></a>
-            <a href=?layer6c><image href="/img/system-layer6.png" x=73 /><text>Chip</text></a>
-            <path d="M 70,20 l -15,0 m -15,0 l -15,0 M 62,20 l -6,9 l -5,0 m -15,0 l -15,0 l -4,6" />
+            <g id=GT>
+                <a href=?layer5b><image href="/img/system-layer5.png" x=29 /><text>Base</text></a>
+                <a href=?layer5w><image href="/img/system-layer5.png" x=59 /><text>Weight</text></a>
+                <a href=?layer5c><image href="/img/system-layer5.png" x=89 /><text>Chip</text></a>
+            </g>
+            <g id=SP>
+                <a href=?layer6s><image href="/img/system-layer6.png" x=21 /><text>Chassis</text></a>
+                <a href=?layer6r><image href="/img/system-layer6.png" x=45 /><text>Ring</text></a>
+                <a href=?layer6c><image href="/img/system-layer6.png" x=76 /><text>Chip</text></a>
+                <a href=?layer6c><image href="/img/system-layer6.png" x=41 /><text>LB</text></a>
+                <path d="M 69,18 l -17,0 m -13.5,0 l -11,0 M 63,18 l -6,9 l -10,0 m -13,0 l -19,0 l -4,6" />
+            </g>
+            <text x=50 y=2>Layer 攻擊環・結晶輪盤</text>
         </g>
-        <text x=50 y=2>Layer 攻擊環・結晶輪盤</text>
         <g class="disk">
-            <a href=?disk3><text>3</text></a>
-            <a href=?disk2><text>2</text></a>
-            <a href=?frame><text>Frame</text></a>
-            <a href=?disk1><text>1</text></a>
+            <a href=?layer6c><image href="/img/system-layer6.png" x=9 y=37 /><text x=12 y=40>LB</text></a>
+            <a href=?disk3><circle cx=5 cy=44 /><text x=5 y=45>3</text></a>
+            <a href=?disk2><circle cx=11 cy=44 /><text x=11 y=45>2</text></a>
+            <a href=?frame><rect x=15 y=41.5 width=12 height=5 rx=1 /><text x=21 y=45>Frame</text></a>
+            <a href=?disk1><circle cx=31 cy=44  /><text x=31 y=45>1</text></a>
+            <text x=13 y=52>Disk 金屬輪盤</text>
         </g>
-        <text x=50 y=2>Disk 金屬輪盤</text>
         <g class="driver">
             <a href=?high><text fill=magenta>⇪</text></a>
             <a href=?dash><text fill=gold>⌇</text></a>
@@ -55,104 +61,42 @@
             <a href=?driver3><text>2</text></a>
             <a href=?driver2><text>2</text></a>
             <a href=?driver1><text>1</text></a>
+            <text x=82 y=82>Driver 軸心・底盤</text>
         </g>
-        <text x=50 y=2>Driver 軸心・底盤</text>
     </svg>
     <script>
         (() => {
-            const [width, start] = [10, 10];
+            const start = 10;
             const end = 100 - start;
             const interval = (end - start) / 5;
-            const scale = () => {
-                const width = Q('main svg').clientWidth / -100 + 18;
-                Q('.layer image', image => {
-                    image.setAttribute('width', width);
-                    image.setAttribute('height', width*7/10);
-                    image.style.transform = `translate(-${width/2}px,-${width*7/10/2}px)`;
-                });
-            }
+            const scale = () =>
+                Q('svg').style.setProperty('--w', (Q('main svg').clientWidth / -100 + 22) + 'px');
             setTimeout(scale);
             window.onresize = scale;
-            Q('.layer a:nth-of-type(-n+6) image', (image, i) => {
+            Q('.layer>a image', (image, i) => {
                 image.setAttribute('y', -7.5);
                 image.setAttribute('x', start + i * interval);
             });
-            Q('.layer a:nth-of-type(n+7) image', (image, i) => {
-                const y = /layer5/.test(image.getAttribute('href')) ? 8 : 17;
-                image.setAttribute('width', width);
-                image.setAttribute('height', 7);
+            Q('#GT image, #SP image', (image, i) => {
+                const y = /layer5/.test(image.getAttribute('href')) ? 9 : 18;
                 image.setAttribute('y', y);
-                image.nextElementSibling.setAttribute('x', width + parseInt(image.getAttribute('x')));
-                image.nextElementSibling.setAttribute('y', 7 + y);
+                image.nextElementSibling.setAttribute('x', 5 + parseInt(image.getAttribute('x')));
+                image.nextElementSibling.setAttribute('y', 3.5 + y);
             });
         })();
     </script>
 </main>
 <script>
 if (Parts.group)
-    Q('main:first-of-type').hidden = false;
-else {
+    L(() => Q('main:first-of-type').hidden = false);
+else L(() => {
     Q('main:last-of-type').hidden = false;
-    L(() => Q('style[media]').removeAttribute('media'));
-}
+    Q('style[media]').removeAttribute('media');
+});
 </script>
 <style media="max-width:1px">
     main {
         overflow:visible;
-    }
-    article {
-        position:relative;
-        max-width:50em;
-        margin:7em auto 0 auto;padding-bottom:min(35.5em,71%);
-    }
-    embed {
-        left:50%;top:0;transform:translate(-50%,0);
-        z-index:-1;
-    }
-    article>* {
-        position:absolute;
-        width:100%;
-    }
-    article section {
-        font-size:1.4rem;
-    }
-    article div:not([id]) {
-        position:absolute;
-    }
-    div[title]::after {
-        content:attr(title);
-        font-size:1rem;
-        position:absolute;
-        display:block;
-    }
-    .layer div::after {
-        top:115%;left:50%;transform:translate(-50%,0);
-    }
-    section:not(.layer) div::after {
-        margin-top:.2em;
-    }
-    .driver div::after {
-        right:0;margin-right:.2em;
-    }
-    .driver div {
-        text-align:right;
-    }
-    article div>svg {
-        position:absolute;top:0;
-        width:100%;
-    }
-    article span {
-        display:inline-block;
-        font-size:.8em;
-        margin:.4rem .2rem 0 .2rem;
-    }
-    section:not(.layer) a {
-        width:1.3em;height:1.3em;
-        z-index:1;
-        display:inline-flex;align-items:center;justify-content:center;
-        border:.1rem solid hsl(var(--c),var(--s),calc(90% - var(--b)/2));
-        border-radius:10em;
-        margin:.25em .15em;
     }
     g:not(.layer) a, svg path {
         filter:drop-shadow(0 0 0.1rem hsl(var(--c),calc(var(--s)*2),80%)) drop-shadow(0 0 0.3rem hsl(var(--c),calc(var(--s)*1.5),70%)) !important;
@@ -165,6 +109,11 @@ else {
     }
 
     /*svg*/
+    g image {
+        width:var(--w);
+        height:calc(var(--w)*5.5/10);
+        transform:translate(calc(var(--w)/-2),calc(var(--w)*5.5/10/-2));
+    }
     svg {
         max-width:50em;
     }
@@ -174,23 +123,32 @@ else {
         stroke-width:.5;
         fill:transparent;
     }
+    circle,rect {
+        stroke-width:.3;
+        stroke:white;
+        r:2.5;
+        fill:transparent;
+    }
     .layer a~path {
         stroke-width:.3;
         stroke:grey;
+    }
+    #SP a:last-of-type  {
+        transform:translate(-1px,10px);
     }
     text {
         text-anchor:middle;
     }
     text:not([fill]) {
-        font-size:.15rem;
+        font-size:3.2px;
         fill:white;
     }
     text[fill] {
-        font-size:.18rem;
+        font-size:3.5px;
     }
-    .layer image+text {
+    image+text {
         text-anchor:end;
-        font-size:.12rem;
+        font-size:2.5px !important;
     }
     .day .disk svg>*,.day rect {
         fill:hsl(var(--c),var(--s),75%);

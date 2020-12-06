@@ -186,8 +186,8 @@ const nav = {
     },
     link: (links, texts) => Parts.group ? nav.next() : nav.href(links[0], texts[0]) + nav.href(links[1], texts[1]),
     next: () => {
-        let [i, g] = [, Parts.group];
-        const gs = groups.find(gs => (i = gs.indexOf(g)) >= 0);
+        let i;
+        const gs = groups.find(gs => (i = gs.indexOf(Parts.group)) >= 0);
         const next = gs[++i % gs.length];
         const inside = /^(layer|remake)/.test(next) ? nav.system(next) : next;
         return nav.href('menu') + `<a href=?${next}${title[next] ? ` title=${title[next]}` : ''}>${inside}</a>`;
@@ -213,12 +213,6 @@ class Indicator extends HTMLElement {
         this.attachShadow({mode: 'open'}).innerHTML = `
         <style>
             :host([hidden]) {display:none;}
-            :host-context(body) {margin:5em 0 0 0;}
-            :host-context(main) {margin:0 0 .5em 0;}
-            :host-context(menu) {
-                margin:0;
-                position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            }
             :host {
                 position:relative;
                 background:radial-gradient(circle at center var(--p),hsla(0,0%,100%,.2) 70%, var(--on) 70%);
@@ -249,7 +243,6 @@ class Indicator extends HTMLElement {
         this.hidden = true;
         DB.open(Parts.group ? Parts.load : null);
     }
-    static observedAttributes = ['progress', 'status'];
     attributeChangedCallback(attr, o, n) {
         if (attr == 'progress')
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
@@ -283,4 +276,5 @@ class Indicator extends HTMLElement {
     }
     prod = () => Q('a[href="products/"]').href += '#update';
 }
+Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);

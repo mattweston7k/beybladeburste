@@ -86,7 +86,7 @@
             <data></data>
             <button onclick=Table.entire()>顯示全部 Show all</button>
         </caption>
-        <thead hidden>
+        <thead>
         <tr class=comp>
             <th rowspan=2>No
             <th colspan=3 class=layer>Layer / <br>Base / Ring
@@ -131,33 +131,31 @@
 <script>
     const Table = {
         limit: true,
-        paste() {
+        get() {
             if (!names) DB.getNames();
             Table.loading(true);
             DB.get('html', 'new-prod', null, n =>
                 DB.get('html', 'old-prod', null, o => {
-                    if (!n.target.result || !o.target.result)
-                        return Table.fetch();
-                    Q('tbody').insertAdjacentHTML('beforeend', n.target.result + (Table.limit ? o.target.result.replace(/<tr/g, '<tr hidden') : o.target.result));
+                    if (!n.target.result || !o.target.result || /^#(flush|update)$/.test(window.location.hash))
+                        return Table.fetch(window.location.hash == '#update' ? o.target.result : false);
+                    Q('tbody').innerHTML = n.target.result + (Table.limit ? o.target.result.replace(/<tr/g, '<tr hidden') : o.target.result);
                     Table.loading(false);
                 })
             );
         },
-        fetch(flush) {
-            DB.get('html', 'old-prod', null, o => {
-                if (!names) DB.getNames();
-                Table.loading(true);
-                Promise.all([
-                    fetch('/update/product-new.json').then(r => r.json()),
-                    !flush && o.target.result ? o.target.result : fetch('/update/product-old.json').then(r => r.json())
-                ]).then(([n, o]) => {
-                    Row.SP = true;
-                    [...n, ...typeof o == 'object' ? o : []].forEach(p => new Row(p));
-                }).then(() => {
-                    Table.save(o.target.result);
-                    Table.loading(false);
-                });
-            })
+        fetch(old) {
+            if (!names) DB.getNames();
+            Table.loading(true);
+            Promise.all([
+                fetch('/update/product-new.json').then(r => r.json()),
+                old ? old : fetch('/update/product-old.json').then(r => r.json())
+            ]).then(([n, o]) => {
+                Row.SP = true;
+                [...n, ...typeof o == 'object' ? o : []].forEach(p => new Row(p));
+            }).then(() => {
+                Table.save(old);
+                Table.loading(false);
+            });
         },
         save(result) {
             DB.put('html', ['new-prod', Table.sanitize('tbody tr:not([hidden])')]);
@@ -167,7 +165,7 @@
             else
                 Q('tbody').insertAdjacentHTML('beforeend', Table.limit ? result.replace(/<tr/g, '<tr hidden') : result);
         },
-        sanitize: elements => {
+        sanitize(elements) {
             const temp = document.createElement('template');
             temp.innerHTML = [...document.querySelectorAll(elements)].map(tr => tr.outerHTML).join('');
             temp.content.querySelectorAll('td.left, td.right').forEach(td => td.innerHTML = td.innerHTML.replace(/.*?(<sub>.*?<\/sub>).*?/, '$1'));
@@ -183,12 +181,12 @@
                 Search.search.clicked();
                 return Q('tbody tr', tr => tr.remove());
             }
+            Q('tr', tr => Row.connectedCallback(tr));
             if (Table.limit === true) {
                 Table.limit = count('tbody tr:not([hidden])');
                 Q('main data').innerHTML = Table.limit;
                 Q('main data').value = count('tbody tr');
             }
-            Q('thead').hidden = false;
             (Search.regex.length > 0 || Search.more || Q('nav data').value) ?
                 Search.find() : Q('nav data').removeAttribute('value');
             Table.flush();
@@ -205,7 +203,7 @@
             if (window.location.search)
                 window.history.pushState('', '', '/products/');
             [...document.querySelectorAll('th')].some(th => th.getAttribute('aria-sort') != 'none') ?
-                Table.paste() : Q('tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
+                Table.get() : Q('tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
             Q('html, body', el => el.scrollTop = 0);
             Q('caption').classList.remove('searching');
             Q('nav data[value]').removeAttribute('value');
@@ -224,7 +222,7 @@
                 $("table").trigger('update', [false]);
         }
     }
-    window.location.hash.length > 1 ? Table.fetch(window.location.hash == '#flush') : Table.paste();
+    Table.get();
     window.onresize = () => Table.flush(false);
 
     (() => {

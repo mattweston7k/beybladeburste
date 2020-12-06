@@ -12,7 +12,10 @@ Parts = {
         Tools.magnify();
     },
     after(info) {
-        info ? Q('details article').innerHTML = info : Q('details').hidden = true;
+        if (info) {
+            Q('details article').innerHTML = info;
+            Q('details').hidden = false;
+        }
         Q('main h5').innerHTML = '　';
         Parts.target();
         Tools.ruler(Parts.group);

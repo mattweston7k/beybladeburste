@@ -488,3 +488,9 @@ nav span,form summary,caption,caption data::after,.tips
     transform:translate(0%,-80%) rotate(-30deg);
     z-index:2;
 }
+body>db-status {
+    margin:5em 0 0 0;
+}
+main>db-status {
+    margin:0 0 .5em 0;
+}

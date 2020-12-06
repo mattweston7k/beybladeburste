@@ -122,6 +122,9 @@ menu>svg:last-of-type {
     position:absolute;top:0%;left:0%;
     will-change:stroke-dashoffset;
 }
+db-status {
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+}
 
 menu a[href] use {
     animation:rotatingR 3s ease-out forwards; }

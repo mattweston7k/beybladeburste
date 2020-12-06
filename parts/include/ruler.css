@@ -11,9 +11,11 @@ label,label::after,div {
     position:fixed;left:0;bottom:0;
     font-size:.8em;
     z-index:5;
+    pointer-events:none;
 }
 label {
     font-size:2em;
+    pointer-events:auto;
 }
 label::before,label::after {
     border-color:hsl(var(--c),var(--s),55%);
@@ -52,10 +54,6 @@ data::before {
 :host([group=layer4]) span, :host([group=layer5]) span {
     color:hsl(0,100%,calc(85% - var(--root-b)/3));
 }
-:host([scale='w+7']) span[fusion]::after {
-    color:hsl(0,100%,calc(85% - var(--root-b)/3));
-    font-style:italic;
-}
 :host([group=layer4]) data[value='9']~data,
 :host([group=layer5]) data[value='9']~data {
     color:hsl(270,100%,calc(90% - var(--root-b)/3));
@@ -76,6 +74,11 @@ span {
 span[fusion]::after {
     content:attr(fusion);
     color:hsl(calc((var(--c) + 230)/2),70%,calc(80% - var(--b)/3));
+}
+:host([group=layer5b]) span[fusion]::after,
+:host([group=layer6r]) span[fusion]::after {
+    color:hsl(0,100%,calc(85% - var(--root-b)/3));
+    font-style:italic;
 }
 
 @media (orientation:landscape) and (min-width:750px) {

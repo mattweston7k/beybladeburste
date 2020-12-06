@@ -149,6 +149,9 @@ caption.loading::after {
     background-size:contain;
     display:inline-block;width:2em;height:2em;
 }
+caption.loading+thead {
+    display:none;
+}
 caption span {
     width:4.5em;
     white-space:initial;
