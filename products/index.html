@@ -123,11 +123,6 @@
 <script src=row.js></script>
 <script src=/include/tablesorter.js></script>
 
-<script async src=/parts/include/parts.js></script>
-<script async src=/parts/include/catalog.js></script>
-<link rel=preload href=/parts/include/catalog.css as=style onload=this.rel='stylesheet'>
-<link rel=preload href=/parts/include/typography.css as=style onload=this.rel='stylesheet'>
-
 <script>
     const Table = {
         limit: true,
@@ -250,3 +245,8 @@
     Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
     Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.read('form') : null);
 </script>
+
+<script async src=/parts/include/parts.js></script>
+<script async src=/parts/include/catalog.js></script>
+<link rel=stylesheet href=/parts/include/catalog.css>
+<link rel=stylesheet href=/parts/include/typography.css>
