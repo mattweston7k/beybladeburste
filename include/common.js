@@ -73,30 +73,27 @@ const DB = {
             return handler ? handler() : null;
         }).catch(er => DB.indicator.error(er));
     },
-    cache(handler, update = [...groups.flat(), 'names']) {
+    async cache(handler, update = [...groups.flat(), 'names']) {
         DB.indicator.total = update.length;
-        DB.fetch(update).then(res =>
-            res.forEach(([r, group]) =>
-                r.then(json => {
-                    if (!json) return;
-                    if (group == 'names') {
-                        DB.put('json', ['names', json]);
-                        names = json;
-                    } else {
-                        const {info, parts} = json;
-                        const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-                        info ? DB.put('html', [group, info], tran) : null;
-                        DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
-                        parts.filter(part => part && typeof part == 'object').forEach(part =>
-                            DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
-                    }
-                    // if (group == 'layer5')
-                    //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
-                    DB.indicator.update();
-                    Cookie.setHistory(group);
-                })
-            )
-        ).catch(er => DB.indicator.error(er)).then(handler);
+        for (const [prom, group] of await DB.fetch(update)) {
+            const json = await prom;
+            if (!json) continue;
+            if (group == 'names') {
+                DB.put('json', ['names', json]);
+                names = json;
+            } else {
+                const {info, parts} = json;
+                const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
+                info ? DB.put('html', [group, info], tran) : null;
+                DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+                parts.filter(part => part && typeof part == 'object').forEach(part =>
+                    DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
+            }
+            // if (group == 'layer5')
+            //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
+            DB.indicator.update();
+            Cookie.setHistory(group);
+        }
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null))),
 
@@ -226,12 +223,14 @@ class Indicator extends HTMLElement {
                 position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
                 color:white;font-size:1rem;font-family:Sans-Serif;
                 margin:0;
-                background:hsla(0,0%,0%,.2);                
                 width:5rem;
             }
             :host::before {
                 font-size:5rem;color:transparent;
                 content:'';font-family:'Font Awesome 5 Free';
+            }
+            :host([disconnected])::before {
+                content:'�';
             }
         </style>
         <p></p>`;
@@ -244,7 +243,7 @@ class Indicator extends HTMLElement {
         if (attr == 'progress')
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
         else if (attr == 'status')
-            this.style.setProperty('--c', {success: 'lime', error: 'deeppink'}[n]);
+            this.style.setProperty('--c', {success: 'lime', error: 'deeppink', disconnected: 'deeppink'}[n]);
     }
     init(update = false) {
         this.hidden = false;

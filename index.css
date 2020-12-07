@@ -227,6 +227,7 @@ iframe {
 }
 #refresh div {
     display:flex;justify-content:flex-end;align-items:center;
+    position:relative;
 }
 #refresh div::before {
     content:attr(title);

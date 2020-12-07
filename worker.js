@@ -6,28 +6,34 @@ const justUpdated = (url, cache) => {
         (new Date).setMonth((new Date).getMonth() - 2) >= cachedDate || false);
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
-const forceUpdate = url => internal(url) && /(js|json|css)$/.test(url);
+const append = url => internal(url) && !/\?/.test(url) && /(ttf|woff2?|js|json|css)$/.test(url) ? `${url}?${Math.random()}` : url;
 
-self.addEventListener('install', ev => ev.waitUntil(caches.open('cache').then(cache =>
-    cache.delete('/include/head.html').then(() => cache.addAll([
-        '/include/head.html'
-    ]))
-)));
+const classify = {
+    update: url => [/\.json/].some(file => file.test(new URL(url).pathname)),
+    volatile: url => [/(js|json|css)$/, /^\/(index\.html)?$/].some(file => file.test(new URL(url).pathname)),
+}
+
+self.addEventListener('install', ev => ev.waitUntil(
+    (async () => (await caches.open('cache')).addAll(['/include/head.html']))()
+));
 self.addEventListener('fetch', ev => ev.respondWith(
     (async () => {
         const {url} = ev.request;
-        const c = await caches.match(url, {ignoreSearch: true});
-        return await addHead(c && internal(url) && !justUpdated(url, c) ? c : await goFetch(ev.request))
+        const c = await caches.match(url, classify.volatile(url) ? null : {ignoreSearch: true});
+        if (classify.update(url))
+            return addHead(await goFetch(url, false));
+        if (classify.volatile(url))
+            try {return await addHead(await goFetch(url, true))} catch (e) {return await addHead(c)}
+
+        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, true));
     })()
 ));
-
-function caching(cache, url, response) {
-    //if (response.ok && response.status == '200' && internal(url))
-        //cache.put(url.replace(/\?[.\d]*$/, '').replace(/#.*?$/, ''), response.clone());
-    return response;
+const goFetch = async (url, cacheable) => {
+    const res = await fetch(new Request(append(url), {mode: 'no-cors'}));
+    if (cacheable)
+        (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone());
+    return res;
 }
-
-const goFetch = async ({url}) => await fetch(new Request(url + (!/\?/.test(url) && forceUpdate(url)? `?${Math.random()}` : ''), {mode: 'no-cors'}));
 
 let code;
 const addHead = async res => {
@@ -40,21 +46,3 @@ const addHead = async res => {
     });
 }
 const head = async () => code = await (await caches.match('/include/head.html')).text();
-    // code ? code : new Promise(resolve => {
-    //     const open = indexedDB.open('db', 1);
-    //     const quit = () => {
-    //         open.result.close();
-    //         indexedDB.deleteDatabase('db');
-    //         resolve('');
-    //     };
-    //     open.onupgradeneeded = quit;
-    //     open.onsuccess = () => {
-    //         try {
-    //             const query = open.result.transaction('html').objectStore('html').get('head');
-    //             open.result.close();
-    //             query.onsuccess = () => resolve(code = query.result || '');
-    //         } catch (e) {
-    //             quit();
-    //         }
-    //     }
-    // })

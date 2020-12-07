@@ -70,7 +70,7 @@
             const end = 100 - start;
             const interval = (end - start) / 5;
             const scale = () =>
-                Q('svg').style.setProperty('--w', (Q('main svg').clientWidth / -100 + 22) + 'px');
+                Q('svg').style.setProperty('--w', (Q('main svg').clientWidth / -100 + 20) + 'px');
             setTimeout(scale);
             window.onresize = scale;
             Q('.layer>a image', (image, i) => {
