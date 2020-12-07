@@ -182,7 +182,7 @@ const Cell = {
             Q('.catalog>a:last-of-type').removeAttribute('href');
             const temp = Q('template').content.cloneNode(true);
             temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(sym) ? 'more' : comp, sym);
-            temp.querySelector('a[href]').href = `/parts/?part=${group}#${sym}`;
+            temp.querySelector('a[href]').href = `/parts/?${group}#${sym}`;
             /^(layer|remake)/.test(group) ?
                 temp.querySelector('img').src = `/img/system-${group.replace(/^layer5$/, 'layer5m').replace(/(layer\d)[^m]$/, '$1')}.png` :
                 temp.querySelector('img').remove();
