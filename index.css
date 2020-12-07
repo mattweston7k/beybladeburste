@@ -226,7 +226,6 @@ iframe {
 }
 #refresh div {
     display:flex;justify-content:flex-end;align-items:center;
-    position:relative;
 }
 #refresh div::before {
     content:attr(title);
@@ -240,10 +239,6 @@ iframe {
 }
 #refresh span[style*=translate]:first-of-type {
     color:var(--theme);
-}
-#refresh span:first-of-type {
-    position:absolute;
-    right:16.5rem;
 }
 #refresh h6 {
     margin:0 1em;
