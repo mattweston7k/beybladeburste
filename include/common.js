@@ -1,8 +1,9 @@
 window.addEventListener('beforeinstallprompt', e => e.preventDefault());
-navigator.serviceWorker.register('/worker.js').then(() => {
-    if (!Q('head meta'))
-        fetch('/include/head.html').then(r => r.text()).then(html => document.head.insertAdjacentHTML('afterbegin', html));
-});
+navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? (async () => {
+    let html = await (await caches.match('/include/head.html', {ignoreSearch: true})).text();
+    html = html || await (await fetch('/include/head.html')).text();
+    document.head.insertAdjacentHTML('afterbegin', html);
+})() : null);
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;

@@ -8,18 +8,18 @@ const justUpdated = (url, cache) => {
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
 const forceUpdate = url => internal(url) && /(js|json|css)$/.test(url);
 
-self.addEventListener('install', ev => ev.waitUntil(caches.open('cache').then(cache => cache.addAll([
-    '/include/head.html'
-]))));
+self.addEventListener('install', ev => ev.waitUntil(caches.open('cache').then(cache =>
+    cache.delete('/include/head.html').then(() => cache.addAll([
+        '/include/head.html'
+    ]))
+)));
 self.addEventListener('fetch', ev => ev.respondWith(
-    caches.open('cache').then(cache => {
+    (async () => {
         const {url} = ev.request;
-        return cache.match(ev.request, {ignoreSearch: true}).then(async c =>
-            addHead(c && internal(url) && !justUpdated(url, c) ? c : await goFetch(ev.request))
-        );
-    })
+        const c = await caches.match(url, {ignoreSearch: true});
+        return await addHead(c && internal(url) && !justUpdated(url, c) ? c : await goFetch(ev.request))
+    })()
 ));
-const getCache = async url => (await (await (await caches.open('cache')).match(url, {ignoreSearch: true})).text());
 
 function caching(cache, url, response) {
     //if (response.ok && response.status == '200' && internal(url))
@@ -39,7 +39,7 @@ const addHead = async res => {
         headers: res.headers
     });
 }
-const head = async () => code = await getCache('/include/head.html');
+const head = async () => code = await (await caches.match('/include/head.html', {ignoreSearch: true})).text();
     // code ? code : new Promise(resolve => {
     //     const open = indexedDB.open('db', 1);
     //     const quit = () => {
