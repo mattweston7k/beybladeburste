@@ -49,8 +49,7 @@ customElements.define('weight-scale', class extends HTMLElement {
 
     connectedCallback() {
         const [min, max, group, scale] = ['min', 'max', 'group', 'scale'].map(a => this.getAttribute(a));
-        this.shadow.querySelectorAll('div, label').forEach(el => el.classList
-            = group == 'remake' ? 'layer' : group == 'other' ? 'driver' : group.replace(/\d.?$/, ''));
+        this.shadow.querySelectorAll('div, label').forEach(el => el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, ''));
         this.scale = Function('w', 'return ' + scale);
         for (let w = parseInt(min); w <= parseInt(max); w++)
             this.shadow.querySelector('div').appendChild(this.cell(w, w == parseInt(max)));
@@ -140,7 +139,6 @@ const Tools = {
                 [max, min, scale] = [12, 2, 'w*0.3+2.3'];
                 break;
             case ('driver3'):
-            case ('other'):
             case ('driver1'):
             case ('driver2'):
             case ('driver4'):

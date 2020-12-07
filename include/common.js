@@ -186,7 +186,7 @@ const nav = {
         let i;
         const gs = groups.find(gs => (i = gs.indexOf(Parts.group)) >= 0);
         const next = gs[++i % gs.length];
-        const inside = /^(layer|remake)/.test(next) ? nav.system(next) : next;
+        const inside = /^(layer|remake)/.test(next) ? nav.system(next) : next[0].toUpperCase() + next.substring(1).replace(/(\d)$/, ' $1');
         return nav.href('menu') + `<a href=?${next}${title[next] ? ` title=${title[next]}` : ''}>${inside}</a>`;
     },
 
