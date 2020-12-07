@@ -36,8 +36,9 @@ header article {
 header img {
     width:10em;
 }
-header hgroup {
+hgroup {
     text-align:right;
+    white-space:nowrap;
 }
 
 #contents {
@@ -282,14 +283,14 @@ footer
 {font-size:0.5em;}
 a[href*='takaratomy']
 {font-size:0.7em;}
-h1
-{font-size:0.75em;}
-time,h5,fieldset li,.fb
+h1,.fb
 {font-size:0.8em;}
-menu a span,.fb a
+time,h5,fieldset li
 {font-size:0.85em;}
-h3,h2:last-of-type,#popup+label h6+p
+menu a span,.fb a
 {font-size:0.9em;}
+h3,h2:last-of-type,#popup+label h6+p
+{font-size:0.95em;}
 h4
 {font-size:1.05em;}
 h2:first-of-type,#popup+label h6
