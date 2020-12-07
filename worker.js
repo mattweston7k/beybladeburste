@@ -23,7 +23,7 @@ self.addEventListener('fetch', ev => ev.respondWith(
 
 function caching(cache, url, response) {
     //if (response.ok && response.status == '200' && internal(url))
-        //cache.put(url.replace(/\?[.\d]*$/, '').replace(/i=.d$/).replace(/#.*?$/, ''), response.clone());
+        //cache.put(url.replace(/\?[.\d]*$/, '').replace(/#.*?$/, ''), response.clone());
     return response;
 }
 
@@ -39,7 +39,7 @@ const addHead = async res => {
         headers: res.headers
     });
 }
-const head = async () => code = await (await caches.match('/include/head.html', {ignoreSearch: true})).text();
+const head = async () => code = await (await caches.match('/include/head.html')).text();
     // code ? code : new Promise(resolve => {
     //     const open = indexedDB.open('db', 1);
     //     const quit = () => {

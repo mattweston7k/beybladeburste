@@ -42,7 +42,7 @@ customElements.define('weight-scale', class extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({mode: 'open'});
-        this.shadow.innerHTML = this.css + '<input type="checkbox" id="show"><label for="show"></label><div></div>';
+        this.shadow.innerHTML = this.css() + '<input type="checkbox" id="show"><label for="show"></label><div></div>';
         this.hidden = true;
     }
     css() {return ['/include/common.css', 'include/ruler.css'].map(c => `<link rel="stylesheet" href=${c}>`).join('');}
