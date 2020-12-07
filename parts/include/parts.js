@@ -3,7 +3,7 @@ Parts = {
     load() {
         Parts.before();
         DB.getParts(Parts.group, ([order, info], parts) => {
-            order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || {comp: Parts.group}));
+            order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || sym));
             info.onsuccess = () => Parts.after(info.result);
         });
     },

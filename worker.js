@@ -14,7 +14,7 @@ const classify = {
 }
 
 self.addEventListener('install', ev => ev.waitUntil(
-    (async () => (await caches.open('cache')).addAll(['/include/head.html']))()
+    (async () => (await caches.open('cache')).addAll(['/include/head.html','/parts/include/bg.svg']))()
 ));
 self.addEventListener('fetch', ev => ev.respondWith(
     (async () => {

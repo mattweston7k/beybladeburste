@@ -89,11 +89,10 @@ const DB = {
                 parts.filter(part => part && typeof part == 'object').forEach(part =>
                     DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
             }
-            // if (group == 'layer5')
-            //     tran.objectStore('html').put(Q('.catalog>a:not([id])').outerHTML, group);
             DB.indicator.update();
             Cookie.setHistory(group);
         }
+        handler ? handler() : null;
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null))),
 

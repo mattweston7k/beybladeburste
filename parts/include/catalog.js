@@ -1,4 +1,7 @@
 function Catalog(part) {
+    if (typeof part == 'string')
+        return Q('.catalog').insertAdjacentHTML('beforeend', part);
+    part = part || {comp: Parts.group};
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = part;
     this.bg = {
         heavy: deck ? 'fusion' : null,
