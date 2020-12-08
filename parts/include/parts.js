@@ -9,8 +9,8 @@ Parts = {
     },
     before() {
         document.title = document.title.replace(/.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
-        Tools.filter(Parts.group);
         Tools.magnify();
+        Tools.ruler(Parts.group);
     },
     after(info) {
         if (info) {
@@ -19,7 +19,7 @@ Parts = {
         }
         Q('main h5').innerHTML = '　';
         Parts.target();
-        Tools.ruler(Parts.group);
+        Tools.filter(Parts.group);
         Parts.count();
     },
     count() {
@@ -72,25 +72,22 @@ customElements.define('weight-scale', class extends HTMLElement {
 });
 const Tools = {
     filter(group) {
-        const typeless = ['disk1', 'disk2', 'frame', 'disk3', 'layer5', 'layer5w', 'layer5c', 'layer6c'];
+        const add = (type, label) => {
+            Q('details').insertAdjacentHTML('afterend', `<input type=checkbox id=${type} checked>`);
+            Q('.filter').insertAdjacentHTML('beforeend', `<label for=${type}><img src='../img/${label}-${type}.png' alt=${type}></label>`);
+        }
         if (group == 'remake')
-            ['MFB', 'BSB'].forEach(t => {
-                Q('details').insertAdjacentHTML('afterend', `<input type=checkbox id=${t} checked>`);
-                Q('.filter').insertAdjacentHTML('beforeend', `<label for=${t}><img src='../img/series-${t}.png' alt=${t}></label>`);
-            });
-        else if (!typeless.includes(group))
-            Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => {
-                Q('details').insertAdjacentHTML('afterend', `<input type=checkbox id=${t} checked>`);
-                Q('.filter').insertAdjacentHTML('beforeend', `<label for=${t}><img src='../img/type-${t}.png' alt=${t}></label>`);
-            });
+            ['MFB', 'BSB'].forEach(t => add(t, 'series'));
+        else if (document.querySelectorAll('a.unk').length === 0 && !/^(disk|frame)/.test(group))
+            Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => add(t, 'types'));
     },
     magnify() {
         const slider = () => {
             const slider = Q("input[type='range']");
             slider.value = Cookie.get.magBar || 1;
             Q(".catalog").style.fontSize = slider.value + "em";
-            slider.oninput = function () {
-                Q(".catalog").style.fontSize = this.value + "em";
+            slider.oninput = ev => {
+                Q(".catalog").style.fontSize = ev.target.value + "em";
                 Cookie.setOptions();
             };
         }
