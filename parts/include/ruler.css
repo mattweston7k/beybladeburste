@@ -22,7 +22,7 @@ label::before,label::after {
     color:hsl(var(--c),var(--s),55%);background:hsl(var(--c),var(--s),90%);
 }
 label::before {
-    content:'\f24e';
+    content:'\f24e';font-family:'Font Awesome 5 Free';
     border-radius:10em;border:0.1rem solid;
     width:1.8em;height:1.8em;
     z-index:1;

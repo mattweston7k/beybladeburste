@@ -27,6 +27,17 @@ const Cookie = {
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
+let Parts = {
+    detach({sym, comp, ...part}) {
+        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
+        return {...part, names: part.names?.can ? {can: part.names.can} : {}};
+    },
+    attach([sym, comp], part) {
+        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
+        return {...part, sym: sym, comp: comp};
+    },
+    group: window.location.pathname == '/parts/' ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
+};
 (() => {
     L(() => document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト');
     const pages = (Cookie.get.notify || '').split(',');
@@ -46,17 +57,6 @@ const Cookie = {
         L(() => Q('#day') ? Q('#day').checked = false : null);
 })();
 
-let Parts = {
-    detach({sym, comp, ...part}) {
-        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
-        return {...part, names: part.names?.can ? {can: part.names.can} : {}};
-    },
-    attach([sym, comp], part) {
-        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
-        return {...part, sym: sym, comp: comp};
-    },
-    group: window.location.pathname == '/parts/' ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
-};
 let names;
 const DB = {
     db: null,
