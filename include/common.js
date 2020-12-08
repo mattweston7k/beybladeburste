@@ -58,7 +58,8 @@ const DB = {
         open.onerror = ev => DB.indicator.error(ev);
     },
     check(handler) {
-        fetch('/update/-time.json?' + Math.random()).then(r => r.json()).then(j => {
+        fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).
+        then(r => r.json()).then(j => {
             const updates = [], notify = [];
             Object.entries(j).forEach(([item, [time, major]]) => {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
@@ -228,8 +229,8 @@ class Indicator extends HTMLElement {
                 font-size:5rem;color:transparent;
                 content:'';font-family:'Font Awesome 5 Free';
             }
-            :host([disconnected])::before {
-                content:'�';
+            :host([status=offline])::before {
+                content:'';
             }
         </style>
         <p></p>`;
@@ -242,7 +243,7 @@ class Indicator extends HTMLElement {
         if (attr == 'progress')
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
         else if (attr == 'status')
-            this.style.setProperty('--c', {success: 'lime', error: 'deeppink', disconnected: 'deeppink'}[n]);
+            this.style.setProperty('--c', {success: 'lime', error: 'deeppink', offline: 'deeppink'}[n]);
     }
     init(update = false) {
         this.hidden = false;
@@ -265,6 +266,8 @@ class Indicator extends HTMLElement {
     }
     error(p) {
         this.hidden = false;
+        if (this.getAttribute('status') == 'offline')
+            return;
         this.setAttribute('status', 'error');
         this.shadowRoot.querySelector('p').innerHTML = /^\/(index\.html)?$/.test(window.location.pathname) ?
             p.target?.errorCode || p || '不支援' : '請先前往首頁';
