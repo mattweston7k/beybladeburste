@@ -1,26 +1,24 @@
 class Part {
     constructor(sym, fusion = false) {
-        [this.sym, this.fusion] = [sym, fusion];
+        [this.sym, this.fusion, this.single] = [sym, fusion, false];
     }
-    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode(), fusion = this.fusion) {
+    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
         if (this.sym == '/')
-            return Part.none();
-        const colspan = /layer$/.test(part) ? ' colspan' : '';
-        return `<td data-part='${part}'>${symCode}<td${colspan} class=left><td${colspan} class='right${fusion ? ' fusion' : ''}'>`;
+            return this.none();
+        return `<td data-part='${part}'>${symCode}<td${this.colspan} class=left><td${this.colspan} class='right${fusion ? ' fusion' : ''}'>`;
     }
-    static none(sym) {return `<td><s>${sym || 'ꕕ'}</s><td><td class='right'>`};
+    none(hidden) {return `<td><s>${hidden ? this.sym : 'ꕕ'}</s><td${this.colspan}><td${this.colspan} class='right'>`};
+    get colspan() {return this.single ? ' colspan' : '';}
 }
 
 class Layer extends Part {
-    constructor(sym, upperFusion) {super(sym, upperFusion);}
-
-    static none() {return "<td><s>ꕕ</s><td colspan><td colspan class='right'>";}
-
-    symCode() {return this.sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : this.sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');}
-
+    constructor(sym, upperFusion) {
+        super(sym, upperFusion);
+        this.symCode = sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
+    }
     baseORring(sym) {
         if (sym == '/')
-            return Part.none();
+            return this.none();
         if (this.system == 'GT')
             return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;&nbsp;${sym}`, false);
         if (this.system == 'SP')
@@ -28,7 +26,7 @@ class Layer extends Part {
     }
     chip(sym) {
         if (sym == '/')
-            return Part.none();
+            return this.none();
         if (this.system == 'GT')
             return super.code(`${sym}.layer5c`, '<s>&gt;</s>' + sym.replace('Δ','D'), sym == 'Δ');
         if (this.system == 'SP')
@@ -45,23 +43,26 @@ class Layer extends Part {
         }
     }
     code() {
-        if (this.sym == '/')
-            return Layer.none();
         const [body, chip, key] = this.sym.split('.');
-        if (!key)
+        if (!key) {
+            this.single = true;
             return super.code();
-
+        }
         this.system = /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
         return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
     }
 }
 class Disk extends Part {
-    constructor(sym) {super(sym);}              // sort 0                          alphabet disk
-    symCode() {return this.sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');}
+    constructor(sym) {
+        super(sym);                                 // sort 0                            alphabet disk
+        this.symCode = sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');
+    }
 }
 class Driver extends Part {
-    constructor(sym, lowerFusion) {super(sym, lowerFusion);}
-    symCode() {return (this.fusion ? '&nbsp;' : '') + this.sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (this.sym == '∞' ? '&nbsp;' : '');}
+    constructor(sym, lowerFusion) {
+        super(sym, lowerFusion);
+        this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (sym == '∞' ? '&nbsp;' : '');
+    }
 }
 
 class Row {
@@ -75,11 +76,10 @@ class Row {
     }
     static fill(lang, tr) {
         tr.querySelectorAll('td[data-part]').forEach(td => {
-            let {dash, high, core, parts: [sym, comp]} = Cell.decompose(td);
-            if (/^layer(5w|6s)$/.test(comp))
+            if (/layer(5w|6s)$/.test(td.getAttribute('data-part')))
                 return;
             const cells = Row.next2(td);
-            lang.forEach((l, i) => l ? Cell.code(l, cells[i], sym, comp, core, dash, high) : null);
+            lang.forEach((l, i) => l ? Cell.code(l, cells[i]) : null);
         });
     }
     create([no, type, abbr, append]) {
@@ -101,7 +101,7 @@ class Row {
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
         this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba')
-            + layer.code() + (driver.fusion ? driver.code() + Part.none(driver.sym) : disk.code() + driver.code());
+            + layer.code() + (driver.fusion ? driver.code() + driver.none(true) : disk.code() + driver.code());
         append ? this.append(append) : null;
         this.attribute(attr);
         document.querySelector('tbody').appendChild(this.tr);
@@ -139,10 +139,10 @@ class Row {
             ].forEach(({n, color}) =>
                 n.map(n => `B-${n}`).includes(no) ? this.cell(['layer6s', 'disk']).style.color = color : null);
     }
-    cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`)};
+    cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
+    static SP = true
 }
-Row.SP = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
 const Cell = {
@@ -195,7 +195,8 @@ const Cell = {
             })
         );
     },
-    code(lang, td, sym, comp, core, dash, high) {
+    code(lang, td) {
+        const {parts: [sym, comp], high, dash, core} = Cell.decompose($(td).prevAll('td[data-part]')[0]);
         const i = ['eng', 'chi', 'jap'].findIndex(l => l == lang);
         const name = (high ? ['High ', '高位', 'ハイ'][i] : '') + ((names[comp][sym] || [])[i] || '');
         const code = {
