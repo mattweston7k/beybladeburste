@@ -21,20 +21,25 @@ const classify = {
 self.addEventListener('fetch', ev => ev.respondWith(
     (async () => {
         const {url} = ev.request;
-        const c = await caches.match(url, classify.volatile(url) ? null : {ignoreSearch: true});
         if (classify.update(url))
             return addHead(await goFetch(url, false));
-        if (classify.volatile(url))
-            try {return await addHead(await goFetch(url, true))} catch (e) {return await addHead(c)}
 
-        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, true));
+        const c = await caches.match(url, classify.volatile(url) ? null : {ignoreSearch: true});
+        if (classify.volatile(url))
+            return await addHead(await goFetch(url, true, c));
+
+        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, true, c));
     })()
 ));
-const goFetch = async (url, cacheable) => {
-    const res = await fetch(new Request(append(url), {mode: 'no-cors'}));
-    if (cacheable)
-        (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone());
-    return res;
+const goFetch = async (url, cacheable, cache) => {
+    try {
+        const res = await fetch(new Request(append(url), {mode: 'no-cors'}));
+        if (cacheable)
+            (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone());
+        return res;
+    } catch(e) {
+        return cache;
+    }
 }
 
 let code;
