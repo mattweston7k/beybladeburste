@@ -1,5 +1,5 @@
 self.addEventListener('install', ev => ev.waitUntil(
-    (async () => (await caches.open('cache')).addAll(['/','/include/head.html','/parts/include/bg.svg']))()
+    (async () => (await caches.open('cache')).addAll(['/index.html','/include/head.html','/parts/include/bg.svg']))()
 ));
 
 const justUpdated = (url, cache) => {
