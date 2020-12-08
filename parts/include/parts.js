@@ -38,9 +38,9 @@ Parts = {
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
     fusion: false,
-    titles: {remake: '復刻 攻擊環 結晶輪盤 Remake Layer', layer6s: '重心盤 底盤 Chassis［超王］', layer6c: '紋章 Chip［超王］', layer6r: '刃輪 戰輪 Ring［超王］',
-        layer5w: '重心鐵 配重鐵 Weight［GT］', layer5c: '紋章 Chip［GT］', layer5b: '攻擊環底 基座 Base［GT］', layer5: '無限之鎖 攻擊環 Layer［GT］',
-        layer4: '攻擊環 結晶輪盤 Layer［超Ｚ］', layer3: '攻擊環 結晶輪盤 Layer［神］', layer2: '攻擊環 結晶輪盤 Layer［Dual］', layer1: '攻擊環 結晶輪盤 Layer［Single］',
+    titles: {remake: '［復刻］攻擊環 結晶輪盤 Remake Layer', layer6s: '［超王］重心盤 底盤 Chassis', layer6c: '［超王］紋章 Chip', layer6r: '［超王］刃輪 戰輪 Ring',
+        layer5w: '［GT］重心鐵 配重鐵 Weight', layer5c: '［GT］紋章 Chip', layer5b: '［GT］攻擊環底 基座 Base', layer5: '［GT］無限之鎖 攻擊環 Layer',
+        layer4: '［超Ｚ］攻擊環 結晶輪盤 Layer', layer3: '［神］攻擊環 結晶輪盤 Layer', layer2: '攻擊環 結晶輪盤 Layer', layer1: '攻擊環 結晶輪盤 Layer',
         disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', driver: '軸心 底盤 Driver'}
 }
 customElements.define('weight-scale', class extends HTMLElement {

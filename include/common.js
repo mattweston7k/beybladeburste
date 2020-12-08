@@ -12,6 +12,40 @@ const groups = [
     ['disk3', 'disk2', 'frame', 'disk1'],
     ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1']
 ];
+const Cookie = {
+    get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
+    set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
+    getHistory: item => JSON.parse(Cookie.get.history || '[]')[item],
+    setHistory: item => {
+        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
+            Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
+    },
+    setOptions: () => {
+        Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
+        Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
+        Q('input[name=mag]:checked') ? Cookie.set('magBut', Q('input[name=mag]:checked').id) : null;
+    },
+    notification: notify => document.cookie = `notify=${notify}; path=/`,
+};
+(() => {
+    L(() => document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト');
+    const pages = (Cookie.get.notify || '').split(',');
+    const gs = pages.filter(g => groups.flat().includes(g));
+    if (/^\/(index.html)?$/.test(window.location.pathname)) {
+        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
+        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
+    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
+        L(() => gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify')));
+    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
+        Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
+
+    if (Cookie.get.mode == 'day') {
+        Q('html').classList.add('day');
+        L(() => Q('#day') ? Q('#day').checked = true : null);
+    } else
+        L(() => Q('#day') ? Q('#day').checked = false : null);
+})();
+
 let Parts = {
     detach({sym, comp, ...part}) {
         ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
@@ -123,38 +157,6 @@ const DB = {
         return DB.open(handler);
     }
 }
-const Cookie = {
-    get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
-    set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
-    getHistory: item => JSON.parse(Cookie.get.history || '[]')[item],
-    setHistory: item => {
-        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
-            Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
-    },
-    setOptions: () => {
-        Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
-        Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
-        Q('input[name=mag]:checked') ? Cookie.set('magBut', Q('input[name=mag]:checked').id) : null;
-    },
-    notification: notify => document.cookie = `notify=${notify}; path=/`,
-};
-(() => {
-    const pages = (Cookie.get.notify || '').split(',');
-    const gs = pages.filter(g => groups.flat().includes(g));
-    if (/^\/(index.html)?$/.test(window.location.pathname)) {
-        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
-        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
-    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
-        L(() => gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify')));
-    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
-        Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
-
-    if (Cookie.get.mode == 'day') {
-        Q('html').classList.add('day');
-        L(() => Q('#day') ? Q('#day').checked = true : null);
-    } else
-        L(() => Q('#day') ? Q('#day').checked = false : null);
-})();
 const twilight = () => {
     Q('html').classList.toggle('day');
     let [from, to] = ['day', 'night'];
