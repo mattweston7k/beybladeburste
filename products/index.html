@@ -147,7 +147,6 @@
             ]).then(([n, o]) => {
                 Row.SP = true;
                 [...n, ...typeof o == 'object' ? o : []].forEach(p => new Row(p));
-            }).then(() => {
                 Table.save(old);
                 Table.loading(false);
             });
