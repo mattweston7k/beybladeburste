@@ -9,7 +9,7 @@
         from {stroke-dashoffset: 45.8;}
         to {stroke-dashoffset: -146.4;}
     }
-    #now article img {width: 49%;max-width: 12em;}
+    #now article img {width:49%;max-width:12em;}
 </style>
 
 <header style="background:url(https://www.beyblade.jp/sparking/wp-content/themes/sparking/img/common/logo_small.png) 0% 50% / contain no-repeat">
@@ -52,6 +52,7 @@
     const gears = g => {
         const polar = (m, angle) => [m * Math.cos(angle), m * Math.sin(angle)];
         const [l, s, t] = [3.5 * g, 3.4 * g - 8, Math.PI / (50 + 2.5 * g)];
+        let points;
         for (let i = 1; i <= g; i++) {
             [lx, ly] = polar(l, Math.PI / g * (2 * i - 1) + t);
             [lxn, lyn] = polar(l, Math.PI / g * 2 * i - t);
@@ -196,11 +197,9 @@
 
 <style>
     #contents {
-        background: linear-gradient(hsla(0, 0%, 0%, 0.7), hsla(0, 0%, 0%, 0.7)), url('/img/bg.jpg') no-repeat 60% 0%;
-        background-size: 150%;
+        background: linear-gradient(hsla(0, 0%, 0%, 0.7), hsla(0, 0%, 0%, 0.7)), url('/img/bg.jpg') no-repeat 60% 0% / 150%;
     }
     #now {
-        background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.5)), url('https://beyblade.jp/campaign/5th/img/story_bg_pc.jpg') no-repeat 50%;
-        background-size: cover;
+        background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.5)), url('https://beyblade.jp/campaign/5th/img/story_bg_pc.jpg') no-repeat 50% / cover;
     }
 </style>

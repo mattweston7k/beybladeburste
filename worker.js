@@ -1,3 +1,7 @@
+self.addEventListener('install', ev => ev.waitUntil(
+    (async () => (await caches.open('cache')).addAll(['/','/include/head.html','/parts/include/bg.svg']))()
+));
+
 const justUpdated = (url, cache) => {
     const cachedDate = new Date(cache.headers.get('date')).getTime();
     return (
@@ -13,9 +17,6 @@ const classify = {
     volatile: url => [/(js|json|css)$/, /^\/(index\.html)?$/].some(file => file.test(new URL(url).pathname)),
 }
 
-self.addEventListener('install', ev => ev.waitUntil(
-    (async () => (await caches.open('cache')).addAll(['/include/head.html','/parts/include/bg.svg']))()
-));
 self.addEventListener('fetch', ev => ev.respondWith(
     (async () => {
         const {url} = ev.request;
