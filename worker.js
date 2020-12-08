@@ -31,16 +31,12 @@ self.addEventListener('fetch', ev => ev.respondWith(
         return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, true, c));
     })()
 ));
-const goFetch = async (url, cacheable, cache) => {
-    try {
-        const res = await fetch(new Request(append(url), {mode: 'no-cors'}));
-        if (cacheable)
-            (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone());
-        return res;
-    } catch(e) {
-        return cache;
-    }
-}
+const goFetch = async (url, cacheable, cache) =>
+    await fetch(new Request(append(url), {mode: 'no-cors'}))
+        .then(async res => {
+            cacheable ? (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone()) : null;
+            return res;
+        }).catch(() => cache);
 
 let code;
 const addHead = async res => {
