@@ -141,8 +141,8 @@ class Row {
     }
     cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
-    static SP = true
 }
+Row.SP = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
 const Cell = {
