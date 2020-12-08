@@ -40,7 +40,7 @@ let code;
 const addHead = async res => {
     if (!(res.headers.get("content-type")||'').includes("text/html"))
         return res;
-    return new Response((code ? code : await head()) + await res.text(), {
+    return new Response((code || await head()) + await res.text(), {
         status: res.status,
         statusText: res.statusText,
         headers: res.headers
