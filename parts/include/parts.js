@@ -8,6 +8,7 @@ Parts = {
         });
     },
     before() {
+        document.title = document.title.replace(/.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
         Tools.filter(Parts.group);
         Tools.magnify();
     },
@@ -36,17 +37,20 @@ Parts = {
         }
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
-    fusion: false
+    fusion: false,
+    titles: {remake: '復刻 攻擊環 結晶輪盤 Remake Layer', layer6s: '重心盤 底盤 Chassis［超王］', layer6c: '紋章 Chip［超王］', layer6r: '刃輪 戰輪 Ring［超王］',
+        layer5w: '重心鐵 配重鐵 Weight［GT］', layer5c: '紋章 Chip［GT］', layer5b: '攻擊環底 基座 Base［GT］', layer5: '無限之鎖 攻擊環 Layer［GT］',
+        layer4: '攻擊環 結晶輪盤 Layer［超Ｚ］', layer3: '攻擊環 結晶輪盤 Layer［神］', layer2: '攻擊環 結晶輪盤 Layer［Dual］', layer1: '攻擊環 結晶輪盤 Layer［Single］',
+        disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', driver: '軸心 底盤 Driver'}
 }
 customElements.define('weight-scale', class extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({mode: 'open'});
-        this.shadow.innerHTML = this.css() + '<input type="checkbox" id="show"><label for="show"></label><div></div>';
+        this.shadow.innerHTML = ['/include/common.css', 'include/ruler.css'].map(c => `<link rel=stylesheet href=${c}>`).join('')
+            + '<input type=checkbox id=show><label for=show></label><div></div>';
         this.hidden = true;
     }
-    css() {return ['/include/common.css', 'include/ruler.css'].map(c => `<link rel="stylesheet" href=${c}>`).join('');}
-
     connectedCallback() {
         const [min, max, group, scale] = ['min', 'max', 'group', 'scale'].map(a => this.getAttribute(a));
         this.shadow.querySelectorAll('div, label').forEach(el => el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, ''));

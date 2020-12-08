@@ -42,7 +42,7 @@ let code;
 const addHead = async res => {
     if (!(res?.headers.get("content-type")||'').includes("text/html"))
         return res;
-    return new Response((code || await head()) + await res.text(), {
+    return new Response((code || await head()) + (await res.text()).replace('</title>', ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト</title>'), {
         status: res.status,
         statusText: res.statusText,
         headers: res.headers
