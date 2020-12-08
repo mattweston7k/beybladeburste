@@ -242,8 +242,10 @@ class Indicator extends HTMLElement {
     attributeChangedCallback(attr, o, n) {
         if (attr == 'progress')
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
-        else if (attr == 'status')
+        else if (attr == 'status') {
             this.style.setProperty('--c', {success: 'lime', error: 'deeppink', offline: 'deeppink'}[n]);
+            n == 'offline' ? this.shadowRoot.querySelector('p').innerHTML = '離線' : null;
+        }
     }
     init(update = false) {
         this.hidden = false;
@@ -269,8 +271,7 @@ class Indicator extends HTMLElement {
         if (this.getAttribute('status') == 'offline')
             return;
         this.setAttribute('status', 'error');
-        this.shadowRoot.querySelector('p').innerHTML = /^\/(index\.html)?$/.test(window.location.pathname) ?
-            p.target?.errorCode || p || '不支援' : '請先前往首頁';
+        this.shadowRoot.querySelector('p').innerHTML = p.target?.errorCode || p || '不支援';
     }
     prod() {Q('a[href="products/"]').href += '#update';}
 }

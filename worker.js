@@ -1,6 +1,7 @@
 self.addEventListener('install', ev => ev.waitUntil(
     (async () => (await caches.open('cache')).addAll(['/index.html','/include/head.html','/parts/include/bg.svg']))()
 ));
+self.addEventListener('activate', event => event.waitUntil(clients.claim()));
 
 const justUpdated = (url, cache) => {
     const cachedDate = new Date(cache.headers.get('date')).getTime();
@@ -38,7 +39,7 @@ const goFetch = async (url, cacheable) => {
 
 let code;
 const addHead = async res => {
-    if (!(res.headers.get("content-type")||'').includes("text/html"))
+    if (!(res?.headers.get("content-type")||'').includes("text/html"))
         return res;
     return new Response((code || await head()) + await res.text(), {
         status: res.status,
