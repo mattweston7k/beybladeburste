@@ -79,7 +79,7 @@ const Tools = {
         if (group == 'remake')
             ['MFB', 'BSB'].forEach(t => add(t, 'series'));
         else if (document.querySelectorAll('a.unk').length === 0 && !/^(disk|frame)/.test(group))
-            Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => add(t, 'types'));
+            Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => add(t, 'type'));
     },
     magnify() {
         const slider = () => {
