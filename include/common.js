@@ -21,7 +21,7 @@ let Parts = {
         [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
         return {...part, sym: sym, comp: comp};
     },
-    group: groups.flat().filter(g => Object.keys(query).includes(g))[0]
+    group: window.location.pathname == '/parts/' ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
 };
 let names;
 const DB = {
