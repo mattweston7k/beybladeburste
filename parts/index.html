@@ -24,7 +24,7 @@
 <main hidden>
     <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
     <svg viewBox="0 0 100 80">
-        <image href="include/parts.svg" width="100" height="80" preserveAspectRatio="xMidYMid slice" />
+        <image href="include/parts.svg#layer" width="100" height="80" preserveAspectRatio="xMidYMid slice" />
         <g class="layer">
             <path d="M 5,6 l 4,-8 l 82,0 L 95,6" />
             <a href=?remake><image href="/img/system-remake.png" /></a>
@@ -81,8 +81,8 @@
             Q('#GT image, #SP image', (image, i) => {
                 const y = /layer5/.test(image.getAttribute('href')) ? 9 : 18;
                 image.setAttribute('y', y);
-                image.nextElementSibling.setAttribute('x', 5 + parseInt(image.getAttribute('x')));
-                image.nextElementSibling.setAttribute('y', 3.5 + y);
+                image.nextElementSibling.setAttribute('x', 3 + parseInt(image.getAttribute('x')));
+                image.nextElementSibling.setAttribute('y', 2.5 + y);
             });
         })();
     </script>
@@ -116,6 +116,7 @@ else L(() => {
         transform:translate(calc(var(--w)/-2),calc(var(--w)*5.5/10/-2));
     }
     svg {
+        margin-top:5em;
         max-width:50em;
     }
     path {

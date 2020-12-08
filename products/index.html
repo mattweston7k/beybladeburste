@@ -238,7 +238,7 @@
     Q('#jap').onchange = ev => {
         Q('#eng').checked = false;
         Q('#eng').disabled = ev.target.checked;
-        Q('tbody tr', tr => tr.fill([, ev.target.checked ? 'jap' : 'chi']));
+        Q('tbody tr', tr => Row.fill([, ev.target.checked ? 'jap' : 'chi'], tr));
         Table.flush(false);
     };
     Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
