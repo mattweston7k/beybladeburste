@@ -28,7 +28,7 @@ self.addEventListener('fetch', ev => ev.respondWith(
         if (classify.volatile(url))
             return await addHead(await goFetch(url, true, c));
 
-        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, true, c));
+        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, !/\/img\/bg\.jpg$/.test(url), c));
     })()
 ));
 const goFetch = async (url, cacheable, cache) =>
