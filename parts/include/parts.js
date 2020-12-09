@@ -23,9 +23,9 @@ Parts = {
         Parts.count();
     },
     count() {
-        if (document.querySelectorAll('.catalog>a').length < 28)
+        if (count('.catalog>a') < 28)
             Q('label[for=fixed]').remove();
-        Q('nav .part data').value = document.querySelectorAll('a[id]:not([id^="+"]):not(.none)').length;
+        Q('nav .part data').value = count('a[id]:not([id^="+"]):not(.none)');
         if (/^(driver3|dash)$/.test(Parts.group))
             Q('nav .part data').setAttribute('data-extra', '+4');
     },
@@ -78,7 +78,7 @@ const Tools = {
         }
         if (group == 'remake')
             ['MFB', 'BSB'].forEach(t => add(t, 'series'));
-        else if (document.querySelectorAll('object[data*=unk]').length === 0 && !/^(disk|frame)/.test(group))
+        else if (count('object[data*=unk]') === 0 && !/^(disk|frame)/.test(group))
             Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => add(t, 'type'));
     },
     magnify() {

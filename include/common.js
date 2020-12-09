@@ -194,7 +194,7 @@ const nav = {
     system: group => `<img src=/img/system-${group.replace(/^layer5$/, 'layer5m').replace(/(\d)[^m]$/, '$1')}.png alt=${group}>`,
     prod: () => `
         <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
-        <li><data></data><span>結果<br>results</span><button data-icon= onclick='Table.reset();this.disabled=true' disabled>重設 Reset</button></li>`,
+        <li><data></data><span>結果<br>results</span><button data-icon= onclick=Table.reset() disabled>重設 Reset</button></li>`,
     part: () => `
         <li><data></data><label for=fixed class=toggle></label></li>    
         <li class=mag><input type=range min=0.55 max=1.45 value step=0.05></li>`,

@@ -24,7 +24,7 @@
             </a>
         </div>
         <details>
-            <summary><span>精準檢索Precise search</span><button type=button data-icon= onclick=Search.read("form")></button></summary>
+            <summary><span>精準檢索Precise search</span><button type=button data-icon= onclick=Search.go()></button></summary>
             <fieldset>
                 <p class=layer>
                     <label for=sparking><img src=../img/system-layer6.png></label>
@@ -54,7 +54,7 @@
                 <svg viewBox="-86.603 -100 173.205 150"><use href=#link /></svg>
                 <span data-icon=>各款<br>發射器</span>
             </a>
-            <a>
+            <a href=#BBG onclick=Table.BBG()>
                 <svg viewBox="-86.603 -100 173.205 150"><use href=#link transform="rotate(180 0 -25)"/></svg>
                 <span data-icon=>更多<br>限定商品</span>
             </a>
@@ -103,6 +103,11 @@
         </thead>
         <tbody></tbody>
     </table>
+    <table id=BBG>
+        <caption>BBG 限定商品</caption>
+        <tbody></tbody>
+    </table>
+    <section class=boards></section>
 
     <input type=checkbox id=popup>
     <label for=popup>
@@ -129,8 +134,8 @@
         get() {
             if (!names) DB.getNames();
             Table.loading(true);
-            DB.get('html', 'new-prod', null, n =>
-                DB.get('html', 'old-prod', null, o => {
+            DB.get('html', 'prod-new', null, n =>
+                DB.get('html', 'prod-old', null, o => {
                     if (!n.target.result || !o.target.result || /^#(flush|update)$/.test(window.location.hash))
                         return Table.fetch(window.location.hash == '#update' ? o.target.result : false);
                     Q('tbody').innerHTML = n.target.result + (Table.limit ? o.target.result.replace(/<tr/g, '<tr hidden') : o.target.result);
@@ -146,16 +151,16 @@
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
             ]).then(([n, o]) => {
                 Row.SP = true;
-                [...n, ...typeof o == 'object' ? o : []].forEach(p => new Row(p));
+                [...n, ...typeof o == 'object' ? o : []].forEach(bey => new Row(bey));
                 Table.save(old);
                 Table.loading(false);
             });
         },
         save(result) {
-            DB.put('html', ['new-prod', Table.sanitize('tbody tr:not([hidden])')]);
+            DB.put('html', ['prod-new', Table.sanitize('tbody tr:not([hidden])')]);
             Cookie.setHistory('products');
             if (!result)
-                DB.put('html', ['old-prod', Table.sanitize('tbody tr[hidden]')]);
+                DB.put('html', ['prod-old', Table.sanitize('tbody tr[hidden]')]);
             else
                 Q('tbody').insertAdjacentHTML('beforeend', Table.limit ? result.replace(/<tr/g, '<tr hidden') : result);
         },
@@ -172,20 +177,24 @@
             });
             if (loading) {
                 Q('caption').classList.add('loading');
-                Search.search.clicked();
-                return Q('tbody tr', tr => tr.remove());
+                return Q('tbody').innerHTML = '';
             }
+            if (window.location.hash == '#BBG')
+                Table.BBG();
             Q('tr', tr => Row.connectedCallback(tr));
             if (Table.limit === true) {
-                Table.limit = count('tbody tr:not([hidden])');
-                Q('main data').innerHTML = Table.limit;
-                Q('main data').value = count('tbody tr');
+                Table.limit = count('#myTable tbody tr:not([hidden])');
+                Table.count();
             }
-            (Search.regex.length > 0 || Search.more || Q('nav data').value) ?
-                Search.find() : Q('nav data').removeAttribute('value');
+            if (!Search.go())
+                Q('nav data').removeAttribute('value');
             Table.flush();
             Q('caption').classList.remove('loading');
             $('table').tablesorter();
+        },
+        count() {
+            Q('main data').innerHTML = count('#myTable tbody tr:not([hidden])');;
+            Q('main data').value = count('#myTable tbody tr');
         },
         entire() {
             Q('tbody tr[hidden]', tr => tr.hidden = false);
@@ -193,15 +202,12 @@
             Q('caption').innerHTML = '';
         },
         reset() {
-            Search.reset();
+            Search.state(false);
             if (window.location.search)
                 window.history.pushState('', '', '/products/');
             [...document.querySelectorAll('th')].some(th => th.getAttribute('aria-sort') != 'none') ?
-                Table.get() : Q('tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
-            Q('html, body', el => el.scrollTop = 0);
-            Q('caption').classList.remove('searching');
-            Q('nav data[value]').removeAttribute('value');
-            Q('input[name=free]').value = '';
+                Table.get() : Q('#myTable tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
+            Q('#BBG tr', tr => tr.hidden = false);
         },
         column(lang) {
             ({eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4]).forEach((c, i) =>
@@ -214,6 +220,36 @@
                 Table.column(Q('#eng').checked ? 'eng' : 'cjk');
             if (update)
                 $("table").trigger('update', [false]);
+        },
+        BBG() {
+            if (Q('#BBG tr')) return;
+            DB.get('html', 'prod-BBG', null, async ev => {
+                if (ev.target.result)
+                    Q('#BBG tbody').innerHTML = ev.target.result;
+                else {
+                    (await (await fetch('/update/product-BBG.json')).json()).forEach(bey => new Row(bey, '#BBG tbody'));
+                    DB.put('html', ['prod-BBG', Table.sanitize(`#BBG tr`)]);
+                }
+                Q('tr', tr => Row.connectedCallback(tr));
+                Table.flush();
+                Q('#myTable tr[data-no^=BBG]', tr => tr.remove());
+                Table.count();
+                Q('section').innerHTML =
+                [
+                    ['29', '/img/launcher/BBG-29.jpg', '<h5>ロングベイランチャー LR<br>Long Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                    ['26'],
+                    ['25', 'https://dmwysfovhyfx3.cloudfront.net/img/goods/L/4904810134398_85bec0ec7b2a402fa7ee55ed1ff51ab1.jpg', '<h5>ビッグベイスタジアム<br>Big Bey stadium'],
+                    ['24', '/img/launcher/BBG-24.jpg', '<h5>ロングベイランチャー L<br>Long Bey launcher L</h5><ruby><rb>シルバー<rt>Silver</ruby>'],
+                    ['23', '/img/launcher/BBG-23.jpg', '<h5>ロングベイランチャー<br>Long Bey launcher</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                    ['17', '/img/launcher/BBG-17.jpg', '<h5>ベイランチャー LR<br>Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                    ['16', '/img/grip/rubber-phoenix.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>フェニックス<rt>Phoenix</ruby>'],
+                    ['10', '/img/grip/rubber-red.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>レッド<rt>Red</ruby>'],
+                    ['05', '/img/grip/power-blue.jpg', '<h5>パワーランチャーグリップ<br>Power launcher grip</h5><ruby><rb>スカイブルー<rt>Sky blue</ruby>'],
+                    ['04',],
+                    ['03', '/img/launcher/BBG-03.jpg', '<h5>ベイランチャー<br>Bey launcher</h5><ruby><rb>クリアブルー<rt>Clear blue</ruby>'],
+                    ['01', 'https://beyblade.takaratomy.co.jp/category/img/products/B_00.png', '<h5>ベイスタジアム<br>Bey stadium</h5><ruby><rb>クリア<rt>Clear</ruby>'],
+                ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
+            });
         }
     }
     Table.get();
@@ -242,7 +278,7 @@
         Table.flush(false);
     };
     Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
-    Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.read('form') : null);
+    Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.go() : null);
 </script>
 
 <script async src=/parts/include/parts.js></script>

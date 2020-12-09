@@ -1,5 +1,5 @@
 form,form~details {
-    max-width: 900px;
+    max-width:  900px;
     margin:auto;
 }
 .comp .tablesorter-header-inner,td {
@@ -7,13 +7,13 @@ form,form~details {
 }
 
 form {
-    padding: 0 0.5em 0.5em 0.5em;
+    padding:0 0.5em 0.5em 0.5em;
 }
 form,form a {
     display:flex;justify-content:center;align-items:center;
 }
 form a {
-    margin: 0.5em 0;
+    margin:0.5em 0;
 }
 form a:not([href]) {
     filter:saturate(0%);
@@ -34,8 +34,8 @@ form a:first-of-type span::before,form a:last-of-type span::after {
     margin:.2em 0;
 }
 form details {
-    width: 48%;
-    max-width: 250px;
+    width:48%;
+    max-width:250px;
     margin:auto;
 }
 form fieldset {
@@ -48,7 +48,7 @@ form details:not([open]) summary {
 form button {
     color:var(--theme);
 }
-form summary * {
+form summary *,caption>* {
     vertical-align:middle;
 }
 form summary span,caption span {
@@ -81,15 +81,15 @@ form p {
     background:linear-gradient(-57deg,transparent 1.1em,hsl(var(--c),var(--s),var(--b)) 1.1em,hsl(var(--c),var(--s),var(--b)) calc(100% - 1.1em),transparent calc(100% - 1.1em));
 }
 form p input {
-    width: 45%;height:1.3em;
-    padding: 0 0.2em;margin:0 1.5em 0 .1em;
-    -webkit-appearance: none;
-    border: 0.05em solid grey;border-radius:0;
+    width:45%;height:1.3em;
+    padding:0 .2em;margin:0 1.5em 0 .1em;
+    -webkit-appearance:none;
+    border:.05em solid grey;border-radius:0;
 }
 
 label[for=sparking],label[for=GT] {
-    position: absolute;top: 0;transform: translate(0,-40%);
-    filter: saturate(0);
+    position:absolute;top:0;transform:translate(0,-40%);
+    filter:saturate(0);
 }
 label[for=sparking] {
     left:1.5em;
@@ -104,7 +104,7 @@ form label img {
     filter:saturate(1);
 }
 form .layer:first-of-type {
-    padding-top: 1.4em;margin-top: 1em;
+    padding-top:1.4em;margin-top:1em;
 }
 
 form~details {
@@ -137,10 +137,8 @@ table {
 caption {
     margin:0.5em auto;
 }
-caption>* {
-    vertical-align:middle;
-}
-caption[class]:not([class=''])>* {
+caption[class]:not([class=''])>*,
+caption.loading+thead {
     display:none;
 }
 caption.loading::after {
@@ -148,9 +146,6 @@ caption.loading::after {
     background:url(/img/loader.svg) center no-repeat;
     background-size:contain;
     display:inline-block;width:2em;height:2em;
-}
-caption.loading+thead {
-    display:none;
 }
 caption span {
     width:4.5em;
@@ -236,7 +231,7 @@ th rt {
     font-size:70%; }
 
 tbody tr {
-    text-align: left;
+    text-align:left;
     background:hsl(var(--c),var(--s),var(--b));
     height:1.3em;
 }
@@ -246,18 +241,24 @@ td {
     z-index:1;
 }
 td[data-part],td:first-child,td b {
-    font-family:'mono'; }
+    font-family:'mono';
+}
 td[data-part],td:first-child {
     width:.1em;
-    padding:0 var(--pad); }
+    padding:0 var(--pad);
+}
 td>*:not([onclick]) {
-    pointer-events:none; }
+    pointer-events:none;
+}
 td s {
-    text-decoration:none; }
-td:not([class]) s {
-    display:none; }
+    text-decoration:none;
+}
 td.right:not([colspan]) s {
-    margin:0 -.15em; }
+    margin:0 -.15em;
+}
+td:not([class]) s {
+    display:none;
+}
 td b {
     border:.1em solid;border-radius:2em;
     padding:0 .4em;margin-left:.4em;
@@ -320,14 +321,25 @@ tr[data-abbr*='.'] td:nth-child(7):not(.fusion)+td,
         visibility:hidden; }
 }
 #jap:checked ~ main td.left {
-    font-size:0; }
+    font-size:0;
+}
 #jap:checked ~ main td.left+.right {
     padding:0 var(--pad);
     border-left:solid .01em hsl(0,0%,55%);
 }
 #jap:checked ~ main td.small {
-    letter-spacing:-.01em; }
-    
+    letter-spacing:-.01em;
+}
+#BBG:not(:target) {
+    display:none;
+}
+.boards div {
+    --c:0;--s:0%;--b:calc(var(--root-b) + 5%);
+}
+h5 {
+    margin-bottom:.5em;
+}
+
 .catalog {
     flex-direction:column;
 }
@@ -359,7 +371,7 @@ input::placeholder,details label,form a,form~details summary,td sub,td b {
     font-size:0.8em; }
 form>a,form p input,caption,caption button {
     font-size:0.9em; }
-.catalog,caption::after {
+.catalog,caption::after,#BBG caption {
     font-size:1.2em; }
 form a span::before,form a span::after,.catalog div a[data-icon]:empty {
     font-size:1.4em; }

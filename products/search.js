@@ -1,69 +1,73 @@
 const Search = {
-    regex: [],
-    reset() {
-        this.precise = this.entered;
-        this.free = this.esc(Q('input[name=free]').value);
-        this.regex = [];
-        this.dash = this.high = false;
-        this.more = '';
-    },
-    autofill(comp, sym) {
-        Q(/layer5/.test(comp) ? '#GT' : '#sparking').click();
-        Q(`input[name=${comp}]`).value = sym;
-        Search.read('form');
-    },
     esc: string => string ? string.replace(/\s/g, '').replace(/[’'ʼ´ˊ]/g, '′').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : undefined,
     get entered() {
         return [...document.querySelectorAll('form input[type=text]')]
             .filter(input => input.value !== '')
-            .reduce((inputs, input) => ({...inputs, [input.name]: this.esc(input.value)}), {});
+            .reduce((inputs, {name, value}) => ({...inputs, [name]: this.esc(value)}), {});
     },
     get clicked() {
         return window.location.search.substring(1).split('&').map(q => q.split('='))
             .filter(([p, v]) => p.length > 1)
             .reduce((inputs, [comp, sym]) => ({...inputs, [comp]: this.esc(decodeURIComponent(sym))}), {});
     },
-    search: {
-        clicked() {
-            const target = Search.clicked;
-            for (let [comp, sym] of Object.entries(target))
-                comp == 'more' ? Search.more = sym : target[comp] = [sym];
-            Search.buildRegex(target);
-        },
-        free() {
-            if (/^\\+/.test(Search.free))
-                return Search.more = Search.free;
+    get free() {
+        return this.esc(Q('input[name=free]').value);
+    },
+    go() {
+        this.dash = this.high = false;
+        this.regex = [];
 
-            Search.dash = /′/.test(Search.free) || /[^\d]′/.test(Search.free);
-            Search.high = /high/i.test(Search.free);
-            const test = (sym, name, comp) => new RegExp(`^${Search.free}$`, 'i').test(sym) ||
-                (/^[0-9A-zαβΩΔ]{1,2}(′|\\\+)?$/.test(Search.free) ? false : name.some(n => new RegExp(Search.free, 'i').test(n)));
-
-            let target = {};
-            for (let [comp, list] of Object.entries(names)) {
-                if (comp == 'driver')
-                    Search.free = Search.free.replace(/(high|′)/i, '');
-                target[comp] = [...target[comp] || [], Search.free.replace(/([A-z])/g, l => l.toUpperCase()) || '[A-zαβΩ]+'];
-                if (Search.free)
-                    for (let [sym, name] of Object.entries(list))
-                        if (test(sym, name, comp))
-                            target[comp].push(sym.replace('+', '\\+'));
+        if (this.free)
+            this.buildRegex(this.byFree(this.free))
+        else {
+            let precise = this.entered;
+            if (Object.keys(precise).length > 0) {
+                this.more = precise.more || '';
+                this.buildRegex(this.byEntered(precise), true);
+            } else {
+                precise = this.clicked;
+                if (Object.keys(precise).length > 0) {
+                    this.more = precise.more || '';
+                    this.buildRegex(this.byClicked(precise));
+                }
             }
-            if (/[\dα′]+[A-Zα_]/i.test(Search.free))
-                target.layer6s = target.disk = [Search.free.replace(/([A-z])/, l => l.toUpperCase())];
-            Search.buildRegex(target);
-        },
-        precise() {
-            let target = {};
-            for (let [comp, input] of Object.entries(Search.precise))
-                if (comp == 'layer5c')
-                    target.layer5c = /^d$/i.test(input) ? ['D', 'Δ'] : /^a$/i.test(input) ? ['A', 'Ɐ'] : [input];
-                else if (comp == 'disk')
-                    target.disk = [input.replace(/([A-z])/, l => l.toUpperCase())];
-                else
-                    comp == 'more' ? Search.more = input : target[comp] = [input];
-            Search.buildRegex(target, true);
         }
+        if (this.regex.length > 0 || this.more) {
+            this.find();
+            return true;
+        }
+    },
+    byClicked(inputs) {
+        Search.more = inputs.more || '';
+        return Object.entries(inputs).reduce((targets, [comp, sym]) => ({...targets, [comp]: [sym]}), {});
+    },
+    byEntered(inputs) {
+        Search.more = inputs.more || '';
+        const processors = {
+            layer5c: input => /^d$/i.test(input) ? ['D', 'Δ'] : /^a$/i.test(input) ? ['A', 'Ɐ'] : [input],
+            disk: input => [input.replace(/([A-z])/, l => l.toUpperCase())]
+        };
+        return Object.entries(inputs).reduce((targets, [comp, sym]) => ({...targets, [comp]: processors[comp]?.(sym) || [sym]}), {});
+    },
+    byFree(input) {
+        if (/^\\+/.test(input))
+            return this.more = input;
+
+        [this.dash, this.high] = [/′$/, /high/i].map(regex => regex.test(input));
+        const match = (sym, name) => new RegExp(`^${input}$`, 'i').test(sym) ||
+            (/^[0-9A-zαβΩΔ]{1,2}(′|\\\+)?$/.test(input) ? false : name.some(n => new RegExp(input, 'i').test(n)));
+
+        let target = {};
+        if (/[\dα′]+[A-Zα_]/i.test(input))
+            target.layer6s = target.disk = [input.toUpperCase()];
+        else for (let [comp, list] of Object.entries(names)) {
+            let adjusted = comp == 'driver' ? input.replace(/(high|′)/i, '') : input;
+            target[comp] = [adjusted.toUpperCase() || '[A-zαβΩ]+'];
+            if (!input) continue;
+            for (let [sym, name] of Object.entries(list))
+                match(sym, name) ? target[comp].push(sym.replace('+', '\\+')) : null;
+        }
+        return target;
     },
     buildRegex(target, i = false) {
         i = i ? 'iu' : 'u';
@@ -88,29 +92,32 @@ const Search = {
             this.regex.push(new RegExp('^.+? (.+ )?(' + target.driver.join('|') + ')′' + (this.dash ? '' : '?') + '(\\+.?)?$', i));
         }
     },
-    read() {
-        this.reset();
-        if (Object.keys(this.precise).length === 0 && !this.free)
-            return;
-        Object.keys(this.precise).length > 0 ? this.search.precise() : this.search.free();
-        Q('form').reset();
-        Q('input[type=text]').blur();
-        setTimeout(Search.find);
-    },
     find() {
-        Q('tbody tr', tr => tr.hidden = !Search.match(tr));
-        Search.result();
-        Q('html, body', el => el.scrollTop = Q('table').offsetTop);
+        Q('tbody tr', tr => {
+            const [no, abbr, more] = ['no', 'abbr', 'more'].map(a => tr.getAttribute(`data-${a}`));
+            tr.hidden = !(this.regex.some(regex => regex.test(abbr)) || no.match(/\d+/)[0] == this.free ||
+                this.more && new RegExp(this.more.replace('\\+', ''), 'i').test(more) ||
+                (/(-|wbba)/i.test(this.free) ? new RegExp(this.free.replace(/wbba/i, 'bbg'), 'i').test(no) : false));
+        });
+        Search.state(true);
     },
-    match(tr) {
-        const no = tr.getAttribute('data-no');
-        return this.regex.some(regex => regex.test(tr.getAttribute('data-abbr'))) || no.match(/\d+/)[0] == this.free ||
-            this.more && new RegExp(this.more.replace('\\+', ''), 'i').test(tr.getAttribute('data-more')) ||
-            (/(-|wbba)/i.test(this.free) ? new RegExp(this.free.replace(/wbba/i, 'bbg'), 'i').test(no) : false);
+    state(searching) {
+        Q('caption').classList[searching ? 'add' : 'remove']('searching');
+        Q('#BBG+section').style.display = searching ? 'none' : 'flex';
+        Q('.prod button').disabled = !searching;
+        Q('html, body', el => el.scrollTop = searching ? Q('table').offsetTop : 0);
+        if (!searching) {
+            Q('nav data').removeAttribute('value');
+            Q('input[name=free]').value = '';
+        } else {
+            Q('nav data').value = count('tbody tr:not([hidden])');
+            Q('form').reset();
+            Q('input[type=text]').blur();
+        }
     },
-    result() {
-        Q('.prod button').disabled = false;
-        Q('nav data').value = document.querySelectorAll('tbody tr:not([hidden])').length;
-        Q('caption').classList.add('searching');
-    },
+    autofill(comp, sym) {
+        Q(/layer5/.test(comp) ? '#GT' : '#sparking').click();
+        Q(`input[name=${comp}]`).value = sym;
+        this.go();
+    }
 };

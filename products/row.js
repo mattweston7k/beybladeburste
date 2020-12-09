@@ -66,9 +66,9 @@ class Driver extends Part {
 }
 
 class Row {
-    constructor(p) {
+    constructor(p, place) {
         this.tr = document.createElement('tr');
-        p ? this.create(p) : null;
+        p ? this.create(p, place) : null;
     }
     static connectedCallback(tr) {
         Row.fill(['eng', 'chi'], tr);
@@ -82,7 +82,7 @@ class Row {
             lang.forEach((l, i) => l ? Cell.code(l, cells[i]) : null);
         });
     }
-    create([no, type, abbr, append]) {
+    create([no, type, abbr, append], place) {
         const attr = {
             'class': type,
             'data-no': no,
@@ -90,7 +90,7 @@ class Row {
             'data-more': (append?.mode || append?.more || '').replace('+', '')
         };
         no = no.split('.')[0];
-        no == 'BBG-34' ? Row.SP = false : null;
+        no == !place && 'BBG-34' ? Row.SP = false : null;
 
         let [layer, disk, driver] = abbr.split(' ');
         if (disk && !driver) // lower fusion
@@ -100,11 +100,11 @@ class Row {
         else
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
-        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/^BBG-\d+/, 'wbba')
+        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/(^BBG-\d+)/, place ? '$1' : 'wbba')
             + layer.code() + (driver.fusion ? driver.code() + driver.none(true) : disk.code() + driver.code());
         append ? this.append(append) : null;
         this.attribute(attr);
-        document.querySelector('tbody').appendChild(this.tr);
+        document.querySelector(place || 'tbody').appendChild(this.tr);
     }
     append(append) {
         const {mode, chip, more} = append;
