@@ -180,14 +180,14 @@
                 return Q('tbody').innerHTML = '';
             window.location.hash == '#BBG' ? Table.BBG() : null;
             Q('tr', tr => Row.connectedCallback(tr));
-            !Search.go() ? Q('nav data').removeAttribute('value') : null;
+            !Search.go() ? Q('nav data').value = '' : null;
             Table.count();
             Table.flush(false);
             $('table').tablesorter();
         },
         count() {
             if (!Table.limit) return;
-            Q('main data').innerHTML = count('#myTable tbody tr:not([hidden])');;
+            Q('main data').innerHTML = count('#myTable tbody tr:not([hidden])');
             Q('main data').value = count('#myTable tbody tr');
         },
         entire() {
@@ -249,27 +249,26 @@
 
     (() => {
         const show = ["RB", "B", "St", "RL", "RLG", "L", "jap", "eng"];
-        Q('head style').insertAdjacentHTML('beforeend', `
+        Q('style').insertAdjacentHTML('beforeend', `
             ${show.map((id, i) => `#${id}:not(:checked)~main table .${id}${i <= 3 ? '.H' : ''}`)} {display:none}
             ${show.map(id => `#${id}:not(:checked)~main label[for=${id}]`)} {opacity:.5;background-color:initial;}`
         );
-        show.forEach(id => Q('main').insertAdjacentHTML('beforebegin', `<input type=checkbox id=${id} ${(id == 'jap' || id == 'eng') ? '' : 'checked'}>`));
+        show.forEach(id => Q('main').insertAdjacentHTML('beforebegin', `<input type=checkbox id=${id} ${/^(eng|jap)$/.test(id) ? '' : 'checked'}>`));
     })();
 
     Q('input[name=system]', radio => radio.onchange = () =>
         JSON.parse(radio.getAttribute('data-part')).forEach((part, i) => {
-            const input = Q(`form .layer input:nth-of-type(${i + 1})`);
-            input.name = part[1];
-            input.previousElementSibling.innerText = part[0];
+            const input = Q(`.layer input:nth-of-type(${i + 1})`);
+            [input.previousElementSibling.innerText, input.name] = part;
         })
     );
     Q('#jap').onchange = ev => {
         Q('#eng').checked = false;
         Q('#eng').disabled = ev.target.checked;
-        Q('tbody tr', tr => Row.fill([, ev.target.checked ? 'jap' : 'chi'], tr));
+        Q('tbody tr', tr => Row.fill([null, ev.target.checked ? 'jap' : 'chi'], tr));
         Table.flush(false);
     };
-    Q('#eng').onchange = ev => Table.column(ev.target.checked? 'eng':'cjk');
+    Q('#eng').onchange = ev => Table.column(ev.target.checked ? 'eng' : 'cjk');
     Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.go() : null);
 </script>
 

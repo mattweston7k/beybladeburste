@@ -17,21 +17,18 @@ const Search = {
         this.dash = this.high = false;
         this.regex = [];
 
-        if (this.free)
-            this.buildRegex(this.byFree(this.free))
-        else {
-            let precise = this.entered;
-            if (Object.keys(precise).length > 0) {
-                this.more = precise.more || '';
-                this.buildRegex(this.byEntered(precise), true);
-            } else {
-                precise = this.clicked;
-                if (Object.keys(precise).length > 0) {
-                    this.more = precise.more || '';
-                    this.buildRegex(this.byClicked(precise));
+        let inputs = this.free;
+        if (inputs)
+            this.buildRegex(this.byFree(inputs));
+        else
+            if (Object.keys(inputs = this.entered).length > 0) {
+                this.more = inputs.more || '';
+                this.buildRegex(this.byEntered(inputs), true);
+            } else
+                if (Object.keys(inputs = this.clicked).length > 0) {
+                    this.more = inputs.more || '';
+                    this.buildRegex(this.byClicked(inputs));
                 }
-            }
-        }
         if (this.regex.length > 0 || this.more) {
             this.find();
             return true;
@@ -106,14 +103,11 @@ const Search = {
         Q('#BBG+section').style.display = searching ? 'none' : 'flex';
         Q('.prod button').disabled = !searching;
         Q('html, body', el => el.scrollTop = searching ? Q('table').offsetTop : 0);
-        if (!searching) {
-            Q('nav data').removeAttribute('value');
-            Q('input[name=free]').value = '';
-        } else {
-            Q('nav data').value = count('tbody tr:not([hidden])');
-            Q('form').reset();
-            Q('input[type=text]').blur();
-        }
+        Q('nav data').value = searching ? count('tbody tr:not([hidden])') : '';
+        if (searching)
+            Q('input[type=text]', input => input.blur());
+        else
+            Q('input[type=text]', input => input.value = '');
     },
     autofill(comp, sym) {
         Q(/layer5/.test(comp) ? '#GT' : '#sparking').click();

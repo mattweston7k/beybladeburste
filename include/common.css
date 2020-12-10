@@ -219,51 +219,67 @@ li,.toggle {
     line-height:1.5em;
     color:coral; }
 
-nav data[value] {
+nav data {
     position:absolute;top:50%;transform:translate(0,-50%);
     font-family:ANC,'Font Awesome 5 Free',sans-serif;
     color:coral;
     text-align:right;white-space:nowrap;
 }
-nav data[value]::before {
-    content:attr(value); }
-.prod data:not([value])+span {
-    visibility:hidden; }
-.prod data[value] {
-    right:9.3em; }
-.prod data[value]::before {
-    font-size:1.6em; }
-@media (min-width:631px) {
-    .prod data[value]+span {
-        text-align:left;
-        padding-left:.1em; }
-    .prod data[value] {
-        right:10.8em;top:30%; }
-    .prod data[value]::before {
-        font-size:3em; }
+nav data[value]:not([value=''])::before {
+    content:attr(value);
 }
-.part data[value] {
-    top:55%;right:4em; }
+.prod data[value='']+span {
+    visibility:hidden;
+}
+.prod data {
+    right:9.3em;
+}
+.prod data::before {
+    font-size:1.6em;
+}
+@media (min-width:631px) {
+    .prod data+span {
+        text-align:left;
+        padding-left:.1em;
+    }
+    .prod data {
+        right:10.8em;top:30%;
+    }
+    .prod data::before {
+        font-size:3em;
+    }
+}
+.part data {
+    top:55%;right:4em;
+}
 .part data:only-child {
-    right:.2rem; }
-.part data[value]::before {
-    font-size:2em; }
-.part data[value]::after {
+    right:.2rem;
+}
+.part data::before {
+    font-size:2em;
+}
+.part data[value]:not([value=''])::after {
     content:attr(data-extra)'\00a0款';
     display:inline-block;
-    transform:translate(0,-.055rem); }
+    transform:translate(0,-.055rem);
+}
 label[for=fixed]::after {
     content:'7×4';font-family:inherit;
     font-size:1.1em;color:hsl(var(--c),var(--s),40%);
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%); }
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+}
 #day:checked+label,#fixed:checked+nav label[for=fixed] {
-    flex-direction: row-reverse; }
+    flex-direction: row-reverse;
+}
 #fixed:not(:checked)+nav label[for=fixed],nav button[disabled] {
-    border-color:#bbb; }
+    border-color:#bbb;
+}
 #fixed:not(:checked)+nav label[for=fixed]::before,nav button[disabled] {
-    background:#bbb; }
+    background:#bbb;
+}
 #day:checked+label::before {
-    content:'\f185'; }
+    content:'\f185';
+}
 
 nav ul li:last-child label,.mag::before,.mag::after {
     background:hsl(var(--h),var(--s),80%);
