@@ -130,7 +130,7 @@
 
 <script>
     const Table = {
-        limit: true,
+        limit: 'B-159',
         get() {
             if (!names) DB.getNames();
             Table.loading(true);
@@ -150,7 +150,7 @@
                 fetch('/update/product-new.json').then(r => r.json()),
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
             ]).then(([n, o]) => {
-                Row.SP = true;
+                Row.show = true;
                 [...n, ...typeof o == 'object' ? o : []].forEach(bey => new Row(bey));
                 Table.save(old);
                 Table.loading(false);
@@ -175,24 +175,18 @@
                 input.value = loading ? 'Loading' : '';
                 input.disabled = loading;
             });
-            if (loading) {
-                Q('caption').classList.add('loading');
+            Q('caption').classList[loading ? 'add' : 'remove']('loading');
+            if (loading)
                 return Q('tbody').innerHTML = '';
-            }
-            if (window.location.hash == '#BBG')
-                Table.BBG();
+            window.location.hash == '#BBG' ? Table.BBG() : null;
             Q('tr', tr => Row.connectedCallback(tr));
-            if (Table.limit === true) {
-                Table.limit = count('#myTable tbody tr:not([hidden])');
-                Table.count();
-            }
-            if (!Search.go())
-                Q('nav data').removeAttribute('value');
-            Table.flush();
-            Q('caption').classList.remove('loading');
+            !Search.go() ? Q('nav data').removeAttribute('value') : null;
+            Table.count();
+            Table.flush(false);
             $('table').tablesorter();
         },
         count() {
+            if (!Table.limit) return;
             Q('main data').innerHTML = count('#myTable tbody tr:not([hidden])');;
             Q('main data').value = count('#myTable tbody tr');
         },
@@ -203,23 +197,20 @@
         },
         reset() {
             Search.state(false);
-            if (window.location.search)
-                window.history.pushState('', '', '/products/');
-            [...document.querySelectorAll('th')].some(th => th.getAttribute('aria-sort') != 'none') ?
-                Table.get() : Q('#myTable tbody tr', (tr, i) => tr.hidden = i >= (Table.limit || 999));
+            window.location.search ? window.history.pushState('', '', '/products/') : null;
+            Q('th[data-sortedBy]') ? Table.get() : Q('#myTable tbody tr', tr => tr.hidden = tr.matches(`tr[data-no="${Table.limit}"]~tr`));
             Q('#BBG tr', tr => tr.hidden = false);
         },
         column(lang) {
-            ({eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4]).forEach((c, i) =>
-                Q(`td[colspan]:nth-child(${i + 3})`, td => td.setAttribute('colspan', c)));
+            const colspan = {eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4];
+            Q('td[data-part$=layer], td:not([data-part]):nth-child(2)', td => Row.next2(td).forEach((td, i) => td.colSpan = colspan[i]));
         },
         flush(update = true) {
             if (window.innerWidth >= 800 || window.innerWidth > window.innerHeight)
                 Table.column(Q('#jap').checked ? 'cjk' : 'both');
             else
                 Table.column(Q('#eng').checked ? 'eng' : 'cjk');
-            if (update)
-                $("table").trigger('update', [false]);
+            update ? $("table").trigger('update', [false]) : null;
         },
         BBG() {
             if (Q('#BBG tr')) return;
@@ -227,12 +218,13 @@
                 if (ev.target.result)
                     Q('#BBG tbody').innerHTML = ev.target.result;
                 else {
+                    Row.show = true;
                     (await (await fetch('/update/product-BBG.json')).json()).forEach(bey => new Row(bey, '#BBG tbody'));
                     DB.put('html', ['prod-BBG', Table.sanitize(`#BBG tr`)]);
                 }
                 Q('tr', tr => Row.connectedCallback(tr));
-                Table.flush();
                 Q('#myTable tr[data-no^=BBG]', tr => tr.remove());
+                Table.flush();
                 Table.count();
                 Q('section').innerHTML =
                 [

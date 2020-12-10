@@ -44,7 +44,7 @@
     #mag1:checked~#fixed:checked~main section {font-size:0.915vw;}
 }
 
-main {
+.catalog {
     user-select:none;
     overflow-x:auto;
 }

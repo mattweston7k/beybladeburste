@@ -1,14 +1,14 @@
 class Part {
     constructor(sym, fusion = false) {
-        [this.sym, this.fusion, this.single] = [sym, fusion, false];
+        [this.sym, this.fusion] = [sym, fusion];
     }
     code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
-        if (this.sym == '/')
-            return this.none();
-        return `<td data-part='${part}'>${symCode}<td${this.colspan} class=left><td${this.colspan} class='right${fusion ? ' fusion' : ''}'>`;
+        return this.sym == '/' ? this.none() :
+            `<td data-part='${part}'>${symCode}<td class=left><td class='right${fusion ? ' fusion' : ''}'>`;
     }
-    none(hidden) {return `<td><s>${hidden ? this.sym : 'ꕕ'}</s><td${this.colspan}><td${this.colspan} class='right'>`};
-    get colspan() {return this.single ? ' colspan' : '';}
+    none(hidden) {
+        return `<td><s>${hidden ? this.sym : 'ꕕ'}</s><td><td class='right'>`
+    };
 }
 
 class Layer extends Part {
@@ -44,10 +44,8 @@ class Layer extends Part {
     }
     code() {
         const [body, chip, key] = this.sym.split('.');
-        if (!key) {
-            this.single = true;
+        if (!key)
             return super.code();
-        }
         this.system = /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
         return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
     }
@@ -66,9 +64,9 @@ class Driver extends Part {
 }
 
 class Row {
-    constructor(p, place) {
+    constructor(bey, place) {
         this.tr = document.createElement('tr');
-        p ? this.create(p, place) : null;
+        this.create(bey, place);
     }
     static connectedCallback(tr) {
         Row.fill(['eng', 'chi'], tr);
@@ -90,7 +88,6 @@ class Row {
             'data-more': (append?.mode || append?.more || '').replace('+', '')
         };
         no = no.split('.')[0];
-        no == !place && 'BBG-34' ? Row.SP = false : null;
 
         let [layer, disk, driver] = abbr.split(' ');
         if (disk && !driver) // lower fusion
@@ -100,13 +97,14 @@ class Row {
         else
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
-        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-&nbsp;$1').replace(/(^BBG-\d+)/, place ? '$1' : 'wbba')
+        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-<s>0</s>&nbsp;$1').replace(/(^BBG-\d+)/, place ? '$1' : 'wbba')
             + layer.code() + (driver.fusion ? driver.code() + driver.none(true) : disk.code() + driver.code());
-        append ? this.append(append) : null;
+        this.append(append);
         this.attribute(attr);
-        document.querySelector(place || 'tbody').appendChild(this.tr);
+        Q(place || 'tbody').appendChild(this.tr);
     }
     append(append) {
+        if (!append) return;
         const {mode, chip, more} = append;
         const add = (td, code) => td.insertAdjacentHTML('beforeend', code);
         if (chip)
@@ -121,7 +119,8 @@ class Row {
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
         this.rare(no);
-        this.tr.hidden = !Row.SP && Table.limit;
+        this.tr.hidden = !Row.show;
+        no == Table.limit ? Row.show = false : null;
     }
     rare(no) {
         if ([100, 117, 129].map(n => `B-${n}`).includes(no))
@@ -142,7 +141,7 @@ class Row {
     cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
-Row.SP = true;
+Row.show = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
 const Cell = {
