@@ -113,8 +113,8 @@
                     '新': 'hsl(0,0%,60%)'
                 };
                 t.querySelector('article').style.setProperty('--c', 'hsl(45,70%,60%)');
-                Object.keys(colors).forEach(c =>
-                    cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null);
+                for (const c in colors)
+                    cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null;
                 Q('#now fieldset').appendChild(t);
             };
 

@@ -117,7 +117,7 @@ function Catalog(part) {
             <div class='info'>` + this.code.symbol + this.code.name + `</div>
             <div class='content'>` + this.code.content(this.weight.classes) + `</div>
             <p class='desc'>` + descF(group) + `</p>` : ``);
-        Object.entries(attr).forEach(([a, v]) => v ? part[a] = v : null);
+        for (const [a, v] of Object.entries(attr)) if (v) part[a] = v;
         return part;
     }
 

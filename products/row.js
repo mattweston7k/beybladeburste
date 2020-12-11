@@ -70,7 +70,7 @@ class Row {
     }
     static connectedCallback(tr) {
         Row.fill(['eng', 'chi'], tr);
-        tr.querySelectorAll('td').forEach(td => td.onclick = () => Cell.preview(td));
+        for (const td of tr.querySelectorAll('td')) td.onclick = () => Cell.preview(td);
     }
     static fill(lang, tr) {
         tr.querySelectorAll('td[data-part]').forEach(td => {
@@ -112,9 +112,9 @@ class Row {
         if (/^s[wh]$/.test(mode))
             add(this.cell(['layer6r']), `<sub>${mode}</sub>`);
         else if (/^\+/.test(mode))
-            Row.next2(this.cell(['driver'])).forEach(td => add(td, `<sub>${mode}</sub>`));
+            for (const td of Row.next2(this.cell(['driver']))) add(td, `<sub>${mode}</sub>`);
         else if (more)
-            Row.next2(this.cell(['layer6r', 'layer'])).forEach(td => add(td, `<b>${more}</b>`));
+            for (const td of Row.next2(this.cell(['layer6r', 'layer']))) add(td, `<b>${more}</b>`);
     }
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
@@ -127,7 +127,7 @@ class Row {
             this.cell(['layer']).style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
             this.tr.classList.add('GT');
-        else [
+        else for (const {n, color} of [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
                 {n: [160], color: 'dodgerblue'},
                 {n: [161, 163], color: 'red'},
@@ -135,8 +135,8 @@ class Row {
                 {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
                 {n: [169], color: 'deeppink'},
                 {n: [171.1], color: 'deepskyblue'}
-            ].forEach(({n, color}) =>
-                n.map(n => `B-${n}`).includes(no) ? this.cell(['layer6s', 'disk']).style.color = color : null);
+            ])
+                n.map(n => `B-${n}`).includes(no) ? this.cell(['layer6s', 'disk']).style.color = color : null;
     }
     cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}

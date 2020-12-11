@@ -148,7 +148,7 @@
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
             ]);
             Row.show = true;
-            [...newer, ...typeof older == 'object' ? older : []].forEach(bey => new Row(bey));
+            for (const bey of [...newer, ...typeof older == 'object' ? older : []]) new Row(bey);
             Table.save(old);
             Table.loading(false);
         },
@@ -163,7 +163,8 @@
         sanitize(elements) {
             const temp = document.createElement('template');
             temp.innerHTML = [...document.querySelectorAll(elements)].map(tr => tr.outerHTML).join('');
-            temp.content.querySelectorAll('td.left, td.right').forEach(td => td.innerHTML = td.innerHTML.replace(/.*?(<sub>.*?<\/sub>).*?/, '$1'));
+            for (const td of temp.content.querySelectorAll('td.left, td.right'))
+                td.innerHTML = td.innerHTML.replace(/.*?(<sub>.*?<\/sub>).*?/, '$1');
             return temp.innerHTML.replace(/(<\/t[d|r]>|\s{2,}|=""|hidden|\s(?=>))/g, '');
         },
         loading(loading) {
@@ -215,7 +216,7 @@
                 Q('#BBG tbody').innerHTML = html;
             else {
                 Row.show = true;
-                (await (await fetch('/update/product-BBG.json')).json()).forEach(bey => new Row(bey, '#BBG tbody'));
+                for (const bey of await (await fetch('/update/product-BBG.json')).json()) new Row(bey, '#BBG tbody');
                 DB.put('html', ['prod-BBG', Table.sanitize(`#BBG tr`)]);
             }
             Q('tr', tr => Row.connectedCallback(tr));

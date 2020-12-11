@@ -117,18 +117,18 @@
         <g class='day'>
             <script>// <![CDATA[
             place = Q('g.day');
-            types.forEach(t => add(`
+            for (const t of types) add(`
             <linearGradient id='img-${t}' class='${t}' x1='0' y1='100%' x2='100%' y2='0'>
                 <stop offset='0%'/><stop offset='100%'/>
-            </linearGradient>`, place));
+            </linearGradient>`, place);
 
-            stats.forEach(s => add(`
+            for (const s of stats) add(`
             <linearGradient id='dd-${s}-5' class='${s}' x1='0%' y1='100%' x2='0%' y2='0%'>
                 <stop offset='0%'/><stop offset='100%'/>
             </linearGradient>
             <radialGradient id='dd-${s}-6' class='${s}' fx='30%' fy='70%'>
                 <stop offset='0%'/><stop offset='100%'/>
-            </radialGradient>`, place));
+            </radialGradient>`, place);
             // ]]></script>
         </g>
 
@@ -274,7 +274,7 @@
     <path d='M 132.5,150 h 17.5 v -17.5 Z' fill='hsl(var(--c),var(--s),calc(15% + var(--base-b)))'/>
     <script>// <![CDATA[
     place = document.querySelector('polygon');
-    types.forEach(t => place.insertAdjacentHTML('afterend', `
+    for (const t of types) place.insertAdjacentHTML('afterend', `
         <g id='${t}5'>
             <use href='#dl-5'/>
             <rect class='${t}' x='5.5' y='${img}' rx='5' fill='url(#img-${t})' stroke-width='${imgBorder}' />
@@ -282,17 +282,17 @@
         <g id='${t}6'>
             <use href='#dl-6'/>
             <rect class='${t}' x='5.5' y='${img}' rx='5' fill='url(#img-${t})' stroke-width='${imgBorder}' />
-        </g>`))
+        </g>`)
 
-    document.querySelectorAll('g[id|=dl] use').forEach(u => u.strokeWidth = descBorder);
-    document.querySelectorAll(`.${q.day != null ? 'night' : 'day'}`).forEach(g => g.remove());
+    for (const u of document.querySelectorAll('g[id|=dl] use')) u.strokeWidth = descBorder;
+    for (const g of document.querySelectorAll(`.${q.day != null ? 'night' : 'day'}`)) g.remove();
 
     let i = 0;
     while ((els = document.querySelectorAll(`[data-parse${i || ''}]`)).length > 0) {
-        els.forEach(el => {
+        for (const el of els) {
             const [, attr, value] = el.getAttribute(`data-parse${i || ''}`).match(/^\[(.+)\](.+?)$/);
             el.setAttribute(attr, value.replace(/\{(.+)\}/, (whole, f) => Function('return ' + f)() ));
-        });
+        };
         i++;
     }
     // ]]></script>

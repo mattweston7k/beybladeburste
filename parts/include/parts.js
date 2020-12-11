@@ -4,14 +4,14 @@ Parts = {
         Parts.before();
         if (window.indexedDB)
             DB.getParts(Parts.group, (order, info, parts) => {
-                order.forEach(sym => Catalog(parts[sym] || sym));
+                for (const sym of order) Catalog(parts[sym] || sym);
                 Parts.after(info);
             });
         else Parts.live();
     },
     async live() {
         const {info, parts} = await (await fetch(`/update/${Parts.group}.json`)).json();
-        parts.forEach(part => Catalog(part ? Parts.attach([part.sym, part.comp], part) : null));
+        for (const part of parts) Catalog(part ? Parts.attach([part.sym, part.comp], part) : null);
         Parts.after(info);
     },
     before() {
@@ -58,7 +58,7 @@ customElements.define('weight-scale', class extends HTMLElement {
     }
     connectedCallback() {
         const [min, max, group, scale] = ['min', 'max', 'group', 'scale'].map(a => this.getAttribute(a));
-        this.shadow.querySelectorAll('div, label').forEach(el => el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, ''));
+        for (const el of this.shadow.querySelectorAll('div, label')) el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, '');
         this.scale = Function('w', 'return ' + scale);
         for (let w = parseInt(min); w <= parseInt(max); w++)
             this.shadow.querySelector('div').appendChild(this.cell(w, w == parseInt(max)));
@@ -82,9 +82,9 @@ const Tools = {
             Q('.filter').insertAdjacentHTML('beforeend', `<label for=${type}><img src='../img/${label}-${type}.png' alt=${type}></label>`);
         }
         if (group == 'remake')
-            ['MFB', 'BSB'].forEach(t => add(t, 'series'));
+            for (const t of ['MFB', 'BSB']) add(t, 'series');
         else if (count('object[data*=unk]') === 0 && !/^(disk|frame)/.test(group))
-            Object.values(Parts.types).map(t => t.substring(0, 3).toLowerCase()).forEach(t => add(t, 'type'));
+            for (const t of Object.values(Parts.types)) add(t.substring(0, 3).toLowerCase(), 'type');
     },
     magnify() {
         const slider = () => {

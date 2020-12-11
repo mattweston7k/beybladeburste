@@ -27,7 +27,7 @@ const Cookie = {
 };
 let Parts = {
     detach({sym, comp, ...part}) {
-        ['stat', 'desc'].forEach(p => !`${part[p]}`.replace(/,/g, '') ? delete part[p] : null);
+        for (const p of ['stat', 'desc']) if (!`${part[p]}`.replace(/,/g, '')) delete part[p];
         return {...part, names: part.names?.can ? {can: part.names.can} : {}};
     },
     attach([sym, comp], part) {
@@ -69,7 +69,7 @@ const DB = {
     get indicator() {return Q('db-status');},
     init(open) {
         DB.indicator.init();
-        ['html', 'json', 'order'].forEach(store => open.result.createObjectStore(store));
+        for (const store of ['html', 'json', 'order']) open.result.createObjectStore(store);
         open.transaction.objectStore('json').createIndex('group', 'group');
         return open.transaction;
     },
@@ -94,11 +94,11 @@ const DB = {
         fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).
         then(r => r.json()).then(j => {
             const updates = [], notify = [];
-            Object.entries(j).forEach(([item, [time, major]]) => {
+            for (const [item, [time, major]] of Object.entries(j)) {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
                 oldUser ? item == 'products' ? DB.indicator.prod() : updates.push(item) : null;
                 oldUser && major || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000 ? notify.push(item) : null;
-            });
+            }
             if (updates.length > 0) {
                 DB.indicator.init(true);
                 Cookie.notification(notify);
@@ -120,8 +120,8 @@ const DB = {
                 const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
                 info ? DB.put('html', [group, info], tran) : null;
                 DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
-                parts.filter(part => part && typeof part == 'object').forEach(part =>
-                    DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran));
+                for (const part of parts.filter(part => part && typeof part == 'object'))
+                    DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran);
             }
             DB.indicator.update();
             Cookie.setHistory(group);
@@ -249,10 +249,10 @@ class Indicator extends HTMLElement {
     init(update = false) {
         this.hidden = false;
         this.links = document.querySelectorAll('a[href="parts/"],a[href="products/"]');
-        this.links.forEach(a => {
+        for (const a of this.links) {
             a.title = a.href;
             a.removeAttribute('href');
-        });
+        }
         this.shadowRoot.querySelector('p').innerHTML = update ? '更新中' : '首次訪問 預備中⋯⋯';
         this.setAttribute('progress', 0);
     }
@@ -260,15 +260,14 @@ class Indicator extends HTMLElement {
         this.progress++;
         this.setAttribute('progress', this.progress / this.total * 100);
         if (this.progress == this.total) {
-            this.links ? this.links.forEach(a => a.href = a.title) : null;
+            for (const a of this.links ?? []) a.href = a.title;
             this.setAttribute('status', 'success');
             this.shadowRoot.querySelector('p').innerHTML = '更新成功';
         }
     }
     error(p) {
         this.hidden = false;
-        if (this.getAttribute('status') == 'offline')
-            return;
+        if (this.getAttribute('status') == 'offline') return;
         this.setAttribute('status', 'error');
         this.shadowRoot.querySelector('p').innerHTML = p.target?.errorCode || p || '不支援';
     }

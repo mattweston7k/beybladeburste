@@ -38,7 +38,7 @@
 </main>
 
 <script>
-Object.entries({
+for (const [abbr, launcher] of Object.entries({
     LSBL: {
         name: 'Long Sparking Bey launcher<br>ロングスパーキングベイランチャー',
         desc: '最高轉速發射器，附低温火花效果，拉線更長',
@@ -182,9 +182,9 @@ Object.entries({
             {classes: 'St r', no: 'B-62', img: '872245_4.jpg'},
             {classes: 'S r', no: 'B-30 B-29', img: '/img/launcher/PL.jpg'}]
     }
-}).forEach(([abbr, launcher]) => {
+})) {
     const details = document.createElement('details');
-    const img = l => l.img ? !l.img.match(/^(https|\/img)/) ? 'https://www.takaratomy.co.jp/' + l.img : l.img : ('/img/launcher/' + l.no + '.jpg');
+    const img = l => l.img ? !l.img.match(/^(https|\/img)/) ? `https://www.takaratomy.co.jp/${l.img}` : l.img : `/img/launcher/${l.no}.jpg`;
     const winder = {
         DW: `<ruby><rb>ドラゴンワインダー<rt>Dragon winder</ruby>`,
         PW: `<ruby><rb>フェニックスワインダー<rt>Phoenix winder</ruby>`,
@@ -212,5 +212,5 @@ Object.entries({
 
     abbr === 'LLL' ? Q('article').insertAdjacentHTML('beforeend', '<h2>拉條型</h2>') : null;
     Q('article').appendChild(details);
-});
+}
 </script>
