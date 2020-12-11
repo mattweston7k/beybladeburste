@@ -131,38 +131,34 @@
 <script>
     const Table = {
         limit: 'B-159',
-        get() {
-            if (!names) DB.getNames();
+        async get() {
+            names ||= await DB.getNames();
             Table.loading(true);
-            DB.get('html', 'prod-new', null, n =>
-                DB.get('html', 'prod-old', null, o => {
-                    if (!n.target.result || !o.target.result || /^#(flush|update)$/.test(window.location.hash))
-                        return Table.fetch(window.location.hash == '#update' ? o.target.result : false);
-                    Q('tbody').innerHTML = n.target.result + (Table.limit ? o.target.result.replace(/<tr/g, '<tr hidden') : o.target.result);
-                    Table.loading(false);
-                })
-            );
+            const [n, o] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
+            if (!n || !o || /^#(flush|update)$/.test(window.location.hash))
+                return Table.fetch(window.location.hash == '#update' ? o : false);
+            Q('tbody').innerHTML = n + (Table.limit ? o.replace(/<tr/g, '<tr hidden') : o);
+            Table.loading(false);
         },
-        fetch(old) {
-            if (!names) DB.getNames();
+        async fetch(old) {
+            names ||= await DB.getNames();
             Table.loading(true);
-            Promise.all([
+            const [n, o] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
-            ]).then(([n, o]) => {
-                Row.show = true;
-                [...n, ...typeof o == 'object' ? o : []].forEach(bey => new Row(bey));
-                Table.save(old);
-                Table.loading(false);
-            });
+            ]);
+            Row.show = true;
+            [...n, ...typeof o == 'object' ? o : []].forEach(bey => new Row(bey));
+            Table.save(old);
+            Table.loading(false);
         },
-        save(result) {
+        save(old) {
             DB.put('html', ['prod-new', Table.sanitize('tbody tr:not([hidden])')]);
             Cookie.setHistory('products');
-            if (!result)
-                DB.put('html', ['prod-old', Table.sanitize('tbody tr[hidden]')]);
+            if (old)
+                Q('tbody').insertAdjacentHTML('beforeend', Table.limit ? old.replace(/<tr/g, '<tr hidden') : old);
             else
-                Q('tbody').insertAdjacentHTML('beforeend', Table.limit ? result.replace(/<tr/g, '<tr hidden') : result);
+                DB.put('html', ['prod-old', Table.sanitize('tbody tr[hidden]')]);
         },
         sanitize(elements) {
             const temp = document.createElement('template');
@@ -182,7 +178,7 @@
             Q('tr', tr => Row.connectedCallback(tr));
             !Search.go() ? Q('nav data').value = '' : null;
             Table.count();
-            Table.flush(false);
+            Table.flush();
             $('table').tablesorter();
         },
         count() {
@@ -205,47 +201,46 @@
             const colspan = {eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4];
             Q('td[data-part$=layer], td:not([data-part]):nth-child(2)', td => Row.next2(td).forEach((td, i) => td.colSpan = colspan[i]));
         },
-        flush(update = true) {
+        flush(update = false) {
             if (window.innerWidth >= 800 || window.innerWidth > window.innerHeight)
                 Table.column(Q('#jap').checked ? 'cjk' : 'both');
             else
                 Table.column(Q('#eng').checked ? 'eng' : 'cjk');
             update ? $("table").trigger('update', [false]) : null;
         },
-        BBG() {
+        async BBG() {
             if (Q('#BBG tr')) return;
-            DB.get('html', 'prod-BBG', null, async ev => {
-                if (ev.target.result)
-                    Q('#BBG tbody').innerHTML = ev.target.result;
-                else {
-                    Row.show = true;
-                    (await (await fetch('/update/product-BBG.json')).json()).forEach(bey => new Row(bey, '#BBG tbody'));
-                    DB.put('html', ['prod-BBG', Table.sanitize(`#BBG tr`)]);
-                }
-                Q('tr', tr => Row.connectedCallback(tr));
-                Q('#myTable tr[data-no^=BBG]', tr => tr.remove());
-                Table.flush();
-                Table.count();
-                Q('section').innerHTML =
-                [
-                    ['29', '/img/launcher/BBG-29.jpg', '<h5>ロングベイランチャー LR<br>Long Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
-                    ['26'],
-                    ['25', 'https://dmwysfovhyfx3.cloudfront.net/img/goods/L/4904810134398_85bec0ec7b2a402fa7ee55ed1ff51ab1.jpg', '<h5>ビッグベイスタジアム<br>Big Bey stadium'],
-                    ['24', '/img/launcher/BBG-24.jpg', '<h5>ロングベイランチャー L<br>Long Bey launcher L</h5><ruby><rb>シルバー<rt>Silver</ruby>'],
-                    ['23', '/img/launcher/BBG-23.jpg', '<h5>ロングベイランチャー<br>Long Bey launcher</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
-                    ['17', '/img/launcher/BBG-17.jpg', '<h5>ベイランチャー LR<br>Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
-                    ['16', '/img/grip/rubber-phoenix.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>フェニックス<rt>Phoenix</ruby>'],
-                    ['10', '/img/grip/rubber-red.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>レッド<rt>Red</ruby>'],
-                    ['05', '/img/grip/power-blue.jpg', '<h5>パワーランチャーグリップ<br>Power launcher grip</h5><ruby><rb>スカイブルー<rt>Sky blue</ruby>'],
-                    ['04',],
-                    ['03', '/img/launcher/BBG-03.jpg', '<h5>ベイランチャー<br>Bey launcher</h5><ruby><rb>クリアブルー<rt>Clear blue</ruby>'],
-                    ['01', 'https://beyblade.takaratomy.co.jp/category/img/products/B_00.png', '<h5>ベイスタジアム<br>Bey stadium</h5><ruby><rb>クリア<rt>Clear</ruby>'],
-                ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
-            });
+            const html = await DB.get('html', 'prod-BBG');
+            if (html)
+                Q('#BBG tbody').innerHTML = html;
+            else {
+                Row.show = true;
+                (await (await fetch('/update/product-BBG.json')).json()).forEach(bey => new Row(bey, '#BBG tbody'));
+                DB.put('html', ['prod-BBG', Table.sanitize(`#BBG tr`)]);
+            }
+            Q('tr', tr => Row.connectedCallback(tr));
+            Q('#myTable tr[data-no^=BBG]', tr => tr.remove());
+            Table.flush(true);
+            Table.count();
+            Q('section').innerHTML =
+            [
+                ['29', '/img/launcher/BBG-29.jpg', '<h5>ロングベイランチャー LR<br>Long Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                ['26'],
+                ['25', 'https://dmwysfovhyfx3.cloudfront.net/img/goods/L/4904810134398_85bec0ec7b2a402fa7ee55ed1ff51ab1.jpg', '<h5>ビッグベイスタジアム<br>Big Bey stadium'],
+                ['24', '/img/launcher/BBG-24.jpg', '<h5>ロングベイランチャー L<br>Long Bey launcher L</h5><ruby><rb>シルバー<rt>Silver</ruby>'],
+                ['23', '/img/launcher/BBG-23.jpg', '<h5>ロングベイランチャー<br>Long Bey launcher</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                ['17', '/img/launcher/BBG-17.jpg', '<h5>ベイランチャー LR<br>Bey launcher LR</h5><ruby><rb>ゴールド<rt>Gold</ruby>'],
+                ['16', '/img/grip/rubber-phoenix.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>フェニックス<rt>Phoenix</ruby>'],
+                ['10', '/img/grip/rubber-red.jpg', '<h5>ラバーランチャーグリップ<br>Rubber launcher grip</h5><ruby><rb>レッド<rt>Red</ruby>'],
+                ['05', '/img/grip/power-blue.jpg', '<h5>パワーランチャーグリップ<br>Power launcher grip</h5><ruby><rb>スカイブルー<rt>Sky blue</ruby>'],
+                ['04',],
+                ['03', '/img/launcher/BBG-03.jpg', '<h5>ベイランチャー<br>Bey launcher</h5><ruby><rb>クリアブルー<rt>Clear blue</ruby>'],
+                ['01', 'https://beyblade.takaratomy.co.jp/category/img/products/B_00.png', '<h5>ベイスタジアム<br>Bey stadium</h5><ruby><rb>クリア<rt>Clear</ruby>'],
+            ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
     Table.get();
-    window.onresize = () => Table.flush(false);
+    window.onresize = () => Table.flush();
 
     (() => {
         const show = ["RB", "B", "St", "RL", "RLG", "L", "jap", "eng"];
@@ -266,7 +261,7 @@
         Q('#eng').checked = false;
         Q('#eng').disabled = ev.target.checked;
         Q('tbody tr', tr => Row.fill([null, ev.target.checked ? 'jap' : 'chi'], tr));
-        Table.flush(false);
+        Table.flush();
     };
     Q('#eng').onchange = ev => Table.column(ev.target.checked ? 'eng' : 'cjk');
     Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.go() : null);

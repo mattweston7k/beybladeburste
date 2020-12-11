@@ -187,12 +187,11 @@ const Cell = {
                 temp.querySelector('img').remove();
             Q('.catalog').insertBefore(temp, Q('.catalog>a:last-of-type'));
         }
-        parts.filter(p => p).forEach(([sym, comp]) =>
-            DB.get('json', `${sym}.${comp}`, null, ev => {
-                Catalog(Parts.attach([sym, comp], ev.target.result));
-                links(comp, ev.target.result.group, sym);
-            })
-        );
+        parts.filter(p => p).forEach(async ([sym, comp]) => {
+            const part = await DB.get('json', `${sym}.${comp}`);
+            Catalog(Parts.attach([sym, comp], part));
+            links(comp, part.group, sym);
+        });
     },
     code(lang, td) {
         const {parts: [sym, comp], high, dash, core} = Cell.decompose($(td).prevAll('td[data-part]')[0]);

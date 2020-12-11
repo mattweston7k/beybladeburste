@@ -36,7 +36,7 @@ let Parts = {
         [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
         return {...part, sym: sym, comp: comp};
     },
-    group: window.location.pathname == '/parts/' ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
+    group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
 };
 (() => {
     L(() => document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト');
@@ -135,15 +135,14 @@ const DB = {
 
     query: (store, key, tran) => (tran || DB.db.transaction(store)).objectStore(store).get(key),
 
-    get: (store, key, tran, callback = ev => console.log(ev.target.result)) => DB.open(() => DB.query(store, key, tran).onsuccess = callback),
+    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
 
-    getNames: tran => DB.open(() => DB.query('json', 'names', tran).onsuccess = ev => names = ev.target.result),
+    getNames: tran => DB.get('json', 'names', tran),
 
     getParts(group, callback = reqs => reqs.map(req => req.onsuccess = () => console.log(req.result))) {
-        const handler = () => {
+        const handler = async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
-            if (!names)
-                DB.getNames(tran);
+            names ||= await DB.getNames(tran);
             const parts = {};
             tran.objectStore('json').index('group').openCursor(group).onsuccess = ev => {
                 const cursor = ev.target.result;
