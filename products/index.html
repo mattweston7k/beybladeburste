@@ -134,21 +134,21 @@
         async get() {
             names ||= await DB.getNames();
             Table.loading(true);
-            const [n, o] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
-            if (!n || !o || /^#(flush|update)$/.test(window.location.hash))
-                return Table.fetch(window.location.hash == '#update' ? o : false);
-            Q('tbody').innerHTML = n + (Table.limit ? o.replace(/<tr/g, '<tr hidden') : o);
+            const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
+            if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
+                return Table.fetch(window.location.hash == '#update' ? older : false);
+            Q('tbody').innerHTML = newer + (Table.limit ? older.replace(/<tr/g, '<tr hidden') : older);
             Table.loading(false);
         },
         async fetch(old) {
             names ||= await DB.getNames();
             Table.loading(true);
-            const [n, o] = await Promise.all([
+            const [newer, older] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
             ]);
             Row.show = true;
-            [...n, ...typeof o == 'object' ? o : []].forEach(bey => new Row(bey));
+            [...newer, ...typeof older == 'object' ? older : []].forEach(bey => new Row(bey));
             Table.save(old);
             Table.loading(false);
         },
@@ -257,14 +257,14 @@
             [input.previousElementSibling.innerText, input.name] = part;
         })
     );
-    Q('#jap').onchange = ev => {
+    Q('#jap').onchange = ({target}) => {
         Q('#eng').checked = false;
-        Q('#eng').disabled = ev.target.checked;
-        Q('tbody tr', tr => Row.fill([null, ev.target.checked ? 'jap' : 'chi'], tr));
+        Q('#eng').disabled = target.checked;
+        Q('tbody tr', tr => Row.fill([null, target.checked ? 'jap' : 'chi'], tr));
         Table.flush();
     };
-    Q('#eng').onchange = ev => Table.column(ev.target.checked ? 'eng' : 'cjk');
-    Q('input[type=text]', input => input.onkeypress = ev => ev.code == 'Enter' ? Search.go() : null);
+    Q('#eng').onchange = ({target}) => Table.column(target.checked ? 'eng' : 'cjk');
+    Q('input[type=text]', input => input.onkeypress = ({code}) => code == 'Enter' ? Search.go() : null);
 </script>
 
 <script async src=/parts/include/parts.js></script>

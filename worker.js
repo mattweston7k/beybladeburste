@@ -48,4 +48,4 @@ const addHead = async res => {
         headers: res.headers
     });
 }
-const head = async () => code = await (await caches.match('/include/head.html')).text();
+const head = async () => code = await (await caches.match('/include/head.html')).text?.();

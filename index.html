@@ -183,7 +183,7 @@
                     DB.del(() => {
                         window.onbeforeunload = () => window.scrollTo(0, 0);
                         window.location.reload();
-                    }, ev => Q('#refresh h5').title = ev.type);
+                    }, ({type}) => Q('#refresh h5').title = type);
                 document.onpointermove = document.ontouchmove = null;
             }
         })();

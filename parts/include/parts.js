@@ -2,9 +2,9 @@ Parts = {
     ...Parts,
     load() {
         Parts.before();
-        DB.getParts(Parts.group, ([order, info], parts) => {
-            order.onsuccess = () => order.result.forEach(sym => Catalog(parts[sym] || sym));
-            info.onsuccess = () => Parts.after(info.result);
+        DB.getParts(Parts.group, (order, info, parts) => {
+            order.forEach(sym => Catalog(parts[sym] || sym));
+            Parts.after(info);
         });
     },
     before() {
@@ -13,10 +13,8 @@ Parts = {
         Tools.ruler(Parts.group);
     },
     after(info) {
-        if (info) {
-            Q('details article').innerHTML = info;
-            Q('details').hidden = false;
-        }
+        Q('details article').innerHTML = info;
+        Q('details').hidden = !info;
         Q('main h5').innerHTML = '　';
         Parts.target();
         Tools.filter(Parts.group);
@@ -86,8 +84,8 @@ const Tools = {
             const slider = Q("input[type='range']");
             slider.value = Cookie.get.magBar || 1;
             Q(".catalog").style.fontSize = slider.value + "em";
-            slider.oninput = ev => {
-                Q(".catalog").style.fontSize = ev.target.value + "em";
+            slider.oninput = ({target}) => {
+                Q(".catalog").style.fontSize = target.value + "em";
                 Cookie.setOptions();
             };
         }

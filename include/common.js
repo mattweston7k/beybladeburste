@@ -135,19 +135,18 @@ const DB = {
 
     query: (store, key, tran) => (tran || DB.db.transaction(store)).objectStore(store).get(key),
 
-    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
+    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ({target: {result}}) => res(result))),
 
     getNames: tran => DB.get('json', 'names', tran),
 
-    getParts(group, callback = reqs => reqs.map(req => req.onsuccess = () => console.log(req.result))) {
+    getParts(group, callback = (...content) => console.log(content)) {
         const handler = async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names ||= await DB.getNames(tran);
             const parts = {};
-            tran.objectStore('json').index('group').openCursor(group).onsuccess = ev => {
-                const cursor = ev.target.result;
+            tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result: cursor}}) => {
                 if (!cursor)
-                    return Promise.all([['order', group], ['html', group]].map(p => DB.query(...p, tran))).then(reqs => callback(reqs, parts));
+                    return callback(...await Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))), parts);
                 const [sym, comp] = cursor.primaryKey.split('.');
                 parts[sym] = Parts.attach([sym, comp], cursor.value);
                 cursor.continue();

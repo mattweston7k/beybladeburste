@@ -21,25 +21,22 @@ const Search = {
         if (inputs)
             this.buildRegex(this.byFree(inputs));
         else
-            if (Object.keys(inputs = this.entered).length > 0) {
-                this.more = inputs.more || '';
+            if (Object.keys(inputs = this.entered).length > 0)
                 this.buildRegex(this.byEntered(inputs), true);
-            } else
-                if (Object.keys(inputs = this.clicked).length > 0) {
-                    this.more = inputs.more || '';
+            else
+                if (Object.keys(inputs = this.clicked).length > 0)
                     this.buildRegex(this.byClicked(inputs));
-                }
         if (this.regex.length > 0 || this.more) {
             this.find();
             return true;
         }
     },
     byClicked(inputs) {
-        Search.more = inputs.more || '';
+        this.more = inputs.more || '';
         return Object.entries(inputs).reduce((targets, [comp, sym]) => ({...targets, [comp]: [sym]}), {});
     },
     byEntered(inputs) {
-        Search.more = inputs.more || '';
+        this.more = inputs.more || '';
         const processors = {
             layer5c: input => /^d$/i.test(input) ? ['D', 'Δ'] : /^a$/i.test(input) ? ['A', 'Ɐ'] : [input],
             disk: input => [input.replace(/([A-z])/, l => l.toUpperCase())]
@@ -85,7 +82,7 @@ const Search = {
         if (target.frame)
             this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + target.frame.join('|') + ') .+?$', i));
         if (target.driver) {
-            target.driver = target.driver.map(d => /^\\\+/.test(d) ? ('.*?' + d) : ('(H(?![ny]))' + (Search.high ? '' : '?') + d));
+            target.driver = target.driver.map(d => /^\\\+/.test(d) ? ('.*?' + d) : ('(H(?![ny]))' + (this.high ? '' : '?') + d));
             this.regex.push(new RegExp('^.+? (.+ )?(' + target.driver.join('|') + ')′' + (this.dash ? '' : '?') + '(\\+.?)?$', i));
         }
     },
@@ -96,7 +93,7 @@ const Search = {
                 this.more && new RegExp(this.more.replace('\\+', ''), 'i').test(more) ||
                 (/(-|wbba)/i.test(this.free) ? new RegExp(this.free.replace(/wbba/i, 'bbg'), 'i').test(no) : false));
         });
-        Search.state(true);
+        this.state(true);
     },
     state(searching) {
         Q('caption').classList[searching ? 'add' : 'remove']('searching');
