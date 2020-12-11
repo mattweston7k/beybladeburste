@@ -62,7 +62,7 @@ const DB = {
         DB.db.close();
         return new Promise(res => {
             const del = indexedDB.deleteDatabase('db');
-            del.onsuccess = () => res(console.log('DB deleted'));
+            del.onsuccess = ({target}) => res(target.readyState);
             del.onerror = del.onblocked = error;
         });
     },

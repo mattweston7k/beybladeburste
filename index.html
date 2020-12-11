@@ -102,12 +102,7 @@
                 t.querySelector('h4').innerHTML = name;
                 t.querySelector('div').insertAdjacentHTML('afterbegin', desc);
                 const a = t.querySelector('div a');
-                if (!video || !searchable)
-                    a.remove();
-                else {
-                    a.href += search;
-                    a.onclick = () => gtag('event', search, {'event_category': 'utube'});
-                }
+                !video || !searchable ? a.remove() : a.href += search;
                 video ? t.querySelector('iframe').src += video : t.querySelector('iframe').remove();
                 const colors = {
                     Starter: 'hsl(200,70%,60%)',
@@ -155,40 +150,35 @@
         <h6>如在商品／部件頁遇上問題<br>請把左圖拖至右圖</h6>
         <span data-icon=></span>
     </div>
-    <script>
-        let startT, endX;
-        (() => {
-            Q('#refresh h5').onpointerdown = () => startT = new Date;
-            Q('#refresh h5').onpointerup = () => {
-                if ((new Date - startT) / 1000 > .5)
-                    Q('h5+dl').style.display='flex';
-            }
-            const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
-            db.onpointerdown = pressed => {
-                db.style.transition = null;
-                document.onpointermove = document.ontouchmove = moving => {
-                    moving.preventDefault();
-                    endX = moving.targetTouches?.[0].pageX;
-                    db.style.transform = `translateX(${(moving.clientX || endX) - pressed.clientX}px)`;
-                    trash.style.color = (moving.clientX || endX) > trash.getBoundingClientRect().x ? 'lime' : null;
-                }
-            }
-            document.onpointerup = document.ontouchend = async lifted => {
-                if (document.onpointermove == null)
-                    return;
-                if ((lifted.clientX || endX) < trash.getBoundingClientRect().x) {
-                    db.style.transform = null;
-                    db.style.transition = 'transform .5s';
-                } else {
-                    await Promise.all([DB.del(({type}) => Q('#refresh h5').title = type), caches.delete('cache')]);
-                    window.onbeforeunload = () => window.scrollTo(0, 0);
-                    window.location.reload();
-                }
-                document.onpointermove = document.ontouchmove = null;
-            }
-        })();
-    </script>
 </section>
+<script>
+    let startT, endX;
+    Q('#refresh h5').onpointerdown = () => startT = new Date;
+    Q('#refresh h5').onpointerup = () => (new Date - startT) / 1000 > .5 ? Q('h5+dl').style.display = 'flex' : null;
+    const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
+    db.onpointerdown = pressed => {
+        db.style.transition = null;
+        document.onpointermove = document.ontouchmove = moving => {
+            moving.preventDefault();
+            endX = moving.targetTouches?.[0].pageX;
+            db.style.transform = `translateX(${(moving.clientX || endX) - pressed.clientX}px)`;
+            trash.style.color = (moving.clientX || endX) > trash.getBoundingClientRect().x ? 'lime' : null;
+        }
+    }
+    document.onpointerup = document.ontouchend = async lifted => {
+        if (document.onpointermove == null)
+            return;
+        if ((lifted.clientX || endX) < trash.getBoundingClientRect().x) {
+            db.style.transform = null;
+            db.style.transition = 'transform .5s';
+        } else {
+            console.log(await Promise.all([DB.del(({type}) => Q('#refresh h5').title = type), caches.delete('cache')]))
+            window.onbeforeunload = () => window.scrollTo(0, 0);
+            window.location.reload();
+        }
+        document.onpointermove = document.ontouchmove = null;
+    }
+</script>
 
 <footer>
     對於本網所載資料的準確性或完整性，製作者不會作任何保證或聲明，或因提供或使用此網資料而直接或間接引致的任何損失、損壞或傷害，負上任何責任。
