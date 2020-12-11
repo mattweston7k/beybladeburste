@@ -128,13 +128,13 @@ const DB = {
         }
         handler ? handler() : null;
     },
-    fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status === 200 ? [r.json(), g] : null))),
+    fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status == 200 ? [r.json(), g] : null))),
 
     put: (store, [key, value], tran) => (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
 
     query: (store, key, tran) => (tran || DB.db.transaction(store)).objectStore(store).get(key),
 
-    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ({target: {result}}) => res(result))),
+    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
 
     getNames: tran => DB.get('json', 'names', tran),
 
@@ -145,7 +145,7 @@ const DB = {
             const parts = {};
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
-                    return callback(...await Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))), parts);
+                    return callback(...await Promise.all(['order', 'html'].map(p => DB.get(p, group, tran))), parts);
                 const [sym, comp] = result.primaryKey.split('.');
                 parts[sym] = Parts.attach([sym, comp], result.value);
                 result.continue();
@@ -159,7 +159,7 @@ const twilight = () => {
     let [from, to] = ['day', 'night'];
     if (Q('html').classList.contains('day'))
         [from, to] = [to, from];
-    Q('.catalog>a object', obj => obj.data = obj.data.replace(from, to));
+    Q('.catalog object', obj => obj.data = obj.data.replace(from, to));
     Cookie.setOptions();
 };
 

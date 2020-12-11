@@ -2,10 +2,17 @@ Parts = {
     ...Parts,
     load() {
         Parts.before();
-        DB.getParts(Parts.group, (order, info, parts) => {
-            order.forEach(sym => Catalog(parts[sym] || sym));
-            Parts.after(info);
-        });
+        if (window.indexedDB)
+            DB.getParts(Parts.group, (order, info, parts) => {
+                order.forEach(sym => Catalog(parts[sym] || sym));
+                Parts.after(info);
+            });
+        else Parts.live();
+    },
+    async live() {
+        const {info, parts} = await (await fetch(`/update/${Parts.group}.json`)).json();
+        parts.forEach(part => Catalog(part ? Parts.attach([part.sym, part.comp], part) : null));
+        Parts.after(info);
     },
     before() {
         document.title = document.title.replace(/.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
