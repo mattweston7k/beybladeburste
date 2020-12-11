@@ -23,10 +23,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/include/common.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/include/parts.js" beforeDir="false" afterPath="$PROJECT_DIR$/parts/include/parts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/products/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/products/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/products/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/products/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/worker.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +120,7 @@
       <workItem from="1607408094270" duration="21958000" />
       <workItem from="1607488216029" duration="19231000" />
       <workItem from="1607621065624" duration="9343000" />
-      <workItem from="1607666064988" duration="8082000" />
+      <workItem from="1607666064988" duration="9048000" />
     </task>
     <servers />
   </component>
@@ -185,11 +181,11 @@
       <screen x="0" y="23" width="1855" height="1057" />
     </state>
     <state x="703" y="472" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1855.1057@0.23.1855.1057" timestamp="1607518178300" />
-    <state x="600" y="155" width="586" height="735" key="find.popup" timestamp="1607677348756">
+    <state x="600" y="155" width="586" height="735" key="find.popup" timestamp="1607677475218">
       <screen x="0" y="23" width="1855" height="1057" />
     </state>
     <state x="600" y="155" width="586" height="735" key="find.popup/0.23.1854.1057@0.23.1854.1057" timestamp="1607666992162" />
-    <state x="600" y="155" width="586" height="735" key="find.popup/0.23.1855.1057@0.23.1855.1057" timestamp="1607677348756" />
+    <state x="600" y="155" width="586" height="735" key="find.popup/0.23.1855.1057@0.23.1855.1057" timestamp="1607677475218" />
     <state x="601" y="155" width="586" height="735" key="find.popup/0.23.1858.1057@0.23.1858.1057" timestamp="1606664520837" />
     <state x="602" y="155" width="587" height="735" key="find.popup/0.23.1860.1057@0.23.1860.1057" timestamp="1606723700964" />
     <state x="478" y="255" key="run.anything.popup" timestamp="1606216218643">

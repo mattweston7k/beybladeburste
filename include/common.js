@@ -16,10 +16,8 @@ const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '[]')[item],
-    setHistory: item => {
-        if (/^(layer6|disk[34]|high|dash|product|name)/.test(item))
-            Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000}));
-    },
+    setHistory: item => (/^(layer6|disk[34]|high|dash|product|name)/.test(item)) ?
+        Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000})) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
         Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
@@ -60,12 +58,13 @@ let Parts = {
 let names;
 const DB = {
     db: null,
-    del: (success = ev => console.log('DB deleted'), error = ev => console.log(ev)) => {
+    del: (error = ev => console.log(ev)) => {
         DB.db.close();
-        const del = indexedDB.deleteDatabase('db');
-        del.onsuccess = success;
-        del.onerror = del.onblocked = error;
-        return del;
+        return new Promise(res => {
+            const del = indexedDB.deleteDatabase('db');
+            del.onsuccess = () => res(console.log('DB deleted'));
+            del.onerror = del.onblocked = error;
+        });
     },
     get indicator() {return Q('db-status');},
     init(open) {
@@ -144,12 +143,12 @@ const DB = {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names ||= await DB.getNames(tran);
             const parts = {};
-            tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result: cursor}}) => {
-                if (!cursor)
+            tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
+                if (!result)
                     return callback(...await Promise.all([['order', group], ['html', group]].map(p => DB.get(...p, tran))), parts);
-                const [sym, comp] = cursor.primaryKey.split('.');
-                parts[sym] = Parts.attach([sym, comp], cursor.value);
-                cursor.continue();
+                const [sym, comp] = result.primaryKey.split('.');
+                parts[sym] = Parts.attach([sym, comp], result.value);
+                result.continue();
             }
         }
         return DB.open(handler);

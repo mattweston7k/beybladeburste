@@ -173,17 +173,17 @@
                     trash.style.color = (moving.clientX || endX) > trash.getBoundingClientRect().x ? 'lime' : null;
                 }
             }
-            document.onpointerup = document.ontouchend = lifted => {
+            document.onpointerup = document.ontouchend = async lifted => {
                 if (document.onpointermove == null)
                     return;
                 if ((lifted.clientX || endX) < trash.getBoundingClientRect().x) {
                     db.style.transform = null;
                     db.style.transition = 'transform .5s';
-                } else
-                    DB.del(() => {
-                        window.onbeforeunload = () => window.scrollTo(0, 0);
-                        window.location.reload();
-                    }, ({type}) => Q('#refresh h5').title = type);
+                } else {
+                    await Promise.all([DB.del(({type}) => Q('#refresh h5').title = type), caches.delete('cache')]);
+                    window.onbeforeunload = () => window.scrollTo(0, 0);
+                    window.location.reload();
+                }
                 document.onpointermove = document.ontouchmove = null;
             }
         })();
