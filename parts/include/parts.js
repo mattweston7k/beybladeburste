@@ -17,13 +17,13 @@ Parts = {
     before() {
         document.title = document.title.replace(/.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
         Tools.magnify();
-        Tools.ruler(Parts.group);
     },
     after(info) {
         Q('details article').innerHTML = info;
         Q('details').hidden = !info;
         Q('main h5').innerHTML = '　';
         Parts.target();
+        Tools.ruler(Parts.group);
         Tools.filter(Parts.group);
         Parts.count();
     },
@@ -36,10 +36,9 @@ Parts = {
     },
     target() {
         let target = window.location.hash.substring(1);
-        if (target) {
-            Q(`a[id='${decodeURI(target)}']`).scrollIntoView({behavior: 'smooth'});
-            Q(`a[id='${decodeURI(target)}']`).classList.add('target');
-        }
+        if (!target) return;
+        Q(`a[id='${decodeURI(target)}']`).scrollIntoView({behavior: 'smooth'});
+        Q(`a[id='${decodeURI(target)}']`).classList.add('target');
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
     fusion: false,
@@ -51,26 +50,26 @@ Parts = {
 customElements.define('weight-scale', class extends HTMLElement {
     constructor() {
         super();
-        this.shadow = this.attachShadow({mode: 'open'});
-        this.shadow.innerHTML = ['/include/common.css', 'include/ruler.css'].map(c => `<link rel=stylesheet href=${c}>`).join('')
+        this.attachShadow({mode: 'open'}).innerHTML = ['/include/common.css', 'include/ruler.css'].map(c => `<link rel=stylesheet href=${c}>`).join('')
             + '<input type=checkbox id=show><label for=show></label><div></div>';
         this.hidden = true;
     }
     connectedCallback() {
         const [min, max, group, scale] = ['min', 'max', 'group', 'scale'].map(a => this.getAttribute(a));
-        for (const el of this.shadow.querySelectorAll('div, label')) el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, '');
         this.scale = Function('w', 'return ' + scale);
+        for (const el of this.shadowRoot.querySelectorAll('div, label'))
+            el.classList = group == 'remake' ? 'layer' : group.replace(/\d.?$/, '');
         for (let w = parseInt(min); w <= parseInt(max); w++)
-            this.shadow.querySelector('div').appendChild(this.cell(w, w == parseInt(max)));
+            this.shadowRoot.querySelector('div').appendChild(this.cell(w, w == parseInt(max)));
     }
-
     cell(w, last) {
         const data = document.createElement('data');
         data.value = w;
-        data.innerHTML = last ? `` : `<span>${this.scale(w).toFixed(1)}</span>`;
-        if (Parts.fusion && !last)
+        if (last) return data;
+        data.innerHTML = `<span>${this.scale(w).toFixed(1)}</span>`;
+        if (Parts.fusion)
             data.querySelector('span').setAttribute('fusion', (this.scale(w) + 30).toFixed(1));
-        else if (/^layer(5b|6r)$/.test(Parts.group) && !last)
+        else if (/^layer(5b|6r)$/.test(Parts.group))
             data.querySelector('span').setAttribute('fusion', (this.scale(w) + 10).toFixed(1));
         return data;
     }
@@ -91,8 +90,8 @@ const Tools = {
             const slider = Q("input[type='range']");
             slider.value = Cookie.get.magBar || 1;
             Q(".catalog").style.fontSize = slider.value + "em";
-            slider.oninput = ({target}) => {
-                Q(".catalog").style.fontSize = target.value + "em";
+            slider.oninput = ev => {
+                Q(".catalog").style.fontSize = ev.target.value + "em";
                 Cookie.setOptions();
             };
         }

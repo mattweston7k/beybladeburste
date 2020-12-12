@@ -15,13 +15,13 @@ const groups = [
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
-    getHistory: item => JSON.parse(Cookie.get.history || '[]')[item],
-    setHistory: item => (/^(layer6|disk[34]|high|dash|product|name)/.test(item)) ?
-        Cookie.set('history', JSON.stringify({...JSON.parse(Cookie.get.history || '{}'), [item]: new Date().getTime() / 1000})) : null,
+    getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
+    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name)/.test(item)) ?
+        Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000) })) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
-        Q('input[type=range]') ? Cookie.set('magBar', Q('input[type=range]').value) : null;
-        Q('input[name=mag]:checked') ? Cookie.set('magBut', Q('input[name=mag]:checked').id) : null;
+        Cookie.set('magBar', Q('input[type=range]')?.value);
+        Cookie.set('magBut', Q('input[name=mag]:checked')?.id);
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
@@ -36,36 +36,32 @@ let Parts = {
     },
     group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
 };
-(() => {
-    L(() => document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト');
+L(() => {
+    document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト';
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
     if (/^\/(index.html)?$/.test(window.location.pathname)) {
-        pages.includes('products') ? L(() => Q('a[href^="products/"]').classList.add('notify')) : null;
-        gs.length > 0 ? L(() => Q('a[href="parts/"]').classList.add('notify')) : null;
+        if (pages.includes('products')) Q('a[href^="products/"]').classList.add('notify');
+        if (gs.length > 0) Q('a[href="parts/"]').classList.add('notify');
     } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
-        L(() => gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify')));
+        gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify'));
     else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
         Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
 
-    if (Cookie.get.mode == 'day') {
-        Q('html').classList.add('day');
-        L(() => Q('#day') ? Q('#day').checked = true : null);
-    } else
-        L(() => Q('#day') ? Q('#day').checked = false : null);
-})();
+    Q('html').classList.add(Cookie.get.mode);
+    if (Q('#day')) Q('#day').checked = Cookie.get.mode == 'day';
+});
 
 let names;
 const DB = {
     db: null,
-    del: (error = ev => console.log(ev)) => {
-        DB.db.close();
-        return new Promise(res => {
+    del: (error = ev => console.log(ev)) =>
+         new Promise(res => {
+            DB.db.close();
             const del = indexedDB.deleteDatabase('db');
-            del.onsuccess = ({target}) => res(target.readyState);
+            del.onsuccess = ev => res(ev.target.readyState);
             del.onerror = del.onblocked = error;
-        });
-    },
+        }),
     get indicator() {return Q('db-status');},
     init(open) {
         DB.indicator.init();
@@ -75,6 +71,7 @@ const DB = {
     },
     open(handler) {
         if (DB.db) return handler();
+        if (!window.indexedDB) return (async () => names ||= await (await fetch('/update/names.json')).json())();
         let firstTime = false;
         const open = indexedDB.open('db', 1);
         open.onupgradeneeded = () => {
@@ -84,8 +81,7 @@ const DB = {
         open.onsuccess = () => {
             DB.db = open.result;
             DB.db.onerror = ev => DB.indicator.error(ev);
-            if (firstTime)
-                return;
+            if (firstTime) return;
             return /^\/(index.html)?$/.test(window.location.pathname) ? DB.check(handler) : handler ? handler() : null;
         }
         open.onerror = ev => DB.indicator.error(ev);
@@ -96,8 +92,8 @@ const DB = {
             const updates = [], notify = [];
             for (const [item, [time, major]] of Object.entries(j)) {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
-                oldUser ? item == 'products' ? DB.indicator.prod() : updates.push(item) : null;
-                oldUser && major || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000 ? notify.push(item) : null;
+                oldUser || !Cookie.getHistory(item) ? item == 'products' ? DB.indicator.prod() : updates.push(item) : null;
+                major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000) ? notify.push(item) : null;
             }
             if (updates.length > 0) {
                 DB.indicator.init(true);
@@ -138,8 +134,8 @@ const DB = {
 
     getNames: tran => DB.get('json', 'names', tran),
 
-    getParts(group, callback = (...content) => console.log(content)) {
-        const handler = async () => {
+    getParts: (group, callback = (...content) => console.log(content)) =>
+        DB.open(async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names ||= await DB.getNames(tran);
             const parts = {};
@@ -150,16 +146,12 @@ const DB = {
                 parts[sym] = Parts.attach([sym, comp], result.value);
                 result.continue();
             }
-        }
-        return DB.open(handler);
-    }
+        })
 }
 const twilight = () => {
     Q('html').classList.toggle('day');
-    let [from, to] = ['day', 'night'];
-    if (Q('html').classList.contains('day'))
-        [from, to] = [to, from];
-    Q('.catalog object', obj => obj.data = obj.data.replace(from, to));
+    const p = ['day', 'night'];
+    Q('object', obj => obj.data = obj.data.replace(...Q('html').classList.contains('day') ? p.reverse() : p));
     Cookie.setOptions();
 };
 
@@ -220,7 +212,7 @@ class Indicator extends HTMLElement {
             }
             p {
                 position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-                color:white;font-size:1rem;font-family:Sans-Serif;
+                color:white;font-size:1rem;font-family:sans-serif;
                 margin:0;
                 width:5rem;
             }
@@ -243,34 +235,27 @@ class Indicator extends HTMLElement {
             this.style.setProperty('--p', 40 - 225 / 100 * parseInt(this.getAttribute('progress')) + '%');
         else if (attr == 'status') {
             this.style.setProperty('--c', {success: 'lime', error: 'deeppink', offline: 'deeppink'}[n]);
-            n == 'offline' ? this.shadowRoot.querySelector('p').innerHTML = '離線' : null;
+            n == 'offline' ? this.show('離線') : null;
         }
     }
     init(update = false) {
         this.hidden = false;
-        this.links = document.querySelectorAll('a[href="parts/"],a[href="products/"]');
-        for (const a of this.links) {
-            a.title = a.href;
-            a.removeAttribute('href');
-        }
-        this.shadowRoot.querySelector('p').innerHTML = update ? '更新中' : '首次訪問 預備中⋯⋯';
+        this.show(update ? '更新中' : '首次訪問 預備中⋯⋯');
         this.setAttribute('progress', 0);
     }
     update() {
-        this.progress++;
-        this.setAttribute('progress', this.progress / this.total * 100);
-        if (this.progress == this.total) {
-            for (const a of this.links ?? []) a.href = a.title;
-            this.setAttribute('status', 'success');
-            this.shadowRoot.querySelector('p').innerHTML = '更新成功';
-        }
+        this.setAttribute('progress', this.progress++ / this.total * 100);
+        if (this.progress != this.total) return;
+        this.setAttribute('status', 'success');
+        this.show('成功');
     }
-    error(p) {
+    error(error) {
         this.hidden = false;
         if (this.getAttribute('status') == 'offline') return;
         this.setAttribute('status', 'error');
-        this.shadowRoot.querySelector('p').innerHTML = p.target?.errorCode || p || '不支援';
+        this.show(error.target?.errorCode || error);
     }
+    show(message) {this.shadowRoot.querySelector('p').innerHTML = message;}
     prod() {Q('a[href="products/"]').href += '#update';}
 }
 Indicator.observedAttributes = ['progress', 'status'];

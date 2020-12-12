@@ -276,17 +276,17 @@ h2.kanji {
     font-size:.65em;}
 .desc {
     font-size:.69em;}
-a[rel=layer1] .can {
+a.layer1 .can {
     font-size:.7em;}
 .layer .jap, .layer .chi, .layer .eng,
 .long .jap, .long .chi, .long .eng {
     font-size:.71em;}
 dt,dd,.scale>div:last-of-type span,
-a[rel=layer1] .eng, a[rel=layer1] .jap, a[rel=layer1] .chi {
+a.layer1 .eng, a.layer1 .jap, a.layer1 .chi {
     font-size:.8em;}
 .jap,.name .right {
     font-size:.9em;}
-.can::before,.can::after,a[rel=layer6s] .eng {
+.can::before,.can::after,a.layer6s .eng {
     font-size:1.2em;}
 h2 {
     --f:2;}

@@ -43,7 +43,7 @@ h2:not(.single)::first-letter {
 #oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP,#GP,#RU) h2::first-letter {
     letter-spacing:-.025em;
 }
-:-webkit-any(#Wh,a[id^='1']:not(.single),a[id$=′]:not([rel=high]),
+:-webkit-any(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
 a[id='2D'],a[id='2B'],.driver[id^='+'],
 #M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,
 #gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,#GPr,#HK,#ML,
@@ -116,7 +116,7 @@ a[id$='+'] sup {
     margin-right:.2em;
     text-align:center;
 }
-a[rel=layer6s] .name .left {
+a.layer6s .name .left {
     margin-right:0;
 }
 .right .chi {
@@ -222,58 +222,58 @@ a[rel=layer6s] .name .left {
 #I.disk .chi {
     letter-spacing:-.01em; }
     
-:-webkit-any(a[rel=dash],a[rel=high]) .name {
+:-webkit-any(a.dash,a.high) .name {
     line-height:1.1em;
     display:block;
 }
-:-webkit-any(a[rel=dash],a[rel=high]) .name sup {
+:-webkit-any(a.dash,a.high) .name sup {
     line-height:0;
 }
-:-webkit-any(a[rel=dash],a[rel=high]) .eng {
+:-webkit-any(a.dash,a.high) .eng {
     font-size:0.9em;
     margin-left:0.1em;
 }
-:-webkit-any(#Ds,#Qc,#Xc,#Zn)[rel=dash] h2::first-letter {
+:-webkit-any(#Ds,#Qc,#Xc,#Zn).dash h2::first-letter {
     letter-spacing:-.025em;
 }
-a[rel=high] h2::first-letter {
+a.high h2::first-letter {
     letter-spacing:-.05em;
 }
-a[rel=high] h2 {
+a.high h2 {
     letter-spacing:-.05em;
 }
-:-webkit-any(#HB)[rel=high] h2::first-letter {
+:-webkit-any(#HB).high h2::first-letter {
     letter-spacing:-.1em;
 }
-a[rel=dash] h2 {
+a.dash h2 {
     letter-spacing:calc(1em*var(--space));
     padding-left:calc(1em*var(--space) + .05em);
 }
-#Z[rel=dash]~a h2 {
+#Z.dash~a h2 {
     padding-right:calc(-1em*var(--space) - .025em);
 }
-a[rel=dash] h2.single {
+a.dash h2.single {
     --space:-.025;}
-#T[rel=dash] h2 {
+#T.dash h2 {
     --space:0; }
-:-webkit-any(#Jl,#Ul,#Vl)[rel=dash] h2  {
+:-webkit-any(#Jl,#Ul,#Vl).dash h2  {
     --space:-.025; }
-:-webkit-any(#B,#H,#L,#U,#X,#Xc)[rel=dash] h2 {
+:-webkit-any(#B,#H,#L,#U,#X,#Xc).dash h2 {
     --space:-.05 !important; }
-:-webkit-any(#Q,#Ev,#Ig,#Mr,#Qc)[rel=dash] h2  {
+:-webkit-any(#Q,#Ev,#Ig,#Mr,#Qc).dash h2  {
     --space:-.075 !important; }
-:-webkit-any(#A,#Ds)[rel=dash] h2 {
+:-webkit-any(#A,#Ds).dash h2 {
     --space:-.1 !important; }
-:-webkit-any(#Kp,#Op,#Sp,#Ch,#Zn)[rel=dash] h2  {
+:-webkit-any(#Kp,#Op,#Sp,#Ch,#Zn).dash h2  {
     --space:-.15; }
-:-webkit-any(#Hn,#Rb)[rel=dash] h2  {
+:-webkit-any(#Hn,#Rb).dash h2  {
     --space:-.175; }
-:-webkit-any(#Dm)[rel=dash] h2  {
+:-webkit-any(#Dm).dash h2  {
     --space:-.25; }
-:-webkit-any(#Zt,#Xc,#Zn)[rel=dash] h2 {
+:-webkit-any(#Zt,#Xc,#Zn).dash h2 {
     padding-left:.1em; }
 
-#α[rel=dash] h2 {
+#α.dash h2 {
     --adj:0em; }
-#Ul[rel=dash] .jap {
+#Ul.dash .jap {
     letter-spacing:-.13em; }

@@ -3,40 +3,35 @@ function Catalog(part) {
         return Q('.catalog').insertAdjacentHTML('beforeend', part);
     part ??= {comp: Parts.group};
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = part;
-    this.bg = {
-        heavy: deck ? 'fusion' : null,
+    const bg = {
+        hue: {
+            layer: /^\+/.test(sym) ? 80 : !deck ? 140 : 185,
+            disk: 230,
+            frame: 230,
+            driver: deck ? 275 : !/^\+/.test(sym) ? 320 : 5
+        }[comp.match(/layer|disk|driver|frame/)[0]],
         set heaviness(classes) {
-            if (this.heavy !== null) return;
-            this.heavy = classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : classes.length > 0 ? '' : null;
+            bg.heavy = deck ? 'fusion' : classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : classes.length > 0 ? '' : null;
         },
         get url() {
-            const query = [['hue', this.hue], ['heavy', this.heavy]].filter(([p, v]) => v !== null);
-            const mode = Q('html').classList.contains('day') ? 'day' : 'night'
+            const query = ['hue', 'heavy'].filter(p => bg[p] !== null).map(p => [p, bg[p]]);
+            const mode = Q('html').classList.contains('day') ? 'day' : 'night';
             return `/parts/include/bg.svg?${mode}&` + query.map(q => q.join('=')).join('&') + (type ? `#${type + (stat?.length || 5)}` : ``)
         },
-        get hue() {
-            return {
-                layer: /^\+/.test(sym) ? 80 : !deck ? 140 : 185,
-                disk: 230,
-                frame: 230,
-                driver: deck ? 275 : !/^\+/.test(sym) ? 320 : 5
-            }[comp.match(/layer|disk|driver|frame/)[0]]
-        },
     }
-    this.weight = {
-        classes: [deck ? 'fusion' : '', typeof stat?.[3] == 'string' ? 'grams' : ''],
-        classify() {
-            if (!stat) return;
-            return this.classes = [...this.classes, sym == '幻' ? 'light' : this.bucket(stat[3])].filter(c => c);
-        },
-        bucket(weight) {
-            const levels = typeof weight == 'string' ?
+    const weight = {
+        bucketing(w) {
+            const levels = typeof w == 'string' ?
                 ({driver: [14, 10], layer5b: [99, 23, 21], layer5c: [99, 14]}[comp] || []) :
                 (/layer[45]$/.test(group) || deck && comp == 'driver' ? [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]);
-            return ['heavy-x', 'heavy-s', 'heavy'][levels.findIndex(l => weight >= l)] || '';
-        }
+            return weight.classes = [
+                deck ? 'fusion' : '',
+                typeof w == 'string' ? 'grams' : '',
+                sym == '幻' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][levels.findIndex(l => w >= l)]
+            ].filter(c => c);
+        },
     }
-    this.code = {
+    const code = {
         get symbol() {
             let code = sym
                 .replace(/^([dlr]α).$/, '$1')
@@ -93,15 +88,14 @@ function Catalog(part) {
             }
             return `<div class='name'>${code}</div>`;
         },
-        content(classes) {
+        get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url("/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png")'></figure>`;
-            if (!stat)
-                return code;
-            const terms = ['攻擊力', '防禦力', '持久力', classes.includes('grams') && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
+            if (!stat) return code;
+            const terms = ['攻擊力', '防禦力', '持久力', typeof stat[3] == 'string' && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
             if (typeof stat[3] == 'string')
                 stat[3] = stat[3].replace(/克$/, '<small>克</small>');
             return code + `
-            <dl class='stat-${stat.length} ${classes.join(' ')}'>` +
+            <dl class='stat-${stat.length} ${weight.classes.join(' ')}'>` +
                 stat.map((s, i) => s === null ? '' : `<div><dt>${terms[i]}<dd>${s}</div>`).join('') + `
             </dl>`;
         }
@@ -113,9 +107,9 @@ function Catalog(part) {
             high: `高度增加的【${sym.replace(/^H/, '')}】driver。`
         })[group] || desc || '';
         part.innerHTML = `
-            <object data='${this.bg.url}'></object>` + (attr.rel ? `
-            <div class='info'>` + this.code.symbol + this.code.name + `</div>
-            <div class='content'>` + this.code.content(this.weight.classes) + `</div>
+            <object data='${bg.url}'></object>` + (group ? `
+            <div class='info'>` + code.symbol + code.name + `</div>
+            <div class='content'>` + code.content + `</div>
             <p class='desc'>` + descF(group) + `</p>` : ``);
         for (const [a, v] of Object.entries(attr)) if (v) part[a] = v;
         return part;
@@ -123,19 +117,17 @@ function Catalog(part) {
 
     if (sym == null)
         return Q('.catalog').appendChild(anchor({classList: 'none'}));
-    if (deck)
-        Parts.fusion = true;
 
-    let classes = [comp, type, generation, sym == 9 ? 'none' : ''].filter(c => c);
+    deck ? Parts.fusion = deck : null;
+    let classes = [comp, group, type, generation, sym == 9 ? 'none' : ''].filter(c => c);
     if (!/^(dash|high)$/.test(group) && (/(メタル|プラス)/.test(names.jap) || names.jap?.length >= 10))
         classes.push('long');
 
-    this.bg.heaviness = this.weight.classify(this.bg) || [];
+    bg.heaviness = weight.bucketing(stat?.[3]);
 
     return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
-        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=` + encodeURIComponent(sym),
-        rel: group,
+        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
         classList: classes.join(' ')
     }));
 }
