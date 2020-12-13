@@ -59,7 +59,7 @@ const Search = {
             target[comp] = [adjusted.toUpperCase() || '[A-zαβΩ]+'];
             if (!input) continue;
             for (let [sym, name] of Object.entries(list))
-                match(sym, name) ? target[comp].push(sym.replace('+', '\\+')) : null;
+                if (match(sym, name)) target[comp].push(sym.replace('+', '\\+'));
         }
         return target;
     },
@@ -101,10 +101,7 @@ const Search = {
         Q('.prod button').disabled = !searching;
         Q('html, body', el => el.scrollTop = searching ? Q('table').offsetTop : 0);
         Q('nav data').value = searching ? count('tbody tr:not([hidden])') : '';
-        if (searching)
-            Q('input[type=text]', input => input.blur());
-        else
-            Q('input[type=text]', input => input.value = '');
+        Q('input[type=text]', searching ? input => input.blur() : input => input.value = '');
     },
     autofill(comp, sym) {
         Q(/layer5/.test(comp) ? '#GT' : '#sparking').click();
