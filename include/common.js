@@ -71,7 +71,7 @@ const DB = {
     },
     open(handler) {
         if (DB.db) return handler();
-        if (!window.indexedDB) return (async () => names ||= await (await fetch('/update/names.json')).json())();
+        if (!window.indexedDB) return (async () => names = names || await (await fetch('/update/names.json')).json())();
         let firstTime = false;
         const open = indexedDB.open('db', 1);
         open.onupgradeneeded = () => {
@@ -137,7 +137,7 @@ const DB = {
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
-            names ||= await DB.getNames(tran);
+            names = names || await DB.getNames(tran);
             const parts = {};
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
