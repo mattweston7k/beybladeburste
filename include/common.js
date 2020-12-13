@@ -96,12 +96,12 @@ const DB = {
             const updates = [], notify = [];
             for (const [item, [time, major]] of Object.entries(j)) {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
-                oldUser || !Cookie.getHistory(item) ? item == 'products' ? DB.indicator.prod() : updates.push(item) : null;
-                major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000) ? notify.push(item) : null;
+                if (oldUser || !Cookie.getHistory(item)) item == 'products' ? DB.indicator.prod() : updates.push(item);
+                if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000)) notify.push(item);
             }
+            if (notify.length > 0) Cookie.notification(notify);
             if (updates.length > 0) {
                 DB.indicator.init(true);
-                Cookie.notification(notify);
                 return DB.cache(handler, updates);
             }
             return handler ? handler() : null;
