@@ -36,18 +36,22 @@ let Parts = {
     },
     group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
 };
-L(() => {
-    document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト';
+const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
     if (/^\/(index.html)?$/.test(window.location.pathname)) {
-        if (pages.includes('products')) Q('a[href^="products/"]').classList.add('notify');
-        if (gs.length > 0) Q('a[href="parts/"]').classList.add('notify');
+        if (pages.includes('products'))
+            Q('a[href*="products/"]').classList.add('notify');
+        if (gs.length > 0)
+            Q('a[href*="parts/"]').classList.add('notify');
     } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
         gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify'));
-    else if (Parts.group || /^\/products\/(index.html)?$/.test(window.location.pathname))
+    else if (Parts.group || /^\/products\/(index.html)?(#.+)?$/.test(window.location.pathname))
         Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
-
+}
+L(() => {
+    document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト';
+    notify();
     Q('html').classList.add(Cookie.get.mode);
     if (Q('#day')) Q('#day').checked = Cookie.get.mode == 'day';
 });
@@ -122,6 +126,7 @@ const DB = {
             DB.indicator.update();
             Cookie.setHistory(group);
         }
+        notify();
         handler ? handler() : null;
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status == 200 ? [r.json(), g] : null))),
