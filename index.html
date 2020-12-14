@@ -94,6 +94,7 @@
                 <iframe src=https://www.youtube.com/embed/ allowfullscreen></iframe>
             </article>
         </template>
+        <h4 style="font-size:1.25em;text-align:left;display:block;margin-bottom:.5em">新系列開始！</h4>
         <script>
             const newBey = (date, cat, name, desc, search, video, searchable = true) => {
                 const t = Q('template').content.cloneNode(true);
@@ -117,20 +118,12 @@
                     cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null;
                 Q('#now fieldset').appendChild(t);
             };
-
-            newBey('2020-12-26', 'B-176 Random Booster Vol.23（攻擊型）', '', '');
-            newBey('2020-12-30', '', 'メタルファイトベイブレード 2020 爆セット　Metal Fight Beyblade 2020 Baku Set',
-                `<ul><li>五款 2010 年推出的陀螺之 Burst 復刻版<li>今次 Clear Wheel 可從 Metal Wheel 拆除，如 10 年前一樣進行模式切換／改造！</ul>`);
-            newBey('2021-01', 'B-177 Booster（防禦型）', '', '<ul><li>Legend Bladers 之一</ul>');
-            newBey('2021-02', 'B-178 Random Booster Vol.24', '', '');
-            newBey('2021-03', 'B-179 Booster', '', '');
             newBey('2021-04', 'B-180 Booster', '', '');
             newBey('', 'B-181 Random Booster Vol.25', '', '');
             newBey('', 'B-182 對戰盤套裝', '', '');
             newBey('', 'B-183 新對戰盤', '', '');
             newBey('', 'B-184 新發射器', '', '');
             newBey('2021-05', 'B-185 Booster', '', '');
-            setTimeout(() => Q('#now article:nth-last-child(7)').insertAdjacentHTML('afterend', '<h4 style="font-size:1.25em;text-align:left;display:block;margin-bottom:.5em">新系列開始！</h4>'));
         </script>
     </fieldset>
 </section>

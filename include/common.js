@@ -141,7 +141,7 @@ const DB = {
             DB.indicator.update();
             Cookie.setHistory(group);
         }
-        DB.put('json', ['names', names]);
+        DB.put('json', ['names', names], tran);
         notify();
         handler ? handler() : null;
     },
