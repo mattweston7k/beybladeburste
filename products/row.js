@@ -1,4 +1,4 @@
-class Part {
+class AbsPart {
     constructor(sym, fusion = false) {
         [this.sym, this.fusion] = [sym, fusion];
     }
@@ -11,7 +11,7 @@ class Part {
     };
 }
 
-class Layer extends Part {
+class Layer extends AbsPart {
     constructor(sym, upperFusion) {
         super(sym, upperFusion);
         this.symCode = sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
@@ -50,13 +50,13 @@ class Layer extends Part {
         return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
     }
 }
-class Disk extends Part {
+class Disk extends AbsPart {
     constructor(sym) {
         super(sym);                                 // sort 0                            alphabet disk
         this.symCode = sym.replace(/^([0α]′?.)$/, '<s>-</s>$1').replace(/^([^\d_|(α′)]+)$/, '$1&nbsp;').replace('′', '<i>′</i>');
     }
 }
-class Driver extends Part {
+class Driver extends AbsPart {
     constructor(sym, lowerFusion) {
         super(sym, lowerFusion);
         this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (sym == '∞' ? '&nbsp;' : '');
@@ -190,7 +190,7 @@ const Cell = {
         }
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const part = await DB.get('json', `${sym}.${comp}`);
-            Catalog(Parts.attach([sym, comp], part));
+            new Part(part).attach(sym, comp).catalog();
             links(comp, part.group, sym);
         });
     },

@@ -4,14 +4,15 @@ Parts = {
         Parts.before();
         if (window.indexedDB)
             DB.getParts(Parts.group, (order, info) => {
-                for (const part of order) Catalog(part);
+                for (const part of order)
+                    typeof part == 'string' ? Part.html(part) : (part || new Part(Parts.group)).catalog();
                 Parts.after(info);
             });
         else Parts.live();
     },
     async live() {
         const {info, parts} = await (await fetch(`/update/${Parts.group}.json`)).json();
-        for (const part of parts) Catalog(part ? Parts.attach([part.sym, part.comp], part) : null);
+        for (const part of parts) new Part(part).attach().catalog();
         Parts.after(info);
     },
     before() {

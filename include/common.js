@@ -25,17 +25,34 @@ const Cookie = {
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
-let Parts = {
-    detach({sym, comp, ...part}) {
-        for (const p of ['stat', 'desc']) if (!`${part[p]}`.replace(/,/g, '')) delete part[p];
-        return {...part, names: part.names?.can ? {can: part.names.can} : {}};
-    },
-    attach([sym, comp], part) {
-        [part.names.eng, part.names.chi, part.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
-        return {...part, sym: sym, comp: comp};
-    },
-    group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null
-};
+class Part {
+    constructor(info) {
+        Object.assign(this, typeof info == 'object' ? info : {comp: info});
+    }
+    detach() {
+        return (({sym, comp, ...other}) => {
+            for (const p of ['stat', 'desc']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
+            return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
+        })(this);
+    }
+    attach(sym = this.sym, comp = this.comp) {
+        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
+        [this.sym, this.comp] = [sym, comp];
+        return this;
+    }
+    async revise(tran) {
+        this.group = Parts.group;
+        this.sym = (this.group == 'high' ? 'H' : '') + this.sym + (this.group == 'dash' ? '′' : '');
+        this.attr = [...this.attr, (await Part.high(tran)).includes(this.sym) ? 'high' : ''].filter(a => a && a != this.group);
+        delete this.stat; delete this.desc;
+        return this;
+    }
+    static async high(tran) {
+        return Part.highs || (Part.highs = await DB.get('order', 'high', tran));
+    }
+}
+let Parts = {group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
+
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
@@ -121,7 +138,7 @@ const DB = {
                 info ? DB.put('html', [group, info], tran) : null;
                 DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
                 for (const part of parts.filter(part => part && typeof part == 'object'))
-                    DB.put('json', [`${part.sym}.${part.comp}`, Parts.detach(part)], tran);
+                    DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()], tran);
             }
             DB.indicator.update();
             Cookie.setHistory(group);
@@ -143,22 +160,16 @@ const DB = {
         DB.open(async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names = names || await DB.getNames(tran);
-            const parts = await DB.get('order', group, tran);
+            let parts = await DB.get('order', group, tran);
             if (/^(dash|high)$/.test(group)) {
-                const high = group == 'dash' ? await DB.get('order', 'high', tran) : [];
-                const reviser = part => ({
-                    ...part, group: group, sym: (group == 'high' ? 'H' : '') + part.sym + (group == 'dash' ? '′' : ''),
-                    attr: [...part.attr, high.includes(`${part.sym}′`) ? 'high' : ''].filter(a => a && a != group)
-                });
-                return callback(await Promise.all(parts.map(async sym =>
-                    reviser(Parts.attach([sym, 'driver'], await DB.get('json', `${sym.replace('′', '')}.driver`, tran)))
-                )), await DB.get('html', group, tran));
+                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran)).attach(sym, 'driver').revise(tran));
+                return callback(await Promise.all(parts), await DB.get('html', group, tran));
             }
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
                     return callback(parts, await DB.get('html', group, tran));
                 const [sym, comp] = result.primaryKey.split('.');
-                parts.splice(parts.indexOf(sym), 1, Parts.attach([sym, comp], result.value));
+                parts.splice(parts.indexOf(sym), 1, new Part(result.value).attach(sym, comp));
                 result.continue();
             }
         })

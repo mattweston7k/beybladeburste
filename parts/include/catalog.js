@@ -1,8 +1,6 @@
-function Catalog(part) {
-    if (typeof part == 'string')
-        return Q('.catalog').insertAdjacentHTML('beforeend', part);
-    part = part || {comp: Parts.group};
-    let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = part;
+Part.html = html => Q('.catalog').insertAdjacentHTML('beforeend', html);
+Part.prototype.catalog = function() {
+    let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = this;
     const bg = {
         hue: {
             layer: /^\+/.test(sym) ? 80 : !deck ? 140 : 185,
