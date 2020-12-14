@@ -12,7 +12,7 @@ Parts = {
     },
     async live() {
         const {info, parts} = await (await fetch(`/update/${Parts.group}.json`)).json();
-        for (const part of parts) new Part(part).attach().catalog();
+        for (const part of parts) new Part(part || Parts.group).catalog();
         Parts.after(info);
     },
     before() {
@@ -29,11 +29,9 @@ Parts = {
         Parts.count();
     },
     count() {
-        if (count('.catalog>a') < 28)
-            Q('label[for=fixed]').remove();
+        if (count('.catalog>a') < 28) Q('label[for=fixed]').remove();
         Q('nav .part data').value = count('a[id]:not([id^="+"]):not(.none)');
-        if (/^(driver3|dash)$/.test(Parts.group))
-            Q('nav .part data').setAttribute('data-extra', '+4');
+        if (/^(driver3|dash)$/.test(Parts.group)) Q('nav .part data').setAttribute('data-extra', '+4');
     },
     target() {
         let target = window.location.hash.substring(1);
@@ -46,7 +44,7 @@ Parts = {
     titles: {remake: '［復刻］攻擊環 結晶輪盤 Remake Layer', layer6s: '［超王］重心盤 底盤 Chassis', layer6c: '［超王］紋章 Chip', layer6r: '［超王］刃輪 戰輪 Ring',
         layer5w: '［GT］重心鐵 配重鐵 Weight', layer5c: '［GT］紋章 Chip', layer5b: '［GT］攻擊環底 基座 Base', layer5: '［GT］無限之鎖 攻擊環 Layer',
         layer4: '［超Ｚ］攻擊環 結晶輪盤 Layer', layer3: '［神］攻擊環 結晶輪盤 Layer', layer2: '攻擊環 結晶輪盤 Layer', layer1: '攻擊環 結晶輪盤 Layer',
-        disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', driver: '軸心 底盤 Driver'}
+        disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', driver: '軸心 底盤 Driver', dash: '軸心 底盤 Driver', high: '軸心 底盤 Driver'}
 }
 customElements.define('weight-scale', class extends HTMLElement {
     constructor() {

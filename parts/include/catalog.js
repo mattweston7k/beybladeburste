@@ -33,10 +33,8 @@ Part.prototype.catalog = function() {
                 .replace(/^([dlr]α).$/, '$1')
                 .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
                 .replace(/^(.{2,}?)([2+])$/, '$1<sup>$2</sup>')
-                .replace(/^\+(?=s[wh])/, '');
-            if (sym == 'BA')
-                code = '';
-            else if (sym == 'sΩ')
+                .replace(/^\+(?=s[wh]|BA)/, '');
+            if (sym == 'sΩ')
                 code = "Ω";
             else if (comp == 'layer5c' && sym == 'Δ')
                 code = "D";
@@ -123,7 +121,7 @@ Part.prototype.catalog = function() {
 
     return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
-        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
+        href: /(9|pP|[lrd]αe|BA)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
         classList: classes.join(' ')
     }));
 }

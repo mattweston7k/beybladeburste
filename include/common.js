@@ -78,7 +78,7 @@ const DB = {
     db: null,
     del: (error = ev => console.log(ev)) =>
          new Promise(res => {
-            DB.db.close();
+            DB.db ? DB.db.close() : null;
             const del = indexedDB.deleteDatabase('db');
             del.onsuccess = ev => res(ev.target.readyState);
             del.onerror = del.onblocked = error;
@@ -124,25 +124,24 @@ const DB = {
             return handler ? handler() : null;
         }).catch(er => DB.indicator.error(er));
     },
-    async cache(handler, update = [...groups.flat(), 'names']) {
+    async cache(handler, update = groups.flat()) {
         DB.indicator.total = update.length;
+        names = names || {};
         for (const [prom, group] of await DB.fetch(update)) {
-            const json = await prom;
-            if (!json) continue;
-            if (group == 'names') {
-                DB.put('json', ['names', json]);
-                names = json;
-            } else {
-                const {info, parts} = json;
-                const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-                info ? DB.put('html', [group, info], tran) : null;
-                DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
-                for (const part of parts.filter(part => part && typeof part == 'object'))
-                    DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()], tran);
+            const {info, parts} = await prom || {};
+            if (!info && !parts) continue;
+            const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
+            info ? DB.put('html', [group, info], tran) : null;
+            DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+            for (const part of parts.filter(part => part && typeof part == 'object')) {
+                if (part.names)
+                    names[part.comp] = {...names[part.comp] || {}, [part.sym]: ['eng', 'chi', 'jap'].map(l => part.names[l])};
+                DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()], tran);
             }
             DB.indicator.update();
             Cookie.setHistory(group);
         }
+        DB.put('json', ['names', names]);
         notify();
         handler ? handler() : null;
     },
