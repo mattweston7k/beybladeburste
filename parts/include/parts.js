@@ -3,8 +3,8 @@ Parts = {
     load() {
         Parts.before();
         if (window.indexedDB)
-            DB.getParts(Parts.group, (order, info, parts) => {
-                for (const sym of order) Catalog(parts[sym] || sym);
+            DB.getParts(Parts.group, (order, info) => {
+                for (const part of order) Catalog(part);
                 Parts.after(info);
             });
         else Parts.live();

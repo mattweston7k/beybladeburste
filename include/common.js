@@ -143,12 +143,22 @@ const DB = {
         DB.open(async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names = names || await DB.getNames(tran);
-            const parts = {};
+            const parts = await DB.get('order', group, tran);
+            if (/^(dash|high)$/.test(group)) {
+                const high = group == 'dash' ? await DB.get('order', 'high', tran) : [];
+                const reviser = part => ({
+                    ...part, group: group, sym: (group == 'high' ? 'H' : '') + part.sym + (group == 'dash' ? '′' : ''),
+                    attr: [...part.attr, high.includes(`${part.sym}′`) ? 'high' : ''].filter(a => a && a != group)
+                });
+                return callback(await Promise.all(parts.map(async sym =>
+                    reviser(Parts.attach([sym, 'driver'], await DB.get('json', `${sym.replace('′', '')}.driver`, tran)))
+                )), await DB.get('html', group, tran));
+            }
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
-                    return callback(...await Promise.all(['order', 'html'].map(p => DB.get(p, group, tran))), parts);
+                    return callback(parts, await DB.get('html', group, tran));
                 const [sym, comp] = result.primaryKey.split('.');
-                parts[sym] = Parts.attach([sym, comp], result.value);
+                parts.splice(parts.indexOf(sym), 1, Parts.attach([sym, comp], result.value));
                 result.continue();
             }
         })

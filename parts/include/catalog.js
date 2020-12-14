@@ -20,16 +20,14 @@ function Catalog(part) {
         },
     }
     const weight = {
-        bucketing(w) {
-            const levels = typeof w == 'string' ?
-                ({driver: [14, 10], layer5b: [99, 23, 21], layer5c: [99, 14]}[comp] || []) :
-                (/layer[45]$/.test(group) || deck && comp == 'driver' ? [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]);
-            return weight.classes = [
-                deck ? 'fusion' : '',
-                typeof w == 'string' ? 'grams' : '',
-                sym == '幻' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][levels.findIndex(l => w >= l)]
-            ].filter(c => c);
-        },
+        levels: w => typeof w == 'string' ?
+            ({driver: [14, 10], layer5b: [99, 23, 21], layer5c: [99, 14]}[comp] || []) :
+            (/layer[45]$/.test(group) || deck && comp == 'driver' ? [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]),
+        bucketing: w => weight.classes = [
+            deck ? 'fusion' : '',
+            typeof w == 'string' ? 'grams' : '',
+            sym == '幻' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][weight.levels(w).findIndex(l => w >= l)]
+        ].filter(c => c),
     }
     const code = {
         get symbol() {
@@ -53,9 +51,9 @@ function Catalog(part) {
             if (!names) return '';
             names = {
                 eng: comp == 'layer6s' ? `${sym[0]}-${Parts.types[sym[1]]}` : names.eng || '',
-                chi: /^(dash|high)$/.test(group) ? '' : (names.chi || '').replace(/[｜︱].*/, ''),
                 jap: !names.jap && names.can ? sym : names.jap || '',
-                can: names.can || ''
+                chi: /^(dash|high)$/.test(group) ? '' : (names.chi || '').replace(/[｜︱].*/, ''),
+                can: /^(dash|high)$/.test(group) ? '' : names.can || ''
             }
             if (group == 'high')
                 [names.eng, names.jap] = ['High ' + names.eng, 'ハイ' + names.jap];
@@ -90,7 +88,7 @@ function Catalog(part) {
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url("/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png")'></figure>`;
-            if (!stat) return code;
+            if (!stat || /^(dash|high)$/.test(group)) return code;
             const terms = ['攻擊力', '防禦力', '持久力', typeof stat[3] == 'string' && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
             if (typeof stat[3] == 'string')
                 stat[3] = stat[3].replace(/克$/, '<small>克</small>');

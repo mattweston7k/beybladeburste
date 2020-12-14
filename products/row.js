@@ -127,7 +127,8 @@ class Row {
             this.cell(['layer']).style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
             this.tr.classList.add('GT');
-        else for (const {n, color} of [
+        else
+            for (const {n, color} of [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
                 {n: [160], color: 'dodgerblue'},
                 {n: [161, 163], color: 'red'},
@@ -135,8 +136,8 @@ class Row {
                 {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
                 {n: [169], color: 'deeppink'},
                 {n: [171.1], color: 'deepskyblue'}
-            ])
-                n.map(n => `B-${n}`).includes(no) ? this.cell(['layer6s', 'disk']).style.color = color : null;
+            ]) if (n.map(n => `B-${n}`).includes(no))
+                this.cell(['layer6s', 'disk']).style.color = color;
     }
     cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
