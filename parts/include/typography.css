@@ -110,43 +110,43 @@ a[id$='+'] sup {
 
 /*text spacing*/
 .catalog>a {
-    --m:-0.5em;--can:-0.7em;
+    --m:-0.5em;--can:-0.7em;--space:0;
 }
-.name .left {
+.horizontal.name>div:first-child {
     margin-right:.2em;
     text-align:center;
 }
-a.layer6s .name .left {
+a.layer6s .name>div:first-child {
     margin-right:0;
 }
-.right :lang(zh) {
+:-webkit-any(.dash,.high) :lang(yue),:-webkit-any(.dash,.high) :lang(zh) {
+    display:none;
+}
+:lang(zh) {
     margin:0 -0.2em 0 var(--m); 
 }
-.bottom :lang(zh) {
-    margin:0 -0.3em 0 var(--m); 
-}
-.left :lang(yue), a:not(.dash):not(.high) .top :lang(yue) {
+:lang(yue) {
     margin:0 var(--can); 
 }
 :-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV) :lang(yue) {
     margin-left:-.2em; }
 :-webkit-any(#DCF,#DRF,#DGF,#DZF) :lang(yue) {
     margin-left:-.3em; }
-#GDV .bottom,#DCF .bottom {
+:-webkit-any(#GDV,#DCF) .name div:last-child {
     margin-left:-.1em; }
     
-.bottom[style] :lang(ja) {
+.vertical :lang(ja) {
     letter-spacing:calc(-1em*var(--space));
 }
-.bottom[style] :lang(zh) {
+.vertical :lang(zh) {
     letter-spacing:calc(-2em*var(--space)/3);
     margin-left:-.6em;
 }
-:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
-    margin-right:calc(var(--can) - .1em);
-}
 :-webkit-any(#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(en) {
     letter-spacing:-.01em;
+}
+:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
+    margin-right:calc(var(--can) - .1em);
 }
 :-webkit-any(#sΩ,#闇α) :lang(en) {
     letter-spacing:-.02em;
@@ -156,49 +156,57 @@ a.layer6s .name .left {
     margin-right:calc(var(--can) - .2em);
 }
 :-webkit-any(#LL,#GDV) :lang(en) {
-    letter-spacing:-.04em; }
+    letter-spacing:-.04em;
+}
 :-webkit-any(#LL,#GDV) :lang(yue) {
     letter-spacing:-.03em;
-    margin-right:calc(var(--can) - .2em); }
+    margin-right:calc(var(--can) - .2em);
+}
 :-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(en) {
-    letter-spacing:-.05em; }
+    letter-spacing:-.05em;
+}
 :-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(yue) {
     letter-spacing:-.04em;
-    margin-right:calc(var(--can) - .2em); }
+    margin-right:calc(var(--can) - .2em);
+}
     
 #光α :lang(en) {
-    letter-spacing:-.075em; }
+    letter-spacing:-.075em;
+}
 #光α :lang(yue) {
     letter-spacing:-.065em;
-    margin-right:calc(var(--can) - .25em); }
+    margin-right:calc(var(--can) - .25em);
+}
 #SgV :lang(en) {
-    letter-spacing:-.085em; }
+    letter-spacing:-.085em;
+}
 #SgV :lang(yue) {
     letter-spacing:-.075em;
-    margin-right:calc(var(--can) - .25em); }
+    margin-right:calc(var(--can) - .25em);
+}
 
-.left[style] :lang(ja) {
+.horizontal :lang(ja) {
     letter-spacing:calc(-1em*var(--space)/10);
 }
-.right[style] :lang(en) {
+.horizontal :lang(en) {
     letter-spacing:calc(-1em*var(--space)/30);
 }
-.right[style] :lang(zh) {
+.horizontal :lang(zh) {
     letter-spacing:calc(-1em*var(--space)/40);
     margin-left:calc(var(--m) - 1em*var(--space)/20);
 }
 @supports (-webkit-touch-callout:none) {
-.right :lang(en) {
-    margin:0 -.05em; }
-.right[style] :lang(en) {
-    letter-spacing:calc(-1em*var(--space)/25); }
+    .horizontal :lang(en) {
+        margin:0 -.05em;
+        letter-spacing:calc(-1em*var(--space)/25);
+    }
 }
 
-:-webkit-any(#Ev,#Dm,#J.layer5b) .left {
+:-webkit-any(#Ev,#Dm,#J.layer5b) .name>div:first-child {
     margin-left:-.15em; }
-#K.layer5b .left {
+#K.layer5b .name>div:first-child {
     margin-left:-.1em; }
-:-webkit-any(#I.layer5b,#J.layer5b,#K.layer5b) .left {
+:-webkit-any(#I.layer5b,#J.layer5b,#K.layer5b) .name>div:first-child {
     margin-right:.15em; }
 #I.layer5b :lang(zh) {
     margin-left:calc(var(--m) - .1em); }

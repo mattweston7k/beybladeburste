@@ -96,27 +96,27 @@ Part.prototype.catalog = function() {
             if (vertical) {
                 len = (names.jap + names.chi).replace(/\s/g, '').length - 15;
                 code = `
-                <div class='top'>
+                <div>
                     <h4 lang=yue>${names.can}</h4>
                     <h3 lang=en>${names.eng}</h3>
                 </div>
-                <div class='bottom'${len > 0 ? ` style='--space:${len * .045}'` : ''}>
+                <div${len > 0 ? ` style='--space:${len * .045}'` : ''}>
                     <h3 lang=ja>${names.jap}</h3>
                     <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             } else {
                 len = names.jap.length + (names.chi ? names.chi.length + 2 : 0) + names.eng.length / 2 - (names.eng.match(/[IJfijlt]/g) || []).length / 4 - 13.25;
                 code = `
-                <div class='left'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
+                <div${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
                     <h4 lang=yue>${names.can}</h4>
                     <h3 lang=ja>${names.jap}</h3>
                 </div>
-                <div class='right'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
+                <div${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
                     <h3 lang=en>${names.eng}</h3>
                     <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             }
-            return `<div class='name${vertical ? ' vertical' : ' horizontal'}'>${code}</div>`;
+            return `<div class='name${!/^(dash|high)$/.test(group) ? vertical ? ' vertical' : ' horizontal' : ''}'>${code}</div>`;
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;

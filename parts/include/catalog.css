@@ -148,7 +148,7 @@ h2 {
     margin:0 0 .15em .2em;
     line-height:1.1em;
 }
-.left :lang(ja) {
+.horizontal :lang(ja) {
     display:block;
     margin-top:-.7em;
 }
@@ -274,18 +274,18 @@ h2.kanji {
 /*font-size*/
 :lang(yue) {
     font-size:.75em;}
-.top :lang(yue),h2 sup {
+.vertical :lang(yue),h2 sup {
     font-size:.65em;}
 .desc {
     font-size:.69em;}
 a.layer1 :lang(yue) {
     font-size:.7em;}
-a:not(.dash):not(.high) .bottom :lang(ja),.bottom :lang(zh),.top :lang(en) {
+.vertical :lang(ja),.vertical :lang(zh),.vertical :lang(en) {
     font-size:.71em;}
 dt,dd,.scale>div:last-of-type span,
 a.layer1 :lang(en), a.layer1 :lang(ja), a.layer1 :lang(zh) {
     font-size:.8em;}
-.left :lang(ja),.right :lang(zh),.right :lang(en) {
+.horizontal :lang(ja),.horizontal :lang(zh),.horizontal :lang(en) {
     font-size:.9em;}
 :lang(yue)::before,:lang(yue)::after,a.layer6s :lang(en) {
     font-size:1.2em;}
