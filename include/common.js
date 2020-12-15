@@ -31,7 +31,8 @@ class Part {
     }
     detach() {
         return (({sym, comp, ...other}) => {
-            for (const p of ['stat', 'desc']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
+            other.attr = other.attr.filter(a => a != 'dash' && a != 'high');
+            for (const p of ['stat', 'desc', 'attr']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
             return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
         })(this);
     }
@@ -40,15 +41,27 @@ class Part {
         [this.sym, this.comp] = [sym, comp];
         return this;
     }
-    async revise(tran) {
-        this.group = Parts.group;
-        this.sym = (this.group == 'high' ? 'H' : '') + this.sym + (this.group == 'dash' ? '′' : '');
-        this.attr = [...this.attr, (await Part.high(tran)).includes(this.sym) ? 'high' : ''].filter(a => a && a != this.group);
-        delete this.stat; delete this.desc;
+    async revise(tran, derivedDriver = false) {
+        if (this.comp != 'driver') return this;
+        if (!derivedDriver) {
+            for (const a of ['dash', 'high'])
+                if ((await Part[a](tran)).includes(this.sym))
+                    this.attr = [...this.attr || [], a];
+        } else if (derivedDriver) {
+            this.group = derivedDriver;
+            [this.sym, this.attr] = this.group == 'high' ?
+                [`H${this.sym}`, [...this.attr || [], /′$/.test(this.sym) ? 'dash' : '']] :
+                [`${this.sym}′`, [...this.attr || [], (await Part.high(tran)).includes(`${this.sym}′`) ? 'high' : '']];
+            this.attr = this.attr.filter(a => a && a != this.group);
+            delete this.stat; delete this.desc;
+        }
         return this;
     }
     static async high(tran) {
         return Part.highs || (Part.highs = await DB.get('order', 'high', tran));
+    }
+    static async dash(tran) {
+        return Part.dashs || (Part.dashs = await DB.get('order', 'dash', tran));
     }
 }
 let Parts = {group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
@@ -161,14 +174,14 @@ const DB = {
             names = names || await DB.getNames(tran);
             let parts = await DB.get('order', group, tran);
             if (/^(dash|high)$/.test(group)) {
-                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran)).attach(sym, 'driver').revise(tran));
+                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran)).attach(sym, 'driver').revise(tran, group));
                 return callback(await Promise.all(parts), await DB.get('html', group, tran));
             }
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
                     return callback(parts, await DB.get('html', group, tran));
                 const [sym, comp] = result.primaryKey.split('.');
-                parts.splice(parts.indexOf(sym), 1, new Part(result.value).attach(sym, comp));
+                parts.splice(parts.indexOf(sym), 1, await new Part(result.value).attach(sym, comp).revise(tran));
                 result.continue();
             }
         })

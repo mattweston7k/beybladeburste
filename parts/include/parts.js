@@ -23,7 +23,6 @@ Parts = {
         Q('details article').innerHTML = info;
         Q('details').hidden = !info;
         Q('main h5').innerHTML = '　';
-        Parts.upgrade();
         Parts.target();
         Parts.count();
         Tools.filter(Parts.group);
@@ -45,13 +44,6 @@ Parts = {
                     }
                 }
             }
-        }
-    },
-    async upgrade() {
-        if (!/^(dash|driver)/.test(Parts.group)) return;
-        for (const group of ['dash', 'high']) {
-            const list = await DB.get('order', group);
-            Q('.catalog>a[id]', a => list.includes(a.id) ? a.querySelector('figure').classList.add(group) : null);
         }
     },
     count() {
