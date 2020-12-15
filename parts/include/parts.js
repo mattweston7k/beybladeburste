@@ -4,8 +4,7 @@ Parts = {
         Parts.before();
         if (window.indexedDB)
             DB.getParts(Parts.group, (order, info) => {
-                for (const part of order)
-                    typeof part == 'string' ? Part.html(part) : (part || new Part(Parts.group)).catalog();
+                for (const part of order) (part || new Part(Parts.group)).catalog();
                 Parts.after(info);
             });
         else Parts.live();
@@ -16,17 +15,44 @@ Parts = {
         Parts.after(info);
     },
     before() {
-        document.title = document.title.replace(/.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
+        document.title = document.title.replace(/^.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
         Tools.magnify();
+        Tools.ruler(Parts.group);
     },
     after(info) {
         Q('details article').innerHTML = info;
         Q('details').hidden = !info;
         Q('main h5').innerHTML = '　';
+        Parts.upgrade();
         Parts.target();
-        Tools.ruler(Parts.group);
-        Tools.filter(Parts.group);
         Parts.count();
+        Tools.filter(Parts.group);
+        try {
+            Q(':-webkit-any(#A)');
+        } catch (e) {
+            try {
+                Q(':is(#A)');
+                Parts.any('is');
+            } catch (e) {
+                try {
+                    Q(':matches(#A)');
+                    Parts.any('matches');
+                } catch (e) {
+                    try {
+                        Q(':-moz-any(#A)');
+                        Parts.any('-moz-any');
+                    } catch (e) {
+                    }
+                }
+            }
+        }
+    },
+    async upgrade() {
+        if (!/^(dash|driver)/.test(Parts.group)) return;
+        for (const group of ['dash', 'high']) {
+            const list = await DB.get('order', group);
+            Q('.catalog>a[id]', a => list.includes(a.id) ? a.querySelector('figure').classList.add(group) : null);
+        }
     },
     count() {
         if (count('.catalog>a') < 28) Q('label[for=fixed]').remove();
@@ -38,6 +64,11 @@ Parts = {
         if (!target) return;
         Q(`a[id='${decodeURI(target)}']`).scrollIntoView({behavior: 'smooth'});
         Q(`a[id='${decodeURI(target)}']`).classList.add('target');
+    },
+    any(prefix) {
+        const css = '/parts/include/typography.css';
+        caches.match(style).then(r => r.text()).catch(() => fetch(style).then(r => r.text()))
+            .then(style => Q('head').insertAdjacentHTML('beforeend', '<style>' + style.replace(/-webkit-any/g, prefix) + '</style>'));
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
     fusion: false,
@@ -107,48 +138,22 @@ const Tools = {
         window.resize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
     },
     ruler(group) {
-        let max, min, scale;
-        switch (group) {
-            case ('dash'):
-            case ('high'):
-                return;
-            case ('layer3'):
-            case ('layer6s'):
-                [max, min, scale] = [10, 1, 'w+7'];
-                break;
-            case ('remake'):
-                [max, min, scale] = [19, 10, 'w+7'];
-                break;
-            case ('layer1'):
-            case ('layer2'):
-            case ('layer5b'):
-            case ('layer5w'):
-            case ('layer6r'):
-                [max, min, scale] = [9, 0, 'w+7'];
-                break;
-            case ('layer4'):
-            case ('disk1'):
-            case ('disk2'):
-                [max, min, scale] = [8, 0, 'w+17'];
-                break;
-            case ('disk3'):
-            case ('layer5'):
-                [max, min, scale] = [15, 5, 'w+17'];
-                break;
-            case ('frame'):
-            case ('layer5c'):
-                [max, min, scale] = [7, 0, 'w*0.3+2.3'];
-                break;
-            case ('layer6c'):
-                [max, min, scale] = [12, 2, 'w*0.3+2.3'];
-                break;
-            case ('driver3'):
-            case ('driver1'):
-            case ('driver2'):
-            case ('driver4'):
-                [max, min, scale] = [10, 0, 'w/2+5.4'];
-                break;
-        }
-        Q('main').insertAdjacentHTML('afterend', `<weight-scale min='${min}' max='${max}' scale='${scale}' group='${group}'/>`);
+        if (/^(dash|high)$/.test(group))
+            return;
+        const weights = [...document.querySelectorAll('dl div:nth-child(4) dd')]
+            .map(dd => dd.innerHTML).filter(html => /^\d+$/.test(html)).map(w => parseInt(w));
+        // let min = Math.min(...weights);
+        // let max = Math.max(min + 2, Math.min(min + 10, Math.max(...weights)));
+        let [max, min, scale] =
+        [
+            [/^layer(1|2|3|5[bw]|6[rs])$/, [10, 1, 'w+7']],
+            [/^remake$/,              [19, 10, 'w+7']],
+            [/^(layer4|disk[12])$/,   [8, 0, 'w+17']],
+            [/^(disk3|layer5)$/,      [15, 5, 'w+17']],
+            [/^(frame|layer5c)$/,     [7, 0, 'w*0.3+2.3']],
+            [/^layer6c$/,             [12, 2, 'w*0.3+2.3']],
+            [/^driver[1234]$/,        [10, 0, 'w/2+5.4']]
+        ].find(s => s[0].test(group))[1];
+        Q('main').insertAdjacentHTML('afterend', `<weight-scale min='${min}' max='${max}' scale='${scale}' group='${group}'></weight-scale>`);
     }
 }

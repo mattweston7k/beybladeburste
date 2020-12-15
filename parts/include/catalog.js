@@ -1,4 +1,3 @@
-Part.html = html => Q('.catalog').insertAdjacentHTML('beforeend', html);
 Part.prototype.catalog = function() {
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = this;
     const bg = {
@@ -9,12 +8,12 @@ Part.prototype.catalog = function() {
             driver: deck ? 275 : !/^\+/.test(sym) ? 320 : 5
         }[comp.match(/layer|disk|driver|frame/)[0]],
         set heaviness(classes) {
-            bg.heavy = deck ? 'fusion' : classes.includes('light') ? 'light' : classes.includes('grams') ? 'grams' : classes.length > 0 ? '' : null;
+            bg.heavy = ['fusion', 'light', 'grams'].find(c => classes.includes(c)) || (classes.length > 0 ? '' : null);
         },
         get url() {
-            const query = ['hue', 'heavy'].filter(p => bg[p] !== null).map(p => [p, bg[p]]);
+            const query = ['hue', 'heavy'].filter(p => bg[p] !== null).map(p => `${p}=${bg[p]}`).join('&');
             const mode = Q('html').classList.contains('day') ? 'day' : 'night';
-            return `/parts/include/bg.svg?${mode}&` + query.map(q => q.join('=')).join('&') + (type ? `#${type + (stat?.length || 5)}` : ``)
+            return `/parts/include/bg.svg?${mode}&${query}` + (type ? `#${type}${stat?.length || 5}` : ``);
         },
     }
     const weight = {
@@ -22,9 +21,9 @@ Part.prototype.catalog = function() {
             ({driver: [14, 10], layer5b: [99, 23, 21], layer5c: [99, 14]}[comp] || []) :
             (/layer[45]$/.test(group) || deck && comp == 'driver' ? [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]),
         bucketing: w => weight.classes = [
-            deck ? 'fusion' : '',
+            deck || /^[IM]$/.test(sym) && comp == 'layer5b' ? 'fusion' : '',
             typeof w == 'string' ? 'grams' : '',
-            sym == '幻' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][weight.levels(w).findIndex(l => w >= l)]
+            sym == '幻' || sym == 'L' && comp == 'layer5b' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][weight.levels(w).findIndex(l => w >= l)]
         ].filter(c => c),
     }
     const code = {
@@ -83,7 +82,7 @@ Part.prototype.catalog = function() {
             return `<div class='name'>${code}</div>`;
         },
         get content() {
-            const code = `<figure class='${(attr || []).join(' ')}' style='background:url("/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png")'></figure>`;
+            const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;
             if (!stat || /^(dash|high)$/.test(group)) return code;
             const terms = ['攻擊力', '防禦力', '持久力', typeof stat[3] == 'string' && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
             if (typeof stat[3] == 'string')
@@ -124,26 +123,4 @@ Part.prototype.catalog = function() {
         href: /(9|pP|[lrd]αe|BA)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
         classList: classes.join(' ')
     }));
-}
-const any = prefix =>
-    caches.open('cache').then(c => c.match(new Request('/parts/include/typography.css'))).then(r => r.text()).catch(() =>
-        fetch('/parts/include/typography.css').then(r => r.text())).then(css => Q('head').insertAdjacentHTML('beforeend', '<style>' + css.replace(/-webkit-any/g, prefix) + '</style>'));
-try {
-    document.querySelector(':-webkit-any(#A)')
-} catch (e) {
-    try {
-        document.querySelector(':is(#A)');
-        any('is');
-    } catch (e) {
-        try {
-            document.querySelector(':matches(#A)');
-            any('matches');
-        } catch (e) {
-            try {
-                document.querySelector(':-moz-any(#A)');
-                any('-moz-any');
-            } catch (e) {
-            }
-        }
-    }
 }

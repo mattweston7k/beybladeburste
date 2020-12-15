@@ -224,7 +224,7 @@ a:not([id]) dl div:nth-of-type(4) dd {
     color:inherit; }
 .heavy,.grams,.fusion {
     --w-color:black; }
-.light {
+.light.grams {
     --w-color:#999; }
 .day .heavy,.day .grams,.day .fusion {
     --w-color:white; }
@@ -235,6 +235,10 @@ a:not([id]) dl div:nth-of-type(4) dd {
 .heavy-x div:nth-of-type(4) dd {
     color:hsl(270,80%,50%);
     text-shadow:0 0 0.1em white;
+}
+.stat-6.fusion div:nth-of-type(4) dd {
+    font-style:italic;
+    margin-right:.1em;
 }
 .stat-6[class*=heavy]:not(.grams) div:nth-of-type(4) dd {
     letter-spacing:-.1em;
