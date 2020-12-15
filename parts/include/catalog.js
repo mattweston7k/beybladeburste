@@ -1,3 +1,40 @@
+class Part {
+    constructor(info) {
+        Object.assign(this, typeof info == 'object' ? info : {comp: info});
+    }
+    detach() {
+        return (({sym, comp, ...other}) => {
+            other.attr = other.attr.filter(a => a != 'dash' && a != 'high');
+            for (const p of ['stat', 'desc', 'attr']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
+            return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
+        })(this);
+    }
+    attach(sym = this.sym, comp = this.comp) {
+        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
+        [this.sym, this.comp] = [sym, comp];
+        return this;
+    }
+    async revise(tran, derivedDriver = false) {
+        if (this.comp != 'driver') return this;
+        if (!derivedDriver) {
+            for (const a of ['dash', 'high'])
+                if ((await Part[a](tran)).includes(this.sym))
+                    this.attr = [...this.attr || [], a];
+        } else if (derivedDriver) {
+            [this.group, this.sym, this.desc, this.attr] = derivedDriver == 'high' ?
+                ['high', `H${this.sym}`, `高度提升的【${this.sym}】driver。`, [...this.attr || [], /′$/.test(this.sym) ? 'dash' : ''] ] :
+                ['dash', `${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, [...this.attr || [], (await Part.high(tran)).includes(`${this.sym}′`) ? 'high' : ''] ];
+            delete this.stat;
+        }
+        return this;
+    }
+    static async high(tran) {
+        return Part.highs || (Part.highs = await DB.get('order', 'high', tran));
+    }
+    static async dash(tran) {
+        return Part.dashs || (Part.dashs = await DB.get('order', 'dash', tran));
+    }
+}
 Part.prototype.catalog = function() {
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = this;
     const bg = {
@@ -95,15 +132,11 @@ Part.prototype.catalog = function() {
     }
     const anchor = attr => {
         const part = document.createElement('a');
-        const descF = group => ({
-            dash: `內藏強化彈簧的【${sym.replace('′', '')}】driver。`,
-            high: `高度增加的【${sym.replace(/^H/, '')}】driver。`
-        })[group] || desc || '';
         part.innerHTML = `
             <object data='${bg.url}'></object>` + (group ? `
             <div class='info'>` + code.symbol + code.name + `</div>
             <div class='content'>` + code.content + `</div>
-            <p class='desc'>` + descF(group) + `</p>` : ``);
+            <p class='desc'>` + (desc || '') + `</p>` : ``);
         for (const [a, v] of Object.entries(attr)) if (v) part[a] = v;
         return part;
     }

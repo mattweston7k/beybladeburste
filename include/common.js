@@ -25,45 +25,6 @@ const Cookie = {
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
-class Part {
-    constructor(info) {
-        Object.assign(this, typeof info == 'object' ? info : {comp: info});
-    }
-    detach() {
-        return (({sym, comp, ...other}) => {
-            other.attr = other.attr.filter(a => a != 'dash' && a != 'high');
-            for (const p of ['stat', 'desc', 'attr']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
-            return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
-        })(this);
-    }
-    attach(sym = this.sym, comp = this.comp) {
-        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
-        [this.sym, this.comp] = [sym, comp];
-        return this;
-    }
-    async revise(tran, derivedDriver = false) {
-        if (this.comp != 'driver') return this;
-        if (!derivedDriver) {
-            for (const a of ['dash', 'high'])
-                if ((await Part[a](tran)).includes(this.sym))
-                    this.attr = [...this.attr || [], a];
-        } else if (derivedDriver) {
-            this.group = derivedDriver;
-            [this.sym, this.attr] = this.group == 'high' ?
-                [`H${this.sym}`, [...this.attr || [], /′$/.test(this.sym) ? 'dash' : '']] :
-                [`${this.sym}′`, [...this.attr || [], (await Part.high(tran)).includes(`${this.sym}′`) ? 'high' : '']];
-            this.attr = this.attr.filter(a => a && a != this.group);
-            delete this.stat; delete this.desc;
-        }
-        return this;
-    }
-    static async high(tran) {
-        return Part.highs || (Part.highs = await DB.get('order', 'high', tran));
-    }
-    static async dash(tran) {
-        return Part.dashs || (Part.dashs = await DB.get('order', 'dash', tran));
-    }
-}
 let Parts = {group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
 
 const notify = () => {
