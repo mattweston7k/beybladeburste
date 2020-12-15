@@ -4,7 +4,7 @@ h1,h2,h3,h4,h5,h6,code {
     box-sizing:border-box !important; }
 summary:focus {
     outline:none; }
-#contents,#contents a:not([href])::before,h1,h2,h3,h4,.can::before,.can::after {
+#contents,#contents a:not([href])::before,h1,h2,h3,h4,:lang(yue)::before,:lang(yue)::after {
     font-family:Mincho,
         Noto Serif CJK TC Semibold,Noto Serif CJK TC Bold,Noto Serif CJK TC, 
         Source Han Serif TC Semibold,Source Han Serif TC Bold,Source Han Serif TC,

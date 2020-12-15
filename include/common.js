@@ -149,8 +149,8 @@ const DB = {
 }
 const twilight = () => {
     Q('html').classList.toggle('day');
-    const p = ['day', 'night'];
-    Q('object', obj => obj.data = obj.data.replace(...Q('html').classList.contains('day') ? p.reverse() : p));
+    const p = Q('html').classList.contains('day') ? ['night', 'day'] : ['day', 'night'];
+    Q('object', obj => obj.data = obj.data.replace(...p));
     Cookie.setOptions();
 };
 

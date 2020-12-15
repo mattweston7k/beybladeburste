@@ -143,16 +143,14 @@ h2 {
     white-space:nowrap;
     min-width:11em;
 }
-.layer .name,.long .name {
+.vertical {
     align-items:flex-start;flex-direction:column;
     margin:0 0 .15em .2em;
+    line-height:1.1em;
 }
-.left .jap {
+.left :lang(ja) {
     display:block;
     margin-top:-.7em;
-}
-.top,.bottom {
-    line-height:1.1em;
 }
 .content {
     padding:.64em .5em .64em .55em;
@@ -249,7 +247,7 @@ a:not([id]) dl div:nth-of-type(4) dd {
     width:100%;
     position:absolute;left:100%;
 }
-.grams.stat-5 dd small{ 
+.grams.stat-5 dd small{
     margin-left:0.2em;
     vertical-align:bottom;
 }
@@ -265,32 +263,31 @@ h2.single {
     font-family:AN,ANC; }
 h2.kanji {
     font-family:mono; }
-.can {
+:lang(yue) {
     font-family:PingFang TC,Microsoft Jhenghei,sans-serif; font-weight:300; }
-.can:not(:empty)::before {content:'〚';}
-.can:not(:empty)::after  {content:'〛';}
-.can::before,.can::after {vertical-align:-.06em;}
-.chi:not(:empty)::before {content:'『';}
-.chi:not(:empty)::after  {content:'』';}
+:lang(yue):not(:empty)::before {content:'〚';}
+:lang(yue):not(:empty)::after  {content:'〛';}
+:lang(yue)::before,:lang(yue)::after {vertical-align:-.06em;}
+:lang(zh):not(:empty)::before {content:'『';}
+:lang(zh):not(:empty)::after  {content:'』';}
 
 /*font-size*/
-.can {
+:lang(yue) {
     font-size:.75em;}
-.layer .can,.long .can,h2 sup {
+.top :lang(yue),h2 sup {
     font-size:.65em;}
 .desc {
     font-size:.69em;}
-a.layer1 .can {
+a.layer1 :lang(yue) {
     font-size:.7em;}
-.layer .jap, .layer .chi, .layer .eng,
-.long .jap, .long .chi, .long .eng {
+a:not(.dash):not(.high) .bottom :lang(ja),.bottom :lang(zh),.top :lang(en) {
     font-size:.71em;}
 dt,dd,.scale>div:last-of-type span,
-a.layer1 .eng, a.layer1 .jap, a.layer1 .chi {
+a.layer1 :lang(en), a.layer1 :lang(ja), a.layer1 :lang(zh) {
     font-size:.8em;}
-.jap,.name .right {
+.left :lang(ja),.right :lang(zh),.right :lang(en) {
     font-size:.9em;}
-.can::before,.can::after,a.layer6s .eng {
+:lang(yue)::before,:lang(yue)::after,a.layer6s :lang(en) {
     font-size:1.2em;}
 h2 {
     --f:2;}

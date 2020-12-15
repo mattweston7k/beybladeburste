@@ -119,81 +119,78 @@ a[id$='+'] sup {
 a.layer6s .name .left {
     margin-right:0;
 }
-.right .chi {
+.right :lang(zh) {
     margin:0 -0.2em 0 var(--m); 
 }
-.layer .chi,.long .chi {
+.bottom :lang(zh) {
     margin:0 -0.3em 0 var(--m); 
 }
-.left .can {
+.left :lang(yue), a:not(.dash):not(.high) .top :lang(yue) {
     margin:0 var(--can); 
 }
-.layer .can,.long .can {
-    margin:0 var(--can); 
-}
-:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV) .can {
+:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV) :lang(yue) {
     margin-left:-.2em; }
-:-webkit-any(#DCF,#DRF,#DGF,#DZF) .can {
+:-webkit-any(#DCF,#DRF,#DGF,#DZF) :lang(yue) {
     margin-left:-.3em; }
 #GDV .bottom,#DCF .bottom {
     margin-left:-.1em; }
     
-.bottom[style] .jap {
+.bottom[style] :lang(ja) {
     letter-spacing:calc(-1em*var(--space));
 }
-.bottom[style] .chi {
+.bottom[style] :lang(zh) {
     letter-spacing:calc(-2em*var(--space)/3);
     margin-left:-.6em;
 }
-:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) .can {
+:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
     margin-right:calc(var(--can) - .1em);
 }
-:-webkit-any(#wV,#bX,#mG,#gK,#sΩ,#DCF) .eng {
+:-webkit-any(#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(en) {
     letter-spacing:-.01em;
 }
-:-webkit-any(#sΩ,#闇α) .eng {
+:-webkit-any(#sΩ,#闇α) :lang(en) {
     letter-spacing:-.02em;
 }
-#闇α .can {
+#闇α :lang(yue) {
     letter-spacing:-.01em;
     margin-right:calc(var(--can) - .2em);
 }
-:-webkit-any(#LL,#GDV) .eng {
+:-webkit-any(#LL,#GDV) :lang(en) {
     letter-spacing:-.04em; }
-:-webkit-any(#LL,#GDV) .can {
+:-webkit-any(#LL,#GDV) :lang(yue) {
     letter-spacing:-.03em;
     margin-right:calc(var(--can) - .2em); }
-:-webkit-any(#Sr,#nL,#Q2,#Pα) .eng {
+:-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(en) {
     letter-spacing:-.05em; }
-:-webkit-any(#Sr,#nL,#Q2,#Pα) .can {
+:-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(yue) {
     letter-spacing:-.04em;
     margin-right:calc(var(--can) - .2em); }
     
-#光α .eng {
+#光α :lang(en) {
     letter-spacing:-.075em; }
-#光α .can {
+#光α :lang(yue) {
     letter-spacing:-.065em;
     margin-right:calc(var(--can) - .25em); }
-#SgV .eng {
+#SgV :lang(en) {
     letter-spacing:-.085em; }
-#SgV .can {
+#SgV :lang(yue) {
     letter-spacing:-.075em;
     margin-right:calc(var(--can) - .25em); }
 
-.left[style] .jap {
+.left[style] :lang(ja) {
     letter-spacing:calc(-1em*var(--space)/10);
 }
-.right[style] .eng {
+.right[style] :lang(en) {
     letter-spacing:calc(-1em*var(--space)/30);
 }
-.right[style] .chi {
+.right[style] :lang(zh) {
     letter-spacing:calc(-1em*var(--space)/40);
     margin-left:calc(var(--m) - 1em*var(--space)/20);
 }
 @supports (-webkit-touch-callout:none) {
-.right .eng {
+.right :lang(en) {
     margin:0 -.05em; }
-.right[style] .eng {
+.right[style] :lang(en) {
     letter-spacing:calc(-1em*var(--space)/25); }
 }
 
@@ -203,23 +200,23 @@ a.layer6s .name .left {
     margin-left:-.1em; }
 :-webkit-any(#I.layer5b,#J.layer5b,#K.layer5b) .left {
     margin-right:.15em; }
-#I.layer5b .chi {
+#I.layer5b :lang(zh) {
     margin-left:calc(var(--m) - .1em); }
 
-#Dm .jap::first-letter {
+#Dm :lang(ja)::first-letter {
     letter-spacing:-0.22em; }
-#Ev .jap::first-letter {
+#Ev :lang(ja)::first-letter {
     letter-spacing:-0.1em; }
-#Hy.layer6c .jap::first-letter {
+#Hy.layer6c :lang(ja)::first-letter {
     letter-spacing:-.07em; }
     
-:-webkit-any(#Vl.layer6c,#V.layer5c) .eng {
+:-webkit-any(#Vl.layer6c,#V.layer5c) :lang(en) {
     letter-spacing:0; }
-#X.driver .jap {
+#X.driver :lang(ja) {
     letter-spacing:-.07em; }
-#Y.driver .jap {
+#Y.driver :lang(ja) {
     letter-spacing:-.08em; }
-#I.disk .chi {
+#I.disk :lang(zh) {
     letter-spacing:-.01em; }
     
 :-webkit-any(a.dash,a.high) .name {
@@ -229,7 +226,7 @@ a.layer6s .name .left {
 :-webkit-any(a.dash,a.high) .name sup {
     line-height:0;
 }
-:-webkit-any(a.dash,a.high) .eng {
+:-webkit-any(a.dash,a.high) :lang(en) {
     font-size:0.9em;
     margin-left:0.1em;
 }
@@ -275,5 +272,5 @@ a.dash h2.single {
 
 #α.dash h2 {
     --adj:0em; }
-#Ul.dash .jap {
+#Ul.dash :lang(ja) {
     letter-spacing:-.13em; }

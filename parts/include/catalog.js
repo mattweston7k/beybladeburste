@@ -92,31 +92,31 @@ Part.prototype.catalog = function() {
             if (/^(dash|high)$/.test(group) && /′$/.test(sym))
                 [names.eng, names.jap] = [names.eng + ' <sup>dash</sup>', names.jap + 'ダッシュ'];
 
-            let len, code;
-            if (comp == 'layer' || classes.includes('long') || /^(dash|high)$/.test(group)) {
+            let len, code, vertical = comp == 'layer' || /^(dash|high)$/.test(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
+            if (vertical) {
                 len = (names.jap + names.chi).replace(/\s/g, '').length - 15;
                 code = `
                 <div class='top'>
-                    <h4 class='can'>${names.can}</h4>
-                    <h3 class='eng'>${names.eng}</h3>
+                    <h4 lang=yue>${names.can}</h4>
+                    <h3 lang=en>${names.eng}</h3>
                 </div>
                 <div class='bottom'${len > 0 ? ` style='--space:${len * .045}'` : ''}>
-                    <h3 class='jap'>${names.jap}</h3>
-                    <h3 class='chi'>${names.chi}</h3>
+                    <h3 lang=ja>${names.jap}</h3>
+                    <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             } else {
                 len = names.jap.length + (names.chi ? names.chi.length + 2 : 0) + names.eng.length / 2 - (names.eng.match(/[IJfijlt]/g) || []).length / 4 - 13.25;
                 code = `
                 <div class='left'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
-                    <h4 class='can'>${names.can}</h4>
-                    <h3 class='jap'>${names.jap}</h3>
+                    <h4 lang=yue>${names.can}</h4>
+                    <h3 lang=ja>${names.jap}</h3>
                 </div>
                 <div class='right'${len > 0 ? ` style='--space:${Math.min(len, 2)}'` : ''}>
-                    <h3 class='eng'>${names.eng}</h3>
-                    <h3 class='chi'>${names.chi}</h3>
+                    <h3 lang=en>${names.eng}</h3>
+                    <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             }
-            return `<div class='name'>${code}</div>`;
+            return `<div class='name${vertical ? ' vertical' : ' horizontal'}'>${code}</div>`;
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;
@@ -145,15 +145,11 @@ Part.prototype.catalog = function() {
         return Q('.catalog').appendChild(anchor({classList: 'none'}));
 
     deck ? Parts.fusion = deck : null;
-    let classes = [comp, group, type, generation, sym == 9 ? 'none' : ''].filter(c => c);
-    if (!/^(dash|high)$/.test(group) && (/(メタル|プラス)/.test(names.jap) || names.jap?.length >= 10))
-        classes.push('long');
-
     bg.heaviness = weight.bucketing(stat?.[3]);
 
     return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
         href: /(9|pP|[lrd]αe|BA)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
-        classList: classes.join(' ')
+        classList: [...new Set([comp, group, type, generation, sym == 9 ? 'none' : ''])].filter(c => c).join(' ')
     }));
 }
