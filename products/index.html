@@ -240,7 +240,6 @@
             ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
-    setTimeout(() => Table.get());
     window.onresize = () => Table.flush();
 
     (() => {
@@ -266,6 +265,8 @@
     };
     Q('#eng').onchange = ({target}) => Table.column(target.checked ? 'eng' : 'cjk');
     Q('input[type=text]', input => input.onkeypress = ({code}) => code == 'Enter' ? Search.go() : null);
+
+    Table.get();
 </script>
 
 <script async src=/parts/include/parts.js></script>
