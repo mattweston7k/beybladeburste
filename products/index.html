@@ -142,12 +142,12 @@
         },
         async fetch(old) {
             Table.loading(true);
-            names = names || await DB.getNames();
             const [newer, older] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
             ]);
             Row.show = true;
+            names = names || await DB.getNames();
             for (const bey of [...newer, ...typeof older == 'object' ? older : []]) new Row(bey);
             Table.save(old);
             Table.loading(false);
