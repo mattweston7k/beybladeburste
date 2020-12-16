@@ -161,7 +161,7 @@ const Cell = {
             more = td.parentNode.getAttribute('data-more');
             preview = [
                 core ? [core, 'disk'] : null,
-                /s[wh]/.test(more) && comp == 'layer6r' || /[ZX]/.test(more) && comp == 'driver' ? ['+' + more, comp] : null
+                /s[wh]/.test(more) && comp == 'layer6r' || /[ZX]/.test(more) && comp == 'driver' ? [`+${more}`, comp] : null
             ];
         }
         return {

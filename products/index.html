@@ -240,7 +240,7 @@
             ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
-    Table.get();
+    await Table.get();
     window.onresize = () => Table.flush();
 
     (() => {
