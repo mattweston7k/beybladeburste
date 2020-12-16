@@ -127,7 +127,7 @@ const DB = {
 
     get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
 
-    getNames: tran => names = DB.get('json', 'names', tran),
+    getNames: async tran => names = await DB.get('json', 'names', tran),
 
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
