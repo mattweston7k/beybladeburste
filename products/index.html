@@ -132,7 +132,7 @@
     const Table = {
         limit: 'B-159',
         async get() {
-            Table.loading(true); setTimeout(() => {
+            Table.loading(true); setTimeout(async () => {
             names = names || await DB.getNames();
             const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
