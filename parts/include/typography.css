@@ -57,8 +57,10 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
 :-webkit-any(#Om,a[id='1′']) h2::first-letter {
     letter-spacing:-.1em;
 }
-:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
+:-webkit-any(.layer[id^=超],#闇α,#光α) h2::first-letter {
     letter-spacing:-.03em;
+}
+:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
     margin-left:-.07em;margin-right:.07em;
 }
 #GPr h2 {
@@ -112,15 +114,9 @@ a[id$='+'] sup {
 .catalog>a {
     --m:-0.5em;--can:-0.7em;--space:0;
 }
-.horizontal.name>div:first-child {
+.name-col>div:first-child {
     margin-right:.2em;
     text-align:center;
-}
-a.layer6s .name>div:first-child {
-    margin-right:0;
-}
-:-webkit-any(.dash,.high) :lang(yue),:-webkit-any(.dash,.high) :lang(zh) {
-    display:none;
 }
 :lang(zh) {
     margin:0 -0.2em 0 var(--m); 
@@ -128,21 +124,22 @@ a.layer6s .name>div:first-child {
 :lang(yue) {
     margin:0 var(--can); 
 }
-:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV) :lang(yue) {
-    margin-left:-.2em; }
-:-webkit-any(#DCF,#DRF,#DGF,#DZF) :lang(yue) {
-    margin-left:-.3em; }
-:-webkit-any(#GDV,#DCF) .name div:last-child {
+:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV,#DCF,#DRF,#DGF,#DZF) :lang(yue) {
+    margin-left:-.4em; }
+:-webkit-any(#GDV,#DCF) div[class|=name]>div:last-child {
     margin-left:-.1em; }
     
-.vertical :lang(ja) {
+.name-row :lang(ja) {
     letter-spacing:calc(-1em*var(--space));
 }
-.vertical :lang(zh) {
+.name-row :lang(zh) {
     letter-spacing:calc(-2em*var(--space)/3);
-    margin-left:-.6em;
+    margin-left:-.5em;
 }
-:-webkit-any(#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(en) {
+#Dt.layer6c :lang(ja) {
+    --space:1.8;
+}
+:-webkit-any(#wV,#bX) :lang(en) {
     letter-spacing:-.01em;
 }
 :-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
@@ -185,36 +182,38 @@ a.layer6s .name>div:first-child {
     margin-right:calc(var(--can) - .25em);
 }
 
-.horizontal :lang(ja) {
+.name-col :lang(ja) {
     letter-spacing:calc(-1em*var(--space)/10);
 }
-.horizontal :lang(en) {
+.name-col :lang(en) {
     letter-spacing:calc(-1em*var(--space)/30);
 }
-.horizontal :lang(zh) {
+.name-col :lang(zh) {
     letter-spacing:calc(-1em*var(--space)/40);
     margin-left:calc(var(--m) - 1em*var(--space)/20);
 }
 @supports (-webkit-touch-callout:none) {
-    .horizontal :lang(en) {
+    .name-col :lang(en) {
         margin:0 -.05em;
         letter-spacing:calc(-1em*var(--space)/25);
     }
 }
 
-:-webkit-any(#Ev,#Dm,#J.layer5b) .name>div:first-child {
-    margin-left:-.15em; }
-#K.layer5b .name>div:first-child {
-    margin-left:-.1em; }
-:-webkit-any(#I.layer5b,#J.layer5b,#K.layer5b) .name>div:first-child {
+:-webkit-any(#Ev,#Dm,#J.layer5b,#Dt.layer6c) div[class|=name]{
+    margin-left:.05em; }
+:-webkit-any(#K.layer5b) div[class|=name] {
+    margin-left:.1em; }
+:-webkit-any(#I.layer5b) div[class|=name]>div:first-child {
     margin-right:.15em; }
-#I.layer5b :lang(zh) {
+:-webkit-any(#J.layer5b,#K.layer5b) div[class|=name]>div:first-child {
+    margin-right:.1em; }
+:-webkit-any(#I.layer5b,#K.layer5b) :lang(zh) {
     margin-left:calc(var(--m) - .1em); }
 
 #Dm :lang(ja)::first-letter {
-    letter-spacing:-0.22em; }
+    letter-spacing:-.22em; }
 #Ev :lang(ja)::first-letter {
-    letter-spacing:-0.1em; }
+    letter-spacing:-.1em; }
 #Hy.layer6c :lang(ja)::first-letter {
     letter-spacing:-.07em; }
     
@@ -226,14 +225,7 @@ a.layer6s .name>div:first-child {
     letter-spacing:-.08em; }
 #I.disk :lang(zh) {
     letter-spacing:-.01em; }
-    
-:-webkit-any(a.dash,a.high) .name {
-    line-height:1.1em;
-    display:block;
-}
-:-webkit-any(a.dash,a.high) .name sup {
-    line-height:0;
-}
+
 :-webkit-any(a.dash,a.high) :lang(en) {
     font-size:0.9em;
     margin-left:0.1em;
@@ -244,11 +236,18 @@ a.layer6s .name>div:first-child {
 a.high h2::first-letter {
     letter-spacing:-.05em;
 }
-a.high h2 {
-    letter-spacing:-.05em;
-}
 :-webkit-any(#HB).high h2::first-letter {
     letter-spacing:-.1em;
+}
+:-webkit-any(#HZ,#HS).high h2::first-letter {
+    letter-spacing:0;
+}
+:-webkit-any(#HB,#HJ).high h2 {
+    letter-spacing:-.05em;
+}
+:-webkit-any(#HA).high h2 {
+    letter-spacing:-.1em;
+    padding-right:.05em;
 }
 a.dash h2 {
     letter-spacing:calc(1em*var(--space));
@@ -259,10 +258,10 @@ a.dash h2 {
 }
 a.dash h2.single {
     --space:-.025;}
-#T.dash h2 {
-    --space:0; }
+:-webkit-any(#T,#F,#V).dash h2 {
+    --space:0 !important;}
 :-webkit-any(#Jl,#Ul,#Vl).dash h2  {
-    --space:-.025; }
+    --space:-.025 !important;}
 :-webkit-any(#B,#H,#L,#U,#X,#Xc).dash h2 {
     --space:-.05 !important; }
 :-webkit-any(#Q,#Ev,#Ig,#Mr,#Qc).dash h2  {

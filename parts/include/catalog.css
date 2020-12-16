@@ -46,30 +46,23 @@
 
 .catalog {
     user-select:none;
-    overflow-x:auto;
 }
-main[data-icon]::before {
-    content:attr(data-icon);
-    position:absolute;right:1rem;top:5rem;
-    z-index:-1;
-    font-size:4em;
-    color:hsla(0,0%,70%,.2);
-}
-
 #att:not(:checked)~section .att,
 #bal:not(:checked)~section .bal,
 #sta:not(:checked)~section .sta,
 #def:not(:checked)~section .def,
 #BSB:not(:checked)~section .BSB,
 #MFB:not(:checked)~section .MFB {
-    display:none;}
+    display:none;
+}
 #att:not(:checked)~.filter label[for=att],
 #bal:not(:checked)~.filter label[for=bal],
 #sta:not(:checked)~.filter label[for=sta],
 #def:not(:checked)~.filter label[for=def],
 #BSB:not(:checked)~.filter label[for=BSB],
 #MFB:not(:checked)~.filter label[for=MFB] {
-    filter:saturate(0%);}
+    filter:saturate(0%);
+}
 .filter img {
     height:4em;
     filter:drop-shadow(0 0 .5em white);
@@ -107,7 +100,6 @@ figure {
     min-width:15em;max-width:15em;
     min-height:15em;max-height:15em;
     margin:0.15em;
-    text-decoration:none;color:inherit;
     box-shadow:0 0 .3em .03em hsl(0,0%,50%);
     position:relative;
 }
@@ -132,25 +124,33 @@ h2 {
     min-width:150%;
     white-space:nowrap;
     text-align:center;
-    font-size:calc(1em*var(--f));
     color:transparent;-webkit-text-fill-color:transparent;
     background-color:hsl(0,0%,10%);
     -webkit-background-clip:text;-moz-background-clip:text;background-clip:text;
 }
-.name {
-    display:flex;align-items:flex-end;
-    margin:0 0 .05em .2em;
+div[class|=name] {
     white-space:nowrap;
     min-width:11em;
+    margin-left:.2em;
 }
-.vertical {
-    align-items:flex-start;flex-direction:column;
-    margin:0 0 .15em .2em;
-    line-height:1.1em;
+.name-col {
+    display:flex;align-items:flex-end;
+    margin-bottom:.05em;
 }
-.horizontal :lang(ja) {
+.name-col :lang(ja) {
     display:block;
     margin-top:-.7em;
+}
+.name-row {
+    display:flex;align-items:flex-start;flex-direction:column;
+    margin-bottom:.15em;
+    line-height:1.1em;
+}
+.name {
+    line-height:1.2em;
+}
+.name sup {
+    line-height:0;
 }
 .content {
     padding:.64em .5em .64em .55em;
@@ -186,7 +186,6 @@ dd {
     position:relative;
 }
 .stat-6 {
-    padding:.6em 0;
     text-align:center;
 }
 .stat-6>div {
@@ -201,31 +200,30 @@ dd {
 .stat-6 dd {
     width:calc(12em/10/0.8);
 }
-.stat-5 {
-    padding:.6em 0;
-}
 .stat-5>div {
     margin:0 .7em 0 1.2em;
 }
 .day .stat-5>div {
     margin:0 .8em 0 1em;
 }
-.stat-5 dd {
-    text-align:right;
-}
 .grams.stat-5 div:nth-of-type(4) dd {
     letter-spacing:-0.05em;
 }
 dl div:nth-of-type(4) dd {
-    color:var(--w-color);}
+    color:var(--w-color);
+}
 a:not([id]) dl div:nth-of-type(4) dd {
-    color:inherit; }
+    color:inherit;
+}
 .heavy,.grams,.fusion {
-    --w-color:black; }
+    --w-color:black;
+}
 .light.grams {
-    --w-color:#999; }
+    --w-color:#999;
+}
 .day .heavy,.day .grams,.day .fusion {
-    --w-color:white; }
+    --w-color:white;
+}
 .heavy-s div:nth-of-type(4) dd {
     --w-color:red;
     text-shadow:0 0 0.1em white;
@@ -242,12 +240,12 @@ a:not([id]) dl div:nth-of-type(4) dd {
     letter-spacing:-.1em;
     padding-right:.1em;
 }
-.grams.stat-6 dd small {
+.stat-6 dd small {
     color:var(--on);
     width:100%;
     position:absolute;left:100%;
 }
-.grams.stat-5 dd small{
+.stat-5 dd small {
     margin-left:0.2em;
     vertical-align:bottom;
 }
@@ -264,37 +262,35 @@ h2.single {
 h2.kanji {
     font-family:mono; }
 :lang(yue) {
-    font-family:PingFang TC,Microsoft Jhenghei,sans-serif; font-weight:300; }
+    font-family:PingFang TC,Microsoft Jhenghei,sans-serif; font-weight:200; }
 :lang(yue):not(:empty)::before {content:'〚';}
 :lang(yue):not(:empty)::after  {content:'〛';}
 :lang(yue)::before,:lang(yue)::after {vertical-align:-.06em;}
 :lang(zh):not(:empty)::before {content:'『';}
 :lang(zh):not(:empty)::after  {content:'』';}
+.dash :lang(yue),.high :lang(yue),.dash :lang(zh),.high :lang(zh),
+.layer6s div[class|=name]>div:first-child {display:none;}
 
 /*font-size*/
-:lang(yue) {
-    font-size:.75em;}
-.vertical :lang(yue),h2 sup {
-    font-size:.65em;}
-.desc {
-    font-size:.69em;}
-a.layer1 :lang(yue) {
-    font-size:.7em;}
-.vertical :lang(ja),.vertical :lang(zh),.vertical :lang(en) {
-    font-size:.71em;}
-dt,dd,.scale>div:last-of-type span,
-a.layer1 :lang(en), a.layer1 :lang(ja), a.layer1 :lang(zh) {
-    font-size:.8em;}
-.horizontal :lang(ja),.horizontal :lang(zh),.horizontal :lang(en) {
-    font-size:.9em;}
-:lang(yue)::before,:lang(yue)::after,a.layer6s :lang(en) {
-    font-size:1.2em;}
-h2 {
-    --f:2;}
-h2.kanji {
-    --f:1.7;}
-[id^=超].layer h2,#闇α h2,#光α h2 {
-    --f:1.8;}
+[lang]     {font-size:.9em;}
+:lang(yue) {font-size:.75em;}
+
+.name-row [lang]     {font-size:.71em;}
+.name-row :lang(yue) {font-size:.65em;}
+
+.layer1 [lang]     {font-size:.8em;}
+.layer1 :lang(yue) {font-size:.7em;}
+
+.layer6s :lang(en) {font-size:1.1em;}
+
+:lang(yue)::before,:lang(yue)::after {font-size:1.2em;}
+
+h2 {font-size:2em;}
+h2.kanji {font-size:1.7em;}
+a[id^=超].layer h2,#闇α h2,#光α h2 {font-size:1.8em;}
+h2 sup {font-size:.65em;}
+dt,dd {font-size:.8em;}
+.desc {font-size:.69em;}
 
 figure::before,figure::after {
     position:absolute;

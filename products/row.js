@@ -108,13 +108,13 @@ class Row {
         const {mode, chip, more} = append;
         const add = (td, code) => td.insertAdjacentHTML('beforeend', code);
         if (chip)
-            add(this.cell(['layer6c', 'layer']), `<img src=chips.svg#${chip} alt=${chip}>`);
+            add(this.any(['layer6c', 'layer']), `<img src=chips.svg#${chip} alt=${chip}>`);
         if (/^s[wh]$/.test(mode))
-            add(this.cell(['layer6r']), `<sub>${mode}</sub>`);
+            add(this.any(['layer6r']), `<sub>${mode}</sub>`);
         else if (/^\+/.test(mode))
-            for (const td of Row.next2(this.cell(['driver']))) add(td, `<sub>${mode}</sub>`);
+            for (const td of Row.next2(this.any(['driver']))) add(td, `<sub>${mode}</sub>`);
         else if (more)
-            for (const td of Row.next2(this.cell(['layer6r', 'layer']))) add(td, `<b>${more}</b>`);
+            for (const td of Row.next2(this.any(['layer6r', 'layer']))) add(td, `<b>${more}</b>`);
     }
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
@@ -124,7 +124,7 @@ class Row {
     }
     rare(no) {
         if ([100, 117, 129].map(n => `B-${n}`).includes(no))
-            this.cell(['layer']).style.color = 'black';
+            this.any(['layer']).style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
             this.tr.classList.add('GT');
         else
@@ -137,9 +137,9 @@ class Row {
                 {n: [169], color: 'deeppink'},
                 {n: [171.1], color: 'deepskyblue'}
             ]) if (n.map(n => `B-${n}`).includes(no))
-                this.cell(['layer6s', 'disk']).style.color = color;
+                this.any(['layer6s', 'disk']).style.color = color;
     }
-    cell(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
+    any(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
 Row.show = true;
@@ -199,15 +199,15 @@ const Cell = {
         const i = ['eng', 'chi', 'jap'].findIndex(l => l == lang);
         const name = (high ? ['High ', '高位', 'ハイ'][i] : '') + ((names[comp][sym] || [])[i] || '');
         const code = {
-            eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 11 ? name.replace(' ', '<br>') : name),
+            eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
             chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
             jap: name => (core ? `${core} ` : '') + (comp == 'driver' ? name.replace(/(アルティメット|エクステンド)/, '$1<br>') : name)
         }[lang](name) + (name && dash ? '<i>′</i>' : '');
         td.innerHTML = td.innerHTML.replace(/^.*?(<(sub|b)>.+>)?$/, code + '$1');
 
-        const oversize = {eng: {driver: 12}};
+        const oversize = {eng: {layer6c: 10, driver: 12}};
         oversize.chi = {layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4};
         oversize.jap = {...oversize.chi, disk: 7, frame: 6, driver: 7}; //イグニッション
-        td.classList[name.replace(' ', '').length >= oversize[lang][comp] ? 'add' : 'remove']('small');
+        td.classList[name.length >= oversize[lang][comp] ? 'add' : 'remove']('small');
     }
 }

@@ -132,10 +132,6 @@ const Tools = {
     ruler(group) {
         if (/^(dash|high)$/.test(group))
             return;
-        const weights = [...document.querySelectorAll('dl div:nth-child(4) dd')]
-            .map(dd => dd.innerHTML).filter(html => /^\d+$/.test(html)).map(w => parseInt(w));
-        // let min = Math.min(...weights);
-        // let max = Math.max(min + 2, Math.min(min + 10, Math.max(...weights)));
         let [max, min, scale] =
         [
             [/^layer(1|2|3|5[bw]|6[rs])$/, [10, 1, 'w+7']],

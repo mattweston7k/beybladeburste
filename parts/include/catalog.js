@@ -84,16 +84,16 @@ Part.prototype.catalog = function() {
             names = {
                 eng: comp == 'layer6s' ? `${sym[0]}-${Parts.types[sym[1]]}` : names.eng || '',
                 jap: !names.jap && names.can ? sym : names.jap || '',
-                chi: /^(dash|high)$/.test(group) ? '' : (names.chi || '').replace(/[｜︱].*/, ''),
-                can: /^(dash|high)$/.test(group) ? '' : names.can || ''
+                chi: (names.chi || '').replace(/[｜︱].*/, ''),
+                can: names.can || ''
             }
             if (group == 'high')
                 [names.eng, names.jap] = ['High ' + names.eng, 'ハイ' + names.jap];
-            if (/^(dash|high)$/.test(group) && /′$/.test(sym))
+            if (comp == 'driver' && /′$/.test(sym))
                 [names.eng, names.jap] = [names.eng + ' <sup>dash</sup>', names.jap + 'ダッシュ'];
 
-            let len, code, vertical = comp == 'layer' || /^(dash|high)$/.test(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
-            if (vertical) {
+            let len, code, rows = comp == 'layer' || /^(dash|high)$/.test(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
+            if (rows) {
                 len = (names.jap + names.chi).replace(/\s/g, '').length - 15;
                 code = `
                 <div>
@@ -116,7 +116,7 @@ Part.prototype.catalog = function() {
                     <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             }
-            return `<div class='name${!/^(dash|high)$/.test(group) ? vertical ? ' vertical' : ' horizontal' : ''}'>${code}</div>`;
+            return `<div class='name${!/^(dash|high)$/.test(group) ? rows ? '-row' : '-col' : ''}'>${code}</div>`;
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;
