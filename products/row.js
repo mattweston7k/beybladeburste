@@ -190,7 +190,7 @@ const Cell = {
         }
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const part = await DB.get('json', `${sym}.${comp}`);
-            new Part(part).attach(sym, comp).revise().catalog();
+            (await new Part(part).attach(sym, comp).revise()).catalog();
             links(comp, part.group, sym);
         });
     },
