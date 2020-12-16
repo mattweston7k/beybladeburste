@@ -190,14 +190,14 @@ const Cell = {
         }
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const part = await DB.get('json', `${sym}.${comp}`);
-            new Part(part).attach(sym, comp).catalog();
+            new Part(part).attach(sym, comp).revise().catalog();
             links(comp, part.group, sym);
         });
     },
     code(lang, td) {
         const {parts: [sym, comp], high, dash, core} = Cell.decompose($(td).prevAll('td[data-part]')[0]);
         const i = ['eng', 'chi', 'jap'].findIndex(l => l == lang);
-        const name = (high ? ['High ', '高位', 'ハイ'][i] : '') + ((names[comp][sym] || [])[i] || '');
+        const name = (high ? ['High ', '高位', 'ハイ'][i] : '') + (names[comp][sym]?.[i] || '');
         const code = {
             eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
             chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
