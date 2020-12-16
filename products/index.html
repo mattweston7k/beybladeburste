@@ -132,17 +132,17 @@
     const Table = {
         limit: 'B-159',
         async get() {
+            Table.loading(true); setTimeout(() => {
             names = names || await DB.getNames();
-            Table.loading(true);
             const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
                 return Table.fetch(window.location.hash == '#update' ? older : false);
             Q('tbody').innerHTML = newer + (Table.limit ? older.replace(/<tr/g, '<tr hidden') : older);
-            Table.loading(false);
+            Table.loading(false); }, 100);
         },
         async fetch(old) {
-            names = names || await DB.getNames();
             Table.loading(true);
+            names = names || await DB.getNames();
             const [newer, older] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
                 old ? old : fetch('/update/product-old.json').then(r => r.json())
