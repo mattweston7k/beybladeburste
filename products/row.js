@@ -166,7 +166,7 @@ const Cell = {
         }
         return {
             dash: dash, high: high, core: core,
-            parts: !preview ? [sym, comp] : [[sym, comp], ...preview].filter(p => p)
+            parts: !preview ? [sym, comp] : [[sym, comp], ...preview].filter(part => part && part[0] != '_')
         };
     },
     preview(td) {
