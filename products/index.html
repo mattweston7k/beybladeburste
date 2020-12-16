@@ -132,7 +132,7 @@
     const Table = {
         limit: 'B-159',
         async get() {
-            if (!names) await DB.getNames();
+            names = names || await DB.getNames();
             Table.loading(true);
             const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
@@ -141,7 +141,7 @@
             Table.loading(false);
         },
         async fetch(old) {
-            if (!names) await DB.getNames();
+            names = names || await DB.getNames();
             Table.loading(true);
             const [newer, older] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
@@ -240,7 +240,7 @@
             ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
-    Table.get();
+    setTimeout(() => Table.get());
     window.onresize = () => Table.flush();
 
     (() => {

@@ -127,12 +127,12 @@ const DB = {
 
     get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
 
-    getNames: async tran => names = await DB.get('json', 'names', tran),
+    getNames: tran => DB.get('json', 'names', tran),
 
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
             const tran = DB.db.transaction(['json', 'order', 'html']);
-            if (!names) await DB.getNames(tran);
+            names = names || await DB.getNames(tran);
             let parts = await DB.get('order', group, tran);
             if (/^(dash|high)$/.test(group)) {
                 parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran)).attach(sym, 'driver').revise(tran, group));
