@@ -132,7 +132,7 @@
     const Table = {
         limit: 'B-159',
         async get() {
-            names = names || await DB.getNames();
+            if (!names) await DB.getNames();
             Table.loading(true);
             const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
@@ -141,7 +141,7 @@
             Table.loading(false);
         },
         async fetch(old) {
-            names = names || await DB.getNames();
+            if (!names) await DB.getNames();
             Table.loading(true);
             const [newer, older] = await Promise.all([
                 fetch('/update/product-new.json').then(r => r.json()),
@@ -240,16 +240,16 @@
             ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
+    Table.get();
     window.onresize = () => Table.flush();
 
-    (async () => {
+    (() => {
         const show = ["RB", "B", "St", "RL", "RLG", "L", "jap", "eng"];
         Q('style').insertAdjacentHTML('beforeend', `
             ${show.map((id, i) => `#${id}:not(:checked)~main table .${id}${i <= 3 ? '.H' : ''}`)} {display:none}
             ${show.map(id => `#${id}:not(:checked)~main label[for=${id}]`)} {opacity:.5;background-color:initial;}`
         );
         show.forEach(id => Q('main').insertAdjacentHTML('beforebegin', `<input type=checkbox id=${id} ${/^(eng|jap)$/.test(id) ? '' : 'checked'}>`));
-        await Table.get();
     })();
 
     Q('input[name=system]', radio => radio.onchange = () =>
