@@ -130,8 +130,8 @@ class Row {
         else
             for (const {n, color} of [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
-                {n: [160], color: 'dodgerblue'},
-                {n: [161, 163], color: 'red'},
+                {n: [160, 179], color: 'dodgerblue'},
+                {n: [161, 163, 177], color: 'red'},
                 {n: [167], color: 'lightseagreen'},
                 {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
                 {n: [169], color: 'deeppink'},
@@ -180,6 +180,7 @@ const Cell = {
         const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
         const links = (comp, group, sym) => {
             Q('.catalog>a:last-of-type').removeAttribute('href');
+            if (group == 'other') return;
             const temp = Q('template').content.cloneNode(true);
             temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(sym) ? 'more' : comp, sym);
             temp.querySelector('a[href]').href = `/parts/?${group}#${sym}`;

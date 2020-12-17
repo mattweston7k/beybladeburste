@@ -198,6 +198,7 @@
             window.location.search ? window.history.pushState('', '', '/products/') : null;
             Q('th[data-sortedBy]') ? Table.get() : Q('#myTable tbody tr', tr => tr.hidden = tr.matches(`tr[data-no="${Table.limit}"]~tr`));
             Q('#BBG tr', tr => tr.hidden = false);
+            Table.count();
         },
         column(lang) {
             const colspan = {eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4];

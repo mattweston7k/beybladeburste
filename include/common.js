@@ -10,7 +10,7 @@ const query = window.location.search.substring(1).split('&').map(q => q.split('=
 const groups = [
     ['remake', 'layer6s', 'layer6r', 'layer6c', 'layer5b', 'layer5c', 'layer5w', 'layer5', 'layer4', 'layer3', 'layer2', 'layer1'],
     ['disk3', 'disk2', 'frame', 'disk1'],
-    ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1']
+    ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
@@ -106,8 +106,8 @@ const DB = {
             const {info, parts} = await prom || {};
             if (!info && !parts) continue;
             const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-            info ? DB.put('html', [group, info], tran) : null;
-            DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+            if (info) DB.put('html', [group, info], tran);
+            if (group != 'other') DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
             for (const part of parts.filter(part => part && typeof part == 'object')) {
                 if (part.names)
                     names[part.comp] = {...names[part.comp] || {}, [part.sym]: ['eng', 'chi', 'jap'].map(l => part.names[l])};
