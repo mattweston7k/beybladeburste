@@ -101,7 +101,7 @@ const DB = {
     },
     async cache(handler, update = groups.flat()) {
         DB.indicator.total = update.length;
-        names = names || {};
+        names = names || await DB.getNames() || {};
         for (const [prom, group] of await DB.fetch(update)) {
             const {info, parts} = await prom || {};
             if (!info && !parts) continue;
