@@ -51,12 +51,15 @@ data::before {
     content:attr(value);
     font-weight:bold;font-size:1.25em;
 }
-:host([group=layer4]) span, :host([group=layer5]) span {
-    color:hsl(0,100%,calc(85% - var(--root-b)/3));
+data[value='9']~data::before,
+data[value='10']::before,data[value='10']~data::before,
+:host([group=layer4]) data::before,
+:host([group=layer5]) data::before {
+    color:hsl(0,100%,calc(80% - var(--root-b)/4));
 }
-:host([group=layer4]) data[value='9']~data,
-:host([group=layer5]) data[value='9']~data {
-    color:hsl(270,100%,calc(90% - var(--root-b)/3));
+:host([group=layer4]) data[value='9']~data::before,
+:host([group=layer5]) data[value='9']~data::before {
+    color:hsl(270,100%,calc(80% - var(--root-b)/4));
 }
 span::before {
     content:'';
@@ -72,13 +75,13 @@ span {
     color:hsl(var(--c),80%,calc(80% - var(--b)/3));
 }
 span[fusion]::after {
-    content:attr(fusion);
+    content:attr(fusion)'\00a0';
     color:hsl(calc((var(--c) + 230)/2),70%,calc(80% - var(--b)/3));
+    background:hsla(0,0%,calc(100% - var(--b)/2),.25);
     font-style:italic;
 }
-:host([group=layer5b]) span[fusion]::after,
-:host([group=layer6r]) span[fusion]::after {
-    color:hsl(0,100%,calc(85% - var(--root-b)/3));
+:host([group=layer5b]) span[fusion]::after {
+    color:inherit;
 }
 
 @media (orientation:landscape) and (min-width:900px) {

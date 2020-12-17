@@ -17,7 +17,6 @@ Parts = {
     before() {
         document.title = document.title.replace(/^.*?(?= ｜ )/, Parts.titles[Parts.group] || Parts.titles[Parts.group.replace(/\d$/, '')]);
         Tools.magnify();
-        Tools.ruler(Parts.group);
     },
     after(info) {
         Q('details article').innerHTML = info;
@@ -25,6 +24,7 @@ Parts = {
         Q('main h5').innerHTML = '　';
         Parts.target();
         Parts.count();
+        Tools.ruler(Parts.group); //Parts.fusion
         Tools.filter(Parts.group);
         try {
             Q(':-webkit-any(#A)');

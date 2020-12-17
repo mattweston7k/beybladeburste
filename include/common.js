@@ -68,8 +68,8 @@ const DB = {
         if (DB.db) return handler();
         if (!window.indexedDB) return (async () => names = names || await (await fetch('/update/names.json')).json())();
         if (!await new Promise(res => {
-            let firstTime = false;
             const open = indexedDB.open('db', 1);
+            let firstTime = false;
             open.onupgradeneeded = () => {
                 firstTime = true;
                 DB.init(open).oncomplete = () => DB.cache(handler);
