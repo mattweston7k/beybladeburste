@@ -156,7 +156,7 @@ const Cell = {
         if (comp == 'driver')
             [dash, high, sym] = [regex.dash.test(sym), regex.high.test(sym), sym.replace(regex.dash, '').replace(regex.high, '')];
         else if (comp == 'disk')
-            [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', (sym.match(regex.core) || [])[0], sym.replace(regex.core, '')];
+            [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', sym.match(regex.core)?.[0], sym.replace(regex.core, '')];
         if (preview) {
             more = td.parentNode.getAttribute('data-more');
             preview = [
