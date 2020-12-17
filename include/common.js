@@ -64,22 +64,23 @@ const DB = {
         open.transaction.objectStore('json').createIndex('group', 'group');
         return open.transaction;
     },
-    open(handler) {
+    async open(handler) {
         if (DB.db) return handler();
         if (!window.indexedDB) return (async () => names = names || await (await fetch('/update/names.json')).json())();
-        let firstTime = false;
-        const open = indexedDB.open('db', 1);
-        open.onupgradeneeded = () => {
-            firstTime = true;
-            DB.init(open).oncomplete = () => DB.cache(handler);
-        }
-        open.onsuccess = () => {
-            DB.db = open.result;
-            DB.db.onerror = ev => DB.indicator.error(ev);
-            if (firstTime) return;
-            return /^\/(index.html)?$/.test(window.location.pathname) ? DB.check(handler) : handler ? handler() : null;
-        }
-        open.onerror = ev => DB.indicator.error(ev);
+        if (!await new Promise(res => {
+            let firstTime = false;
+            const open = indexedDB.open('db', 1);
+            open.onupgradeneeded = () => {
+                firstTime = true;
+                DB.init(open).oncomplete = () => DB.cache(handler);
+            }
+            open.onsuccess = () => {
+                DB.db = open.result;
+                DB.db.onerror = ev => DB.indicator.error(ev);
+                res(firstTime);
+            }
+            open.onerror = ev => DB.indicator.error(ev);
+        })) return /^\/(index.html)?$/.test(window.location.pathname) ? DB.check(handler) : handler ? handler() : null;
     },
     check(handler) {
         fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).

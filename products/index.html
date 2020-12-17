@@ -127,18 +127,19 @@
 <script src=image.js></script>
 <script src=row.js></script>
 <script src=/include/tablesorter.js></script>
+<script src=/parts/include/catalog.js></script>
 
 <script>
     const Table = {
         limit: 'B-159',
         async get() {
-            Table.loading(true); setTimeout(async () => {
+            Table.loading(true);
             names = names || await DB.getNames();
             const [newer, older] = [await DB.get('html', `prod-new`), await DB.get('html', `prod-old`)];
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
                 return Table.fetch(window.location.hash == '#update' ? older : false);
             Q('tbody').innerHTML = newer + (Table.limit ? older.replace(/<tr/g, '<tr hidden') : older);
-            Table.loading(false); }, 50);
+            Table.loading(false);
         },
         async fetch(old) {
             Table.loading(true);
@@ -269,6 +270,5 @@
 </script>
 
 <script async src=/parts/include/parts.js></script>
-<script async src=/parts/include/catalog.js></script>
 <link rel=stylesheet href=/parts/include/catalog.css>
 <link rel=stylesheet href=/parts/include/typography.css>
