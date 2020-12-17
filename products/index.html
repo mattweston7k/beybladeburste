@@ -138,7 +138,7 @@
             if (!newer || !older || /^#(flush|update)$/.test(window.location.hash))
                 return Table.fetch(window.location.hash == '#update' ? older : false);
             Q('tbody').innerHTML = newer + (Table.limit ? older.replace(/<tr/g, '<tr hidden') : older);
-            Table.loading(false); }, 100);
+            Table.loading(false); }, 50);
         },
         async fetch(old) {
             Table.loading(true);
@@ -240,6 +240,7 @@
             ].map(([code, img, text]) => `<div><code>BBG-${code}</code>${img ? `<img src=${img} alt=BBG-${code}>` : ''}${text || '不明'}</div>`).join('');
         }
     }
+    Table.get();
     window.onresize = () => Table.flush();
 
     (() => {
@@ -265,8 +266,6 @@
     };
     Q('#eng').onchange = ({target}) => Table.column(target.checked ? 'eng' : 'cjk');
     Q('input[type=text]', input => input.onkeypress = ({code}) => code == 'Enter' ? Search.go() : null);
-
-    Table.get();
 </script>
 
 <script async src=/parts/include/parts.js></script>
