@@ -35,10 +35,10 @@ const notify = () => {
             Q('a[href*="products/"]').classList.add('notify');
         if (gs.length > 0)
             Q('a[href*="parts/"]').classList.add('notify');
-    } else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
-        gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify'));
-    else if (Parts.group || /^\/products\/(index.html)?(#.+)?$/.test(window.location.pathname))
+    } else if (Parts.group || /^\/products\/(index.html)?(#.+)?$/.test(window.location.pathname))
         Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
+    else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
+        gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify'));
 }
 L(() => {
     document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト';
@@ -90,7 +90,6 @@ const DB = {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
                 if (oldUser || !Cookie.getHistory(item)) item == 'products' ? DB.indicator.prod() : updates.push(item);
                 if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000)) notify.push(item);
-                Cookie.setHistory(item);
             }
             if (notify.length > 0) Cookie.notification(notify);
             if (updates.length > 0) {
