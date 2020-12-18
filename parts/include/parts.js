@@ -127,7 +127,7 @@ const Tools = {
         }
         buttons();
         window.innerWidth > 630 ? slider() : null;
-        window.resize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
+        window.onresize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
     },
     ruler(group) {
         if (/^(dash|high)$/.test(group))

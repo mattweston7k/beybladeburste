@@ -20,8 +20,8 @@ const Cookie = {
         Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000) })) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
-        Cookie.set('magBar', Q('input[type=range]')?.value);
-        Cookie.set('magBut', Q('input[name=mag]:checked')?.id);
+        Cookie.set('magBar', Q('input[type=range]')?.value || '');
+        Cookie.set('magBut', Q('input[name=mag]:checked')?.id || '');
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
