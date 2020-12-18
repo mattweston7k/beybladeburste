@@ -16,7 +16,7 @@ const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
-    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name)/.test(item)) ?
+    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name|frame)/.test(item)) ?
         Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000) })) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
@@ -90,6 +90,7 @@ const DB = {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
                 if (oldUser || !Cookie.getHistory(item)) item == 'products' ? DB.indicator.prod() : updates.push(item);
                 if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000)) notify.push(item);
+                Cookie.setHistory(item);
             }
             if (notify.length > 0) Cookie.notification(notify);
             if (updates.length > 0) {

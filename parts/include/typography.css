@@ -17,7 +17,7 @@ h2.kanji {
 }
 a[id^='1']:not([id='11']):not(.single) h2,
 :-webkit-any(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
-#dC,#dF,#oE,#eF,#RL,#ML,#HK,#GPr) h2 {
+#dC,#dF,#oE,#eF) h2 {
     padding-right:.05em;
 }
 :-webkit-any(.layer[id$='2'],#Hn,#Op,#Rb,#Sp) h2 {
@@ -40,17 +40,17 @@ h2:not(.single)::first-letter {
 }
 :-webkit-any(#Ab,#Dr,#Gn,#Hy,#Hr,#Kp,#Rb,#Rg,#Sp,#Sw,#Vn,#αn,
 #B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,
-#oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP,#GP,#RU) h2::first-letter {
+#oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP) h2::first-letter {
     letter-spacing:-.025em;
 }
 :-webkit-any(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
 a[id='2D'],a[id='2B'],.driver[id^='+'],
 #M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,
-#gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,#GPr,#HK,#ML,
+#gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,
 a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
     letter-spacing:-.05em !important;
 }
-:-webkit-any(#Hn,#Mb,#Mr,#Op,#Wd,a[id$=m],#GPr,
+:-webkit-any(#Hn,#Mb,#Mr,#Op,#Wd,a[id$=m],
 #mG,#SgV) h2::first-letter {
     letter-spacing:-.075em;
 }
@@ -63,9 +63,26 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
 :-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
     margin-left:-.07em;margin-right:.07em;
 }
-#GPr h2 {
+
+#BP~a.MFB h2 {
     letter-spacing:-.05em;
     padding-right:.1em;
+    transform:scaleX(.9);
+}
+#GPg h2 {
+    padding-right:.05em !important;
+}
+#GPg h2 {
+    letter-spacing:-.075em !important;
+}
+#RUn h2 {
+    letter-spacing:-.1em !important;
+}
+#BP~a.MFB h2::first-letter {
+    letter-spacing:-.075em;
+}
+#MLd h2::first-letter {
+    letter-spacing:-.1em !important;
 }
 #SgV h2 {
     letter-spacing:-.12em;
