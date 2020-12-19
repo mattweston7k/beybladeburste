@@ -46,7 +46,7 @@ const Product = {
             return 'https://ct.yimg.com/xd/api/res/1.2/42QonUWAs7dwFUrFhnp5og--/YXBwaWQ9eXR3YXVjdGlvbnNlcnZpY2U7aD03NDA7cT04NTtyb3RhdGU9YXV0bzt3PTgwMA--/https://s.yimg.com/ob/image/410c9674-367e-46f5-9d8d-8b9441857106.jpg';
 
         if (/^BBG-(15|20|28|33)/.test(no))
-            return `${window.location.host}/img/${no}.png`;
+            return `https://${window.location.host}/img/${no}.png`;
         if (no == 'BBG-02')
             return 'https://img.ponparemall.net/imgmgr/25/00115525/0/itn3/51001860_2.jpg';
         if (no == 'BBG-09')
