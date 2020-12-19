@@ -23,81 +23,155 @@
 </main>
 <main hidden>
     <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
-    <svg viewBox="0 0 100 80">
-        <image href="include/parts.svg#layer" width="100" height="80" preserveAspectRatio="xMidYMin slice" />
-        <g class="layer">
-            <path d="M 5,6 l 4,-8 l 82,0 L 95,6" />
-            <a href=?remake><image href="/img/system-remake.png" /></a>
-            <a href=?layer5><image href="/img/system-layer5m.png" /></a>
-            <a href=?layer4><image href="/img/system-layer4.png" /></a>
-            <a href=?layer3><image href="/img/system-layer3.png" /></a>
-            <a href=?layer2><image href="/img/system-layer2.png" /></a>
-            <a href=?layer1><image href="/img/system-layer1.png" /></a>
-            <g id=GT>
-                <a href=?layer5b><image href="/img/system-layer5.png" x=29 /><text>Base</text></a>
-                <a href=?layer5w><image href="/img/system-layer5.png" x=59 /><text>Weight</text></a>
-                <a href=?layer5c><image href="/img/system-layer5.png" x=89 /><text>Chip</text></a>
-            </g>
-            <g id=SP>
-                <a href=?layer6s><image href="/img/system-layer6.png" x=21 /><text>Chassis</text></a>
-                <a href=?layer6r><image href="/img/system-layer6.png" x=45 /><text>Ring</text></a>
-                <a href=?layer6c><image href="/img/system-layer6.png" x=76 /><text>Chip</text></a>
-                <a href=?layer6c><image href="/img/system-layer6.png" x=41 /><text>LB</text></a>
-                <path d="M 69,18 l -17,0 m -13.5,0 l -11,0 M 63,18 l -6,9 l -10,0 m -13,0 l -19,0 l -4,6" />
-            </g>
-            <text x=50 y=2>Layer 攻擊環・結晶輪盤</text>
-        </g>
-        <g class="disk">
-            <a href=?layer6c><image href="/img/system-layer6.png" x=9 y=37 /><text x=12 y=40>LB</text></a>
-            <a href=?disk3><circle cx=5 cy=44 /><text x=5 y=45>3</text></a>
-            <a href=?disk2><circle cx=11 cy=44 /><text x=11 y=45>2</text></a>
-            <a href=?frame><rect x=15 y=41.5 width=12 height=5 rx=1 /><text x=21 y=45>Frame</text></a>
-            <a href=?disk1><circle cx=31 cy=44  /><text x=31 y=45>1</text></a>
-            <text x=3 y=52>Disk 金屬輪盤</text>
-        </g>
-        <g class="driver">
-            <a href=?high><text fill=magenta>⇪</text></a>
-            <a href=?dash><text fill=gold>⌇</text></a>
-            <a href=?driver4><text>4</text></a>
-            <a href=?driver3><text>2</text></a>
-            <a href=?driver2><text>2</text></a>
-            <a href=?driver1><text>1</text></a>
-            <text x=97 y=82>Driver 軸心・底盤</text>
-        </g>
-    </svg>
-    <script>
-        (() => {
-            const start = 10;
-            const end = 100 - start;
-            const interval = (end - start) / 5;
-            const scale = () =>
-                Q('svg').style.setProperty('--w', (Q('main svg').clientWidth / -100 + 20) + 'px');
-            setTimeout(scale);
-            window.onresize = scale;
-            Q('.layer>a image', (image, i) => {
-                image.setAttribute('y', -7.5);
-                image.setAttribute('x', start + i * interval);
-            });
-            Q('#GT image, #SP image', (image, i) => {
-                const y = /layer5/.test(image.getAttribute('href')) ? 9 : 18;
-                image.setAttribute('y', y);
-                image.nextElementSibling.setAttribute('x', 3 + parseInt(image.getAttribute('x')));
-                image.nextElementSibling.setAttribute('y', 2.5 + y);
-            });
-        })();
-    </script>
+    <section>
+        <button disabled>left</button>
+        <button style="right:0">right</button>
+        <div class=layer style="height:31%;--p:0">
+            <div>
+                <a href=?layer6s style="top:28%;left:22%"><img src=/img/system-layer6.png></a>
+                <a href=?layer6r style="top:28%;left:53%"><img src=/img/system-layer6.png></a>
+                <a href=?layer6c style="top:50%;left:80%"><img src=/img/system-layer6.png></a>
+                <a href=?layer6LB style="top:75%;left:35%"><img src=/img/system-layer6.png></a>
+            </div>
+            <div>
+                <a href=?layer5><img src=/img/system-layer5m.png></a>
+                <a href=?layer5b><img src=/img/system-layer5.png></a>
+                <a href=?layer5w><img src=/img/system-layer5.png></a>
+                <a href=?layer5c><img src=/img/system-layer5.png></a>
+            </div>
+            <div>
+                <a href=?remake><img src=/img/system-remake.png></a>
+                <a href=?layer4><img src=/img/system-layer4.png></a>
+                <a href=?layer3><img src=/img/system-layer3.png></a>
+                <a href=?layer2><img src=/img/system-layer2.png></a>
+                <a href=?layer1><img src=/img/system-layer1.png></a>
+            </div>
+        </div>
+        <div class=disk style="top:38%;height:22%">
+            <a href=?diskLB><img src=/img/system-layer6.png></a>
+            <a href=?disk3>Disk 3</a>
+            <a href=?disk1>Disk 1</a>
+            <a href=?disk2>Core disk</a>
+            <a href=?frame>Frame</a>
+        </div>
+        <div class=driver style="top:68%;height:28%">
+            <a href=?driver4><svg viewBox="0 0 20 20"><use href="#round"/></svg>4</a>
+            <a href=?driver3><svg viewBox="0 0 20 20"><use href="#round"/></svg>3</a>
+            <a href=?driver2><svg viewBox="0 0 20 20"><use href="#round"/></svg>2</a>
+            <a href=?driver1><svg viewBox="0 0 20 20"><use href="#round"/></svg>1</a>
+            <a href=?high data-icon="⇪"><svg viewBox="0 0 20 20"><use href="#round"/></svg></a>
+            <a href=?dash data-icon="⌇"><svg viewBox="0 0 20 20"><use href="#round"/></svg></a>
+        </div>
+
+        <svg viewBox="0 0 100 73">
+            <defs>
+                <rect id="round" x="0" y="0" width="20" height="20" rx="10" ry="10"></rect>
+            </defs>
+            <image href="include/parts.svg#layer" width="100" height="73" />
+            <path d="M 72,12 l -4,0 l -3.5,-5 l -4,0 m -15.5,0 l -15.5,0 M 68,12 l -3.5,5 l -21,0 m -15.5,0 l -5,0 l -3.5,5 l 3.5,5"/>
+        </svg>
+    </section>
 </main>
 <script>
-if (Parts.group)
-    L(() => Q('main:first-of-type').hidden = false);
-else L(() => {
-    Q('main:last-of-type').hidden = false;
-    Q('style[media]').removeAttribute('media');
-});
+    let page = 0;
+    Q('button:first-of-type').onclick = ev => {
+        Q('button:last-of-type').disabled = false;
+        page++;
+        Q('.layer').style.setProperty('--p', page);
+        ev.target.disabled = page == 0;
+    };
+    Q('button:last-of-type').onclick = ev => {
+        Q('button:first-of-type').disabled = false;
+        page--;
+        Q('.layer').style.setProperty('--p', page);
+        ev.target.disabled = page == -2;
+    };
+    if (Parts.group)
+        L(() => Q('main:first-of-type').hidden = false);
+    else L(() => {
+        Q('main:last-of-type').hidden = false;
+        Q('style[media]').removeAttribute('media');
+    });
 </script>
 <style media="max-width:1px">
     main {
         overflow:visible;
+    }
+    main a[data-icon]::after {content:attr(data-icon);}
+    a[data-icon='⌇']::after {color:gold;}
+    a[data-icon='⇪']::after {color:magenta;}
+
+    section {
+        position:relative;
+        max-width:800px;
+        margin:auto;
+    }
+    section div {
+        position:absolute;width:100%;
+    }
+    .layer {
+        overflow:hidden;
+    }
+    .layer>div   {
+        height:100%;
+        transition:left .5s;
+        display:flex;justify-content:space-around;align-items:center;
+        padding:0 10%;
+    }
+    .layer>div:first-child {
+        left:calc(var(--p)*100%);
+    }
+    .layer>div:nth-child(2) {
+        left:calc((1 + var(--p))*100%);
+    }
+    .layer>div:last-child {
+        left:calc((2 + var(--p))*100%);
+    }
+    svg path {
+        opacity:0;transition:opacity .5s;
+    }
+    .layer[style*='--p:0']~svg path {
+        opacity:1;
+    }
+    .disk {
+        display:grid;grid-template:'a b c' 50% 'a d e' 50%;
+        align-items:center;justify-content:center;
+        padding-left:20%;
+    }
+    .disk a:first-child {
+        grid-area:a;
+    }
+    .driver {
+        display:grid;grid-template:'a b c d' 2em '. e f .' 2em / 2em 2em 2em 2em;
+        justify-content:center;align-items:center;
+    }
+    a[href='?high'] {grid-area:e;}
+    a[href='?dash'] {grid-area:f;}
+
+    section button {
+        position:absolute;top:-2em;z-index:3;
+    }
+    .layer>div:first-child a {
+        position:absolute;transform:translate(-50%,-50%);
+    }
+    .layer a,.disk a:first-child {
+        display:inline-block;
+        height:3em;
+    }
+    .driver a {
+        position:relative;
+        height:2em;
+        display:inline-block;
+    }
+    section a svg {
+        position:absolute;left:50%;transform:translate(-50%,0);
+        height:100%;
+    }
+    #round {
+        stroke-width:1.5;
+    }
+    section img {
+        height:100%;
     }
     g:not(.layer) a, svg path {
         filter:drop-shadow(0 0 0.1rem hsl(var(--c),calc(var(--s)*2),80%)) drop-shadow(0 0 0.3rem hsl(var(--c),calc(var(--s)*1.5),70%)) !important;
@@ -114,10 +188,6 @@ else L(() => {
         width:var(--w);
         height:calc(var(--w)*5.5/10);
         transform:translate(calc(var(--w)/-2),calc(var(--w)*5.5/10/-2));
-    }
-    svg {
-        margin-top:5em;
-        max-width:50em;
     }
     path {
         stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));

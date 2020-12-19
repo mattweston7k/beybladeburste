@@ -252,7 +252,7 @@ a:not([id]) dl div:nth-of-type(4) dd {
 .desc {
     padding:.4em calc(4.2em/.7/10);margin:0;
     text-align:justify;
-    line-height:calc((3.5em/.69 - .8em)/3);
+    line-height:1.45em;
 }
 
 h2 {
