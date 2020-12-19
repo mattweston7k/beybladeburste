@@ -333,7 +333,7 @@ tr[data-abbr*='.'] td:nth-child(7):not(.fusion)+td,
 #BBG:not(:target) {
     display:none;
 }
-.boards div {
+table+.boards div {
     --c:0;--s:0%;--b:calc(var(--root-b) + 5%);
 }
 h5 {
