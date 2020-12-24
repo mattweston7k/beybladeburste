@@ -8,7 +8,8 @@ const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
 const query = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v}), {});
 const groups = [
-    ['remake', 'layer6s', 'layer6r', 'layer6c', 'layer5b', 'layer5c', 'layer5w', 'layer5', 'layer4', 'layer3', 'layer2', 'layer1'],
+    ['layer6s', 'layer6r', 'LB', 'layer6c', 'layer5b', 'layer5c',
+        'remake', 'layer5w', 'layer5', 'layer4', 'layer3', 'layer2', 'layer1'],
     ['disk3', 'disk2', 'frame', 'disk1'],
     ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
@@ -16,8 +17,8 @@ const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
-    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name|frame)/.test(item)) ?
-        Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000) })) : null,
+    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name|frame|LB)/.test(item)) ?
+        Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000)} )) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
         Cookie.set('magBar', Q('input[type=range]')?.value || '');

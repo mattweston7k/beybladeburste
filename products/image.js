@@ -5,9 +5,9 @@ const Product = {
                 return ['202007_b171.jpg'];
             case 128:
             case 126:
-                return ['bey_b' + id + '_2_72.jpg', 'bey_b' + id + '_1_72.jpg'];
+                return [`bey_b${id}_2_72.jpg`, `bey_b${id}_1_72.jpg`];
             case 98:
-                return ['bey_b' + id + '_72_2.jpg', 'bey_b' + id + '_72_1.jpg'];
+                return [`bey_b${id}_72_2.jpg`, `bey_b${id}_72_1.jpg`];
             case 174:
             case 156:
             case 153:
@@ -16,19 +16,19 @@ const Product = {
             case 146:
             case 140:
             case 121:
-                return ['bey_b' + id + '_2.jpg', 'bey_b' + id + '_1.jpg'];
+                return [`bey_b${id}_2.jpg`, `bey_b${id}_1.jpg`];
             case 130:
             case 129:
             case 127:
             case 125:
             case 122:
             case 97:
-                return ['bey_b' + id + '_72.jpg'];
+                return [`bey_b${id}_72.jpg`];
             case 65:
-                return ['bey_b59_0.jpg'];
+                return [`bey_b59_0.jpg`];
             case 64:
             case 63:
-                return ['bey_b' + id + '_0.jpg'];
+                return [`bey_b${id}_0.jpg`];
             default:
                 return ['bey_b' + `${id}`.padStart(2, '0') + '.jpg'];
         }

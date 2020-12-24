@@ -39,7 +39,7 @@ label::after {
 }
 
 div {
-    background:hsla(var(--c),var(--s),calc(var(--b) + 5%),0.9);
+    background:hsla(var(--c),var(--s),calc(var(--b) + 5%),0.9);--b:30%;
 }
 div,data {
     position:relative;
@@ -115,7 +115,7 @@ span[fusion]::after {
         white-space:nowrap;
     }
     span[fusion]::after {
-        content:'\00a0\00a0'attr(fusion); }
+        margin-left:.5em; }
     span::before {
         left:50%;transform:translate(-50%,-.1em); }
 }
