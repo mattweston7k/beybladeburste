@@ -56,7 +56,8 @@ Part.prototype.catalog = function() {
     const weight = {
         levels: w => typeof w == 'string' ?
             ({driver: [14, 10], layer5b: [99, 23, 21], layer5c: [99, 14]}[comp] || []) :
-            (/layer[45]$/.test(group) || deck && comp == 'driver' ? [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]),
+            (/^(layer[45])$/.test(group) || group == 'LB' && comp == 'layer6r' || deck && comp == 'driver' ?
+                [8, 0, 0] : deck ? [10, 5, 3] : [18, 10, 8]),
         bucketing: w => weight.classes = [
             deck || /^[IM]$/.test(sym) && comp == 'layer5b' ? 'fusion' : '',
             typeof w == 'string' ? 'grams' : '',

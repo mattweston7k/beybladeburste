@@ -51,8 +51,9 @@ data::before {
     content:attr(value);
     font-weight:bold;font-size:1.25em;
 }
-data[value='9']~data::before,
-data[value='10']::before,data[value='10']~data::before,
+div:not(.LB)>data[value='9']~data::before,
+div:not(.LB)>data[value='10']::before,
+div:not(.LB)>data[value='10']~data::before,
 :host([group=layer4]) data::before,
 :host([group=layer5]) data::before {
     color:hsl(0,100%,calc(80% - var(--root-b)/4));
