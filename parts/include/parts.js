@@ -26,25 +26,16 @@ Parts = {
         Parts.count();
         Tools.ruler(Parts.group); //Parts.fusion
         Tools.filter(Parts.group);
-        try {
-            Q(':-webkit-any(#A)');
-        } catch (e) {
-            try {
-                Q(':is(#A)');
-                Parts.any('is');
-            } catch (e) {
-                try {
-                    Q(':matches(#A)');
-                    Parts.any('matches');
-                } catch (e) {
-                    try {
-                        Q(':-moz-any(#A)');
-                        Parts.any('-moz-any');
-                    } catch (e) {
-                    }
-                }
-            }
-        }
+        new Promise(res => res(Q(':-webkit-any(#A)'))).catch(() => {
+            Q(':is(#A)');
+            Parts.any('is');
+        }).catch(() => {
+            Q(':matches(#A)');
+            Parts.any('matches');
+        }).catch(() => {
+            Q(':-moz-any(#A)');
+            Parts.any('-moz-any');
+        });
     },
     count() {
         if (count('.catalog>a') < 28) Q('label[for=fixed]').remove();

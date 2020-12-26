@@ -154,3 +154,14 @@ Part.prototype.catalog = function() {
         classList: [...new Set([comp, group, type, generation, sym == 9 ? 'none' : ''])].filter(c => c).join(' ')
     }));
 }
+Part.prototype.links = function() {
+    Q('.catalog>a:last-of-type').removeAttribute('href');
+    if (this.group == 'other') return;
+    const temp = Q('template').content.cloneNode(true);
+    temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(this.sym) ? 'more' : this.comp, this.sym);
+    temp.querySelector('a[href]').href = `/parts/?${this.group}#${this.sym}`;
+    /^(layer|remake)/.test(this.group) ?
+        temp.querySelector('img').src = `/img/system-${this.group.replace(/^layer5$/, 'layer5m').replace(/(layer\d)[^m]$/, '$1')}.png` :
+        temp.querySelector('img').remove();
+    Q('.catalog').insertBefore(temp, Q('.catalog>a:last-of-type'));
+}

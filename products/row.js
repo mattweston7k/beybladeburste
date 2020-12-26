@@ -178,21 +178,10 @@ const Cell = {
         }
         Q('label[for=popup] img').src = '';
         const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
-        const links = (comp, group, sym) => {
-            Q('.catalog>a:last-of-type').removeAttribute('href');
-            if (group == 'other') return;
-            const temp = Q('template').content.cloneNode(true);
-            temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(sym) ? 'more' : comp, sym);
-            temp.querySelector('a[href]').href = `/parts/?${group}#${sym}`;
-            /^(layer|remake)/.test(group) ?
-                temp.querySelector('img').src = `/img/system-${group.replace(/^layer5$/, 'layer5m').replace(/(layer\d)[^m]$/, '$1')}.png` :
-                temp.querySelector('img').remove();
-            Q('.catalog').insertBefore(temp, Q('.catalog>a:last-of-type'));
-        }
         parts.filter(p => p).forEach(async ([sym, comp]) => {
-            const part = await DB.get('json', `${sym}.${comp}`);
-            (await new Part(part).attach(sym, comp).revise()).catalog();
-            links(comp, part.group, sym);
+            const part = await new Part(await DB.get('json', `${sym}.${comp}`)).attach(sym, comp).revise();
+            part.catalog();
+            part.links();
         });
     },
     code(lang, td) {
