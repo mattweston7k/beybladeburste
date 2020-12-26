@@ -61,7 +61,7 @@ Part.prototype.catalog = function() {
         bucketing: w => weight.classes = [
             deck || /^[IM]$/.test(sym) && comp == 'layer5b' ? 'fusion' : '',
             typeof w == 'string' ? 'grams' : '',
-            sym == '幻' || sym == 'L' && comp == 'layer5b' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][weight.levels(w).findIndex(l => w >= l)]
+            sym == '幻' || sym == 'L' && comp == 'layer5b' ? 'light' : ['heavy-x', 'heavy-s', 'heavy'][weight.levels(w).findIndex(l => parseInt(w) >= l)]
         ].filter(c => c),
     }
     const code = {
