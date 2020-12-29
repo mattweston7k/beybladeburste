@@ -34,11 +34,6 @@ form summary span::first-line,caption span::first-line,.groups h2,.groups h3,.gr
     font-family:"ANC";font-display:swap;
     src: url("/include/fonts/part-symbol-AvenirNC.ttf"); }
 @font-face {
-  font-family: 'Font Awesome 5 Brands';
-  font-style: normal;
-  font-weight: normal;
-  src: url("/include/fonts/fa-brands-400.woff2") format("woff2"); }
-@font-face {
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
   font-weight: 900;
@@ -49,7 +44,7 @@ form summary span::first-line,caption span::first-line,.groups h2,.groups h3,.gr
 figure::before,figure::after,
 label[for$=L]::before,label[for$=R]::before,
 [data-icon]::before,[data-icon]::after {
-    font-family:'Font Awesome 5 Free','Font Awesome 5 Brands',AN;
+    font-family:'Font Awesome 5 Free',AN;
     font-weight:bold;
 }
 @keyframes highlight {
