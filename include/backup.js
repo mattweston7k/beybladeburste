@@ -4,7 +4,7 @@ class Nav extends HTMLElement {
         this.attachShadow({mode: 'open'}).innerHTML = `
         <link rel=stylesheet href=/include/common.css>
         <ul class=link><slot name=link></slot></ul>` +
-            (Parts.group ? this.part : /^\/products\/(index.html)?$/.test(window.location.pathname) ? this.prod : '') +
+            (Parts.group ? this.part : '/products/' == window.location.pathname ? this.prod : '') +
             this.menu;
     }
     connectedCallback() {

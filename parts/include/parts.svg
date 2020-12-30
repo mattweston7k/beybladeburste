@@ -38,15 +38,11 @@ document.querySelector('#driver').setAttribute('d',`M ${startX},${startY} L ${10
 document.querySelector('svg').setAttribute('viewBox',`${100-initX},${initY},${initX-100+initX},${tip-dy+r-initY}`);
 </script-->
 <style>
-* {
-  fill:hsl(0,0%,50%);
-  transition:.3s;
+[style] {
+  fill:hsl(var(--c),65%,60%);
 }
 #whole:target * {
   fill:hsl(45,90%,50%);
-}
-:target,g:target>* {
-  fill:hsl(var(--c),65%,60%) !important;
 }
 </style>
 </svg>
