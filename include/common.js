@@ -26,19 +26,19 @@ const Cookie = {
     },
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
-let Parts = {group: /^\/parts\/(index.html)?$/.test(window.location.pathname) ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
+let Parts = {group: '/parts/' == window.location.pathname ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
 
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
-    if (/^\/(index.html)?$/.test(window.location.pathname)) {
+    if ('/' == window.location.pathname) {
         if (pages.includes('products'))
             Q('a[href*="products/"]').classList.add('notify');
         if (gs.length > 0)
             Q('a[href*="parts/"]').classList.add('notify');
-    } else if (Parts.group || /^\/products\/(index.html)?(#.+)?$/.test(window.location.pathname))
+    } else if (Parts.group || /^\/products\/(#.+)?$/.test(window.location.pathname))
         Cookie.notification(pages.filter(p => p != (Parts.group || 'products')));
-    else if (/^\/parts\/(index.html)?$/.test(window.location.pathname))
+    else if ('/parts/' == window.location.pathname)
         gs.forEach(g => Q(`main a[href='?${g}']`).classList.add('notify'));
 }
 L(() => {
@@ -81,7 +81,7 @@ const DB = {
                 res(firstTime);
             }
             open.onerror = ev => DB.indicator.error(ev);
-        })) return /^\/(index.html)?$/.test(window.location.pathname) ? DB.check(handler) : handler ? handler() : null;
+        })) return '/' == window.location.pathname ? DB.check(handler) : handler ? handler() : null;
     },
     check(handler) {
         fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).
@@ -161,7 +161,7 @@ const nav = {
     hrefs: {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'},
     create: (links = ['home', 'prize'], texts = []) => {
         nav.ul('link', links, texts);
-        Parts.group ? nav.ul('part') : /^\/products\/(index.html)?$/.test(window.location.pathname) ? nav.ul('prod') : '';
+        Parts.group ? nav.ul('part') : '/products/' == window.location.pathname ? nav.ul('prod') : '';
         nav.ul('menu');
     },
     ul: (menu, ...p) => {
