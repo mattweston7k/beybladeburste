@@ -118,8 +118,10 @@
                     cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null;
                 Q('#now fieldset').appendChild(t);
             };
-            fetch('/update/-news.json').then(r => r.json()).catch(() => DB.indicator.setAttribute('status', 'offline'))
-                .then(beys => beys.forEach(b =>
+            fetch('/update/-news.json').then(r => r.json()).catch(() => {
+                DB.indicator.setAttribute('status', 'offline');
+                Q('#now').hidden = true;
+            }).then(beys => beys.forEach(b =>
                     typeof b == 'string' ? Q('#now fieldset').insertAdjacentHTML('beforeend', b) : newBey(...b) ));
         </script>
     </fieldset>
