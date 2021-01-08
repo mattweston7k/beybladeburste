@@ -1,4 +1,3 @@
-window.addEventListener('beforeinstallprompt', ev => ev.preventDefault());
 navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? (async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
     document.head.insertAdjacentHTML('afterbegin', html);
