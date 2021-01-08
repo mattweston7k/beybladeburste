@@ -8,7 +8,7 @@ const justUpdated = (url, cache) => {
     return (
         /(Mincho-chi\.ttf)$/.test(url) && new Date('2020-10-14').getTime() >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
-        /^\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
+        /io\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 2) >= cachedDate || false);
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
