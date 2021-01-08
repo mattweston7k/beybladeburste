@@ -15,7 +15,7 @@ const append = url => internal(url) && !/\?/.test(url) && /(ttf|woff2?|js|json|c
 
 const classify = {
     update: url => [/\.json/].some(file => file.test(new URL(url).pathname)),
-    volatile: url => [/(js|json|css)$/, /^\/(index\.html)?$/].some(file => file.test(new URL(url).pathname)),
+    volatile: url => [/(js|json|css)$/].some(file => file.test(new URL(url).pathname)),
 }
 
 self.addEventListener('fetch', ev => ev.respondWith(
