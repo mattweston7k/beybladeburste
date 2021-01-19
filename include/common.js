@@ -60,13 +60,14 @@ const DB = {
     get indicator() {return Q('db-status');},
     init(open) {
         DB.indicator.init();
-        for (const store of ['html', 'json', 'order']) open.result.createObjectStore(store);
+        for (const store of ['html', 'json', 'order']) 
+            open.result.createObjectStore(store, store == 'json' ? {keyPath: 'key'} : null);
         open.transaction.objectStore('json').createIndex('group', 'group');
         return open.transaction;
     },
     async open(handler) {
         if (DB.db) return handler();
-        if (!window.indexedDB) return (async () => names = names || await (await fetch('/update/names.json')).json())();
+        if (!window.indexedDB) return names = names || await (await fetch('/update/names.json')).json();
         if (!await new Promise(res => {
             const open = indexedDB.open('db', 1);
             let firstTime = false;
@@ -105,45 +106,44 @@ const DB = {
         for (const [prom, group] of await DB.fetch(update)) {
             const {info, parts} = await prom || {};
             if (!info && !parts) continue;
-            const tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite');
-            if (info) DB.put('html', [group, info], tran);
-            if (group != 'other') DB.put('order', [group, parts.map(part => part?.sym || part)], tran);
+            (DB.tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite')).oncomplete = () => DB.tran = null;
+            if (info) DB.put('html', [group, info]);
+            if (group != 'other') DB.put('order', [group, parts.map(part => part?.sym || part)]);
             for (const part of parts.filter(part => part && typeof part == 'object')) {
                 if (part.names)
                     names[part.comp] = {...names[part.comp] || {}, [part.sym]: ['eng', 'chi', 'jap'].map(l => part.names[l])};
-                DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()], tran);
+                DB.put('json', [, new Part(part).detach()]);
             }
             DB.indicator.update();
             Cookie.setHistory(group);
         }
-        DB.put('json', ['names', names]);
+        DB.put('json', [, {key: 'names', names: names}]);
         notify();
         handler ? handler() : null;
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status == 200 ? [r.json(), g] : null))),
 
-    put: (store, [key, value], tran) => (tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
+    put: (store, [key, value]) => (DB.tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
 
-    query: (store, key, tran) => (tran || DB.db.transaction(store)).objectStore(store).get(key),
+    query: (store, key) => (DB.tran || DB.db.transaction(store)).objectStore(store).get(key),
 
-    get: (store, key, tran) => DB.open(async () => await new Promise(res => DB.query(store, key, tran).onsuccess = ev => res(ev.target.result))),
+    get: (store, key) => DB.open(async () => await new Promise(res => DB.query(store, key).onsuccess = ev => res(ev.target.result))),
 
-    getNames: tran => DB.get('json', 'names', tran),
+    getNames: async () => (await DB.get('json', 'names')).names,
 
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
-            const tran = DB.db.transaction(['json', 'order', 'html']);
-            names = names || await DB.getNames(tran);
-            let parts = await DB.get('order', group, tran);
+            (DB.tran = DB.db.transaction(['json', 'order', 'html'])).oncomplete = () => DB.tran = null;
+            names = names || await DB.getNames();
+            let parts = await DB.get('order', group);
             if (Part.derived.includes(group)) {
-                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran), group).attach(sym, 'driver').revise(tran));
-                return callback(await Promise.all(parts), await DB.get('html', group, tran));
+                parts = parts.map(async sym => new Part(await DB.get('json', `${sym.replace('′', '')}.driver`), group).attach(sym).revise());
+                return callback(await Promise.all(parts), await DB.get('html', group));
             }
-            tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
+            DB.tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
-                    return callback(parts, await DB.get('html', group, tran));
-                const [sym, comp] = result.primaryKey.split('.');
-                parts.splice(parts.indexOf(sym), 1, await new Part(result.value).attach(sym, comp).revise(tran));
+                    return callback(parts, await DB.get('html', group));
+                parts.splice(parts.indexOf(result.primaryKey.split('.')[0]), 1, await new Part(result.value).attach().revise());
                 result.continue();
             }
         })

@@ -8,20 +8,21 @@ class Part {
             other.attr = other.attr.filter(attr => !Part.derived.includes(attr));
             for (const p of ['stat', 'desc', 'attr'].filter(p => !`${other[p]}`.replace(/,/g, ''))) 
                 delete other[p];
-            return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
+            return ({...other, key: `${sym}.${comp}`, names: this.names?.can ? {can: this.names.can} : {}})
         })(this);
     }
-    attach(sym = this.sym, comp = this.comp) {
-        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym] || names[comp]?.[sym.replace('′', '')] || ['', '', ''];
-        [this.sym, this.comp] = [sym, comp];
+    attach(sym) {
+        [, this.sym, this.comp] = this.key.match(/(.+)\.(.+)/);
+        if (sym) this.sym = sym;
+        [this.names.eng, this.names.chi, this.names.jap] = names[this.comp]?.[this.sym] || names[this.comp]?.[this.sym.replace('′', '')] || ['', '', ''];
         return this;
     }
-    async revise(tran) {
+    async revise() {
         if (this.comp != 'driver') 
             return this;
         if (!Part.derived.includes(this.group) || this.group == 'dash')
             for (const g of Part.derived.filter(p => p != this.group)) 
-                await Part.list(g, tran);
+                await Part.list(g);
 
         if (!Part.derived.includes(this.group)) 
             this.attr = [...this.attr || [], ...Part.derived.filter(g => Part[g].includes(this.sym))];
@@ -44,8 +45,8 @@ class Part {
             [names.eng, names.jap, names.chi] = ['Metal ' + names.eng, 'メタル' + names.jap, '金屬' + names.chi];
         return names;
     }
-    static async list(group, tran) {
-        return Part[group] || (Part[group] = await DB.get('order', group, tran));
+    static async list(group) {
+        return Part[group] || (Part[group] = await DB.get('order', group));
     }
 }
 Part.derived = ['dash', 'high', 'metal'];

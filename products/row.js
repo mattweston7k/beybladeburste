@@ -70,7 +70,7 @@ class Row {
     }
     static connectedCallback(tr) {
         Row.fill(['eng', 'chi'], tr);
-        for (const td of tr.querySelectorAll('td')) td.onclick = () => Cell.preview(td);
+        for (const td of tr.querySelectorAll('td')) {Object.assign(td, {c:()=>console.log(2)});td.onclick = () => Cell.preview(td);}
     }
     static fill(lang, tr) {
         tr.querySelectorAll('td[data-part]').forEach(td => {
@@ -130,7 +130,7 @@ class Row {
         else
             for (const {n, color} of [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
-                {n: [160, 179], color: 'dodgerblue'},
+                {n: [160], color: 'dodgerblue'},
                 {n: [161, 163], color: 'red'},
                 {n: [167], color: 'lightseagreen'},
                 {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
@@ -179,7 +179,7 @@ const Cell = {
         Q('label[for=popup] img').src = '';
         const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
-            const part = await new Part(await DB.get('json', `${sym}.${comp}`)).attach(sym, comp).revise();
+            const part = await new Part(await DB.get('json', `${sym}.${comp}`)).attach().revise();
             part.catalog();
             part.links();
         });
