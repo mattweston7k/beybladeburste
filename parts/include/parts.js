@@ -61,7 +61,8 @@ Parts = {
         layer6s: '［超王］重心盤 底盤 Chassis', layer6c: '［超王］紋章 Chip', layer6r: '［超王］刃輪 戰輪 Ring',
         layer5w: '［GT］重心鐵 配重鐵 Weight', layer5c: '［GT］紋章 Chip', layer5b: '［GT］攻擊環底 基座 Base', layer5: '［GT 無限之鎖］攻擊環 Layer',
         layer4: '［超Ｚ］攻擊環 結晶輪盤 Layer', layer3: '［神］攻擊環 結晶輪盤 Layer', layer2: '攻擊環 結晶輪盤 Layer', layer1: '攻擊環 結晶輪盤 Layer',
-        disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', driver: '軸心 底盤 Driver', dash: '軸心 底盤 Driver', high: '軸心 底盤 Driver'}
+        disk: '金屬 鋼鐵 輪盤 Disk', frame: '結晶環 戰環 Frame', 
+        driver: '軸心 底盤 Driver', dash: '軸心 底盤 Driver', high: '軸心 底盤 Driver', metal: '軸心 底盤 Driver'}
 }
 customElements.define('weight-scale', class extends HTMLElement {
     constructor() {
@@ -124,7 +125,7 @@ const Tools = {
         window.onresize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
     },
     ruler(group) {
-        if (/^(dash|high)$/.test(group))
+        if (Part.derived.includes(group))
             return;
         let [max, min, scale] =
         [

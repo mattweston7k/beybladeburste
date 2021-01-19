@@ -39,7 +39,7 @@ h2:not(.single)::first-letter {
     letter-spacing:0em;
 }
 :-webkit-any(#Ab,#Dr,#Gn,#Hy,#Hr,#Kp,#Rb,#Rg,#Sp,#Sw,#Vn,#αn,
-#B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,
+#B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,#Wy,
 #oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP) h2::first-letter {
     letter-spacing:-.025em;
 }
@@ -298,3 +298,8 @@ a.dash h2.single {
     --adj:0em; }
 #Ul.dash :lang(ja) {
     letter-spacing:-.13em; }
+
+a.metal h2 {
+    transform:scaleX(.9);
+    padding-right:.05em;
+}

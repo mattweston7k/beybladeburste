@@ -10,13 +10,13 @@ const groups = [
     ['layer6s', 'layer6r', 'LB', 'layer6c', 'layer5b', 'layer5c',
         'remake', 'layer5w', 'layer5', 'layer4', 'layer3', 'layer2', 'layer1'],
     ['disk3', 'disk2', 'frame', 'disk1'],
-    ['dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
+    ['metal', 'dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
-    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|product|remake|name|frame|LB)/.test(item)) ?
+    setHistory: item => (/^(layer[67]|disk[34]|driver[34]|high|dash|metal|product|remake|name|frame|LB)/.test(item)) ?
         Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000)} )) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
@@ -135,8 +135,8 @@ const DB = {
             const tran = DB.db.transaction(['json', 'order', 'html']);
             names = names || await DB.getNames(tran);
             let parts = await DB.get('order', group, tran);
-            if (/^(dash|high)$/.test(group)) {
-                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran)).attach(sym, 'driver').revise(tran, group));
+            if (Part.derived.includes(group)) {
+                parts = parts.map(async sym => new Part(await DB.get('json', sym.replace('′', '') + `.driver`, tran), group).attach(sym, 'driver').revise(tran));
                 return callback(await Promise.all(parts), await DB.get('html', group, tran));
             }
             tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {

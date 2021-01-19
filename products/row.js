@@ -131,7 +131,7 @@ class Row {
             for (const {n, color} of [
                 {n: [159, 172], color: 'rgb(210,190,0)'},
                 {n: [160, 179], color: 'dodgerblue'},
-                {n: [161, 163, 177], color: 'red'},
+                {n: [161, 163], color: 'red'},
                 {n: [167], color: 'lightseagreen'},
                 {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
                 {n: [169], color: 'deeppink'},
@@ -148,15 +148,15 @@ customElements.define('product-row', Row, {extends: 'tr'});
 const Cell = {
     decompose(td, preview = false) {
         let [sym, comp] = td.getAttribute('data-part').split('.');
-        let dash, high, core, more, regex = {
+        let dash, prefix, core, more, regex = {
             dash: /′(\+.)?$/,
-            high: /^H(?=[^′a-z])/,
+            prefix: /^[HM](?=[^′a-z])/,
             core: /[\dα′_]+(?=[A-Zα_])/
         };
         if (comp == 'driver')
-            [dash, high, sym] = [regex.dash.test(sym), regex.high.test(sym), sym.replace(regex.dash, '').replace(regex.high, '')];
+            [dash, prefix, sym] = [regex.dash.test(sym), regex.prefix.exec(sym)?.[0], sym.replace(regex.dash, '').replace(regex.prefix, '')];
         else if (comp == 'disk')
-            [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', sym.match(regex.core)?.[0], sym.replace(regex.core, '')];
+            [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', regex.core.exec(sym)?.[0], sym.replace(regex.core, '')];
         if (preview) {
             more = td.parentNode.getAttribute('data-more');
             preview = [
@@ -165,7 +165,7 @@ const Cell = {
             ];
         }
         return {
-            dash: dash, high: high, core: core,
+            dash: dash, prefix: prefix, core: core,
             parts: !preview ? [sym, comp] : [[sym, comp], ...preview].filter(part => part && part[0] != '_')
         };
     },
@@ -185,9 +185,8 @@ const Cell = {
         });
     },
     code(lang, td) {
-        const {parts: [sym, comp], high, dash, core} = Cell.decompose($(td).prevAll('td[data-part]')[0]);
-        const i = ['eng', 'chi', 'jap'].findIndex(l => l == lang);
-        const name = (high ? ['High ', '高位', 'ハイ'][i] : '') + (names[comp][sym]?.[i] || '');
+        const {parts: [sym, comp], prefix, dash, core} = Cell.decompose($(td).prevAll('td[data-part]')[0]);
+        const name = Part.derivedNames({eng: names[comp][sym]?.[0] || '', chi: names[comp][sym]?.[1] || '', jap: names[comp][sym]?.[2] || ''}, prefix)[lang];
         const code = {
             eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
             chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),

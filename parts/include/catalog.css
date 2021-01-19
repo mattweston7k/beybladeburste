@@ -268,7 +268,8 @@ h2.kanji {
 :lang(yue)::before,:lang(yue)::after {vertical-align:-.06em;}
 :lang(zh):not(:empty)::before {content:'『';}
 :lang(zh):not(:empty)::after  {content:'』';}
-.dash :lang(yue),.high :lang(yue),.dash :lang(zh),.high :lang(zh),
+.dash :lang(yue),.high :lang(yue),.metal :lang(yue),
+.dash :lang(zh),.high :lang(zh),.metal :lang(zh),
 .layer6s div[class|=name]>div:first-child {display:none;}
 
 /*font-size*/
@@ -306,6 +307,10 @@ figure::before,figure::after {
 figure.dash::before {
     content:'⌇';color:gold;
     left:-.3em;bottom:-.3em;
+}
+figure.metal::before {
+    content:'✨';color:silver;
+    left:-.1em;bottom:-.3em;
 }
 figure.high::after {
     content:'⇪';color:magenta;

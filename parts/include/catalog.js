@@ -1,40 +1,55 @@
 class Part {
-    constructor(info) {
+    constructor(info, derived) {
         Object.assign(this, typeof info == 'object' ? info : {comp: info});
+        derived ? this.group = derived : null;
     }
     detach() {
         return (({sym, comp, ...other}) => {
-            other.attr = other.attr.filter(a => a != 'dash' && a != 'high');
-            for (const p of ['stat', 'desc', 'attr']) if (!`${other[p]}`.replace(/,/g, '')) delete other[p];
+            other.attr = other.attr.filter(attr => !Part.derived.includes(attr));
+            for (const p of ['stat', 'desc', 'attr'].filter(p => !`${other[p]}`.replace(/,/g, ''))) 
+                delete other[p];
             return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
         })(this);
     }
     attach(sym = this.sym, comp = this.comp) {
-        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym.replace('′', '')] || ['', '', ''];
+        [this.names.eng, this.names.chi, this.names.jap] = names[comp]?.[sym] || names[comp]?.[sym.replace('′', '')] || ['', '', ''];
         [this.sym, this.comp] = [sym, comp];
         return this;
     }
-    async revise(tran, derivedDriver = false) {
-        if (this.comp != 'driver') return this;
-        if (!derivedDriver) {
-            for (const a of ['dash', 'high'])
-                if ((await Part[a](tran)).includes(this.sym))
-                    this.attr = [...this.attr || [], a];
-        } else if (derivedDriver) {
-            [this.group, this.sym, this.desc, this.attr] = derivedDriver == 'high' ?
-                ['high', `H${this.sym}`, `高度提升的【${this.sym}】driver。`, [...this.attr || [], /′$/.test(this.sym) ? 'dash' : ''] ] :
-                ['dash', `${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, [...this.attr || [], (await Part.high(tran)).includes(`${this.sym}′`) ? 'high' : ''] ];
+    async revise(tran) {
+        if (this.comp != 'driver') 
+            return this;
+        if (!Part.derived.includes(this.group) || this.group == 'dash')
+            for (const g of Part.derived.filter(p => p != this.group)) 
+                await Part.list(g, tran);
+
+        if (!Part.derived.includes(this.group)) 
+            this.attr = [...this.attr || [], ...Part.derived.filter(g => Part[g].includes(this.sym))];
+        else {
+            [this.sym, this.desc, this.attr] = {
+                high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, /′$/.test(this.sym) ? ['dash'] : [] ],
+                dash: [`${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
+                metal: [`M${this.sym.replace('′', '')}`, `上部 Ring 部分使用金屬的【${this.sym}】driver。`, []]
+            }[this.group];
+            this.names = Part.derivedNames(this.names, this.group);
             delete this.stat;
         }
         return this;
     }
-    static async high(tran) {
-        return Part.highs || (Part.highs = await DB.get('order', 'high', tran));
+    static derivedNames(names, group) {
+        names = {...(names || {}), can: ''};
+        if (group == 'high' || group == 'H')
+            [names.eng, names.jap, names.chi] = ['High ' + names.eng, 'ハイ' + names.jap, '高位' + names.chi];
+        else if (group == 'metal' || group == 'M')
+            [names.eng, names.jap, names.chi] = ['Metal ' + names.eng, 'メタル' + names.jap, '金屬' + names.chi];
+        return names;
     }
-    static async dash(tran) {
-        return Part.dashs || (Part.dashs = await DB.get('order', 'dash', tran));
+    static async list(group, tran) {
+        return Part[group] || (Part[group] = await DB.get('order', group, tran));
     }
 }
+Part.derived = ['dash', 'high', 'metal'];
+
 Part.prototype.catalog = function() {
     let {comp, group, sym, type, generation, attr, deck, names, stat, desc} = this;
     const bg = {
@@ -88,12 +103,10 @@ Part.prototype.catalog = function() {
                 chi: (names.chi || '').replace(/[｜︱].*/, ''),
                 can: names.can || ''
             }
-            if (group == 'high')
-                [names.eng, names.jap] = ['High ' + names.eng, 'ハイ' + names.jap];
-            if (comp == 'driver' && /′$/.test(sym))
+            if (/′$/.test(sym))
                 [names.eng, names.jap] = [names.eng + ' <sup>dash</sup>', names.jap + 'ダッシュ'];
 
-            let len, code, rows = comp == 'layer' || /^(dash|high)$/.test(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
+            let len, code, rows = comp == 'layer' || Part.derived.includes(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
             if (rows) {
                 len = (names.jap + names.chi).replace(/\s/g, '').length - 15;
                 code = `
@@ -117,11 +130,11 @@ Part.prototype.catalog = function() {
                     <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             }
-            return `<div class='name${!/^(dash|high)$/.test(group) ? rows ? '-row' : '-col' : ''}'>${code}</div>`;
+            return `<div class='name${!Part.derived.includes(group) ? rows ? '-row' : '-col' : ''}'>${code}</div>`;
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;
-            if (!stat || /^(dash|high)$/.test(group)) return code;
+            if (!stat || Part.derived.includes(group)) return code;
             const terms = ['攻擊力', '防禦力', '持久力', typeof stat[3] == 'string' && stat.length == 5 ? '重量' : '重　量', '機動力', '擊爆力'];
             if (typeof stat[3] == 'string')
                 stat[3] = stat[3].replace(/克$/, '<small>克</small>');
