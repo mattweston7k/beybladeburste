@@ -52,7 +52,7 @@ Parts = {
     },
     any(prefix) {
         const css = '/parts/include/typography.css';
-        caches.match(style).then(r => r.text()).catch(() => fetch(style).then(r => r.text()))
+        caches.match(css).then(r => r.text()).catch(() => fetch(css).then(r => r.text()))
             .then(style => Q('head').insertAdjacentHTML('beforeend', '<style>' + style.replace(/-webkit-any/g, prefix) + '</style>'));
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
@@ -132,7 +132,7 @@ const Tools = {
             [/^layer(1|2|3|5[bw]|6[rs])$/, [10, 1, 'w+7']],
             [/^remake$/,              [19, 10, 'w+7']],
             [/^(layer4|disk[12])$/,   [8, 0, 'w+17']],
-            [/^(disk3|layer5|LB)$/,      [15, 5, 'w+17']],
+            [/^(disk3|layer5|LB)$/,   [15, 5, 'w+17']],
             [/^(frame|layer5c)$/,     [7, 0, 'w*0.3+2.3']],
             [/^layer6c$/,             [12, 2, 'w*0.3+2.3']],
             [/^driver[1234]$/,        [10, 0, 'w/2+5.4']]
