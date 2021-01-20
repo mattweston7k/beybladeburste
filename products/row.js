@@ -70,7 +70,7 @@ class Row {
     }
     static connectedCallback(tr) {
         Row.fill(['eng', 'chi'], tr);
-        for (const td of tr.querySelectorAll('td')) {Object.assign(td, {c:()=>console.log(2)});td.onclick = () => Cell.preview(td);}
+        for (const td of tr.querySelectorAll('td')) td.onclick = () => Cell.preview(td);
     }
     static fill(lang, tr) {
         tr.querySelectorAll('td[data-part]').forEach(td => {
