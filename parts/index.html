@@ -61,6 +61,7 @@
             <a href=?driver3><svg viewBox="0 0 20 20"><use href="#round"/></svg>3</a>
             <a href=?driver2><svg viewBox="0 0 20 20"><use href="#round"/></svg>2</a>
             <a href=?driver1><svg viewBox="0 0 20 20"><use href="#round"/></svg>1</a>
+            <a href=?metal data-icon="✨"><svg viewBox="0 0 20 20"><use href="#round"/></svg></a>
             <a href=?high data-icon="⇪"><svg viewBox="0 0 20 20"><use href="#round"/></svg></a>
             <a href=?dash data-icon="⌇"><svg viewBox="0 0 20 20"><use href="#round"/></svg></a>
         </div>
@@ -98,8 +99,9 @@
 </script>
 <style media="max-width:1px">
     main [data-icon]::after {content:attr(data-icon);}
-    a[data-icon='⌇']::after {color:gold;}
-    a[data-icon='⇪']::after {color:magenta;}
+    a[href='?dash']::after {color:gold;}
+    a[href='?metal']::after {color:silver;}
+    a[href='?high']::after {color:magenta;}
     a[title]::after {
         content:attr(title);
         position:absolute;right:.5em;bottom:0;
@@ -166,8 +168,6 @@
         display:grid;grid-template:'a b c d' 2em '. e f .' 2em / 2em 2em 2em 2em;
         justify-content:center;align-items:center;
     }
-    a[href='?high'] {grid-area:e;}
-    a[href='?dash'] {grid-area:f;}
 
     button {
         position:absolute;bottom:0;

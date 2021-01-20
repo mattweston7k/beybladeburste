@@ -60,8 +60,7 @@ const DB = {
     get indicator() {return Q('db-status');},
     init(open) {
         DB.indicator.init();
-        for (const store of ['html', 'json', 'order']) 
-            open.result.createObjectStore(store, store == 'json' ? {keyPath: 'key'} : null);
+        for (const store of ['html', 'json', 'order']) open.result.createObjectStore(store);
         open.transaction.objectStore('json').createIndex('group', 'group');
         return open.transaction;
     },
@@ -112,12 +111,12 @@ const DB = {
             for (const part of parts.filter(part => part && typeof part == 'object')) {
                 if (part.names)
                     names[part.comp] = {...names[part.comp] || {}, [part.sym]: ['eng', 'chi', 'jap'].map(l => part.names[l])};
-                DB.put('json', [, new Part(part).detach()]);
+                DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()]);
             }
             DB.indicator.update();
             Cookie.setHistory(group);
         }
-        DB.put('json', [, {key: 'names', names: names}]);
+        DB.put('json', ['names', names]);
         notify();
         handler ? handler() : null;
     },
@@ -129,7 +128,7 @@ const DB = {
 
     get: (store, key) => DB.open(async () => await new Promise(res => DB.query(store, key).onsuccess = ev => res(ev.target.result))),
 
-    getNames: async () => (await DB.get('json', 'names')).names,
+    getNames: async () => await DB.get('json', 'names'),
 
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
@@ -137,13 +136,17 @@ const DB = {
             names = names || await DB.getNames();
             let parts = await DB.get('order', group);
             if (Part.derived.includes(group)) {
-                parts = parts.map(async sym => new Part(await DB.get('json', `${sym.replace('′', '')}.driver`), group).attach(sym).revise());
+                parts = parts.map(async sym => {
+                    const key = sym.replace('′', '') + '.driver';
+                    return new Part({key: key, ...await DB.get('json', key)}, group).attach(sym).revise();
+                });
                 return callback(await Promise.all(parts), await DB.get('html', group));
             }
             DB.tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
                     return callback(parts, await DB.get('html', group));
-                parts.splice(parts.indexOf(result.primaryKey.split('.')[0]), 1, await new Part(result.value).attach().revise());
+                const part = await new Part({key: result.primaryKey, ...result.value}).attach().revise();
+                parts.splice(parts.indexOf(part.sym), 1, part);
                 result.continue();
             }
         })

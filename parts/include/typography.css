@@ -38,7 +38,7 @@ a[id^='1']:not([id='11']):not(.single) h2,
 h2:not(.single)::first-letter {
     letter-spacing:0em;
 }
-:-webkit-any(#Ab,#Dr,#Gn,#Hy,#Hr,#Kp,#Rb,#Rg,#Sp,#Sw,#Vn,#αn,
+:-webkit-any(#Ab,#Dr,#Ds,#Gn,#Hy,#Hr,#Kp,#Qc,#Rb,#Rg,#Sp,#Sw,#Vn,#Xc,#Zn,#αn,
 #B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,#Wy,
 #oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP) h2::first-letter {
     letter-spacing:-.025em;
@@ -243,12 +243,9 @@ a[id$='+'] sup {
 #I.disk :lang(zh) {
     letter-spacing:-.01em; }
 
-:-webkit-any(a.dash,a.high) :lang(en) {
+:-webkit-any(a.dash,a.high,a.metal) :lang(en) {
     font-size:0.9em;
     margin-left:0.1em;
-}
-:-webkit-any(#Ds,#Qc,#Xc,#Zn).dash h2::first-letter {
-    letter-spacing:-.025em;
 }
 a.high h2::first-letter {
     letter-spacing:-.05em;
@@ -264,6 +261,9 @@ a.high h2::first-letter {
 }
 :-webkit-any(#HA).high h2 {
     letter-spacing:-.1em;
+    padding-right:.05em;
+}
+:-webkit-any(#HZ,#HS).high h2 {
     padding-right:.05em;
 }
 a.dash h2 {
@@ -302,4 +302,10 @@ a.dash h2.single {
 a.metal h2 {
     transform:scaleX(.9);
     padding-right:.05em;
+}
+:-webkit-any(#MA) h2::first-letter {
+    letter-spacing:-.025em;
+}
+:-webkit-any(#MF) h2::first-letter {
+    letter-spacing:-.05em;
 }

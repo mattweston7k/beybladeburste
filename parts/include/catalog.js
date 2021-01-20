@@ -12,9 +12,10 @@ class Part {
         })(this);
     }
     attach(sym) {
-        [, this.sym, this.comp] = this.key.match(/(.+)\.(.+)/);
+        [this.sym, this.comp] = this.key.split('.');
         if (sym) this.sym = sym;
         [this.names.eng, this.names.chi, this.names.jap] = names[this.comp]?.[this.sym] || names[this.comp]?.[this.sym.replace('′', '')] || ['', '', ''];
+        delete this.key;
         return this;
     }
     async revise() {
