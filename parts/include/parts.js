@@ -67,7 +67,8 @@ Parts = {
 customElements.define('weight-scale', class extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({mode: 'open'}).innerHTML = ['/include/common.css', 'include/ruler.css'].map(c => `<link rel=stylesheet href=${c}>`).join('')
+        this.attachShadow({mode: 'open'}).innerHTML =
+            ['/include/common.css', 'include/ruler.css'].map(c => `<link rel=stylesheet href=${c}>`).join('')
             + '<input type=checkbox id=show><label for=show></label><div></div>';
         this.hidden = true;
     }
