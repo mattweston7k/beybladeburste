@@ -179,7 +179,8 @@ const Cell = {
         Q('label[for=popup] img').src = '';
         const {parts} = Cell.decompose(td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0], true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
-            const part = await new Part({key: `${sym}.${comp}`, ...await DB.get('json', `${sym}.${comp}`)}).attach().revise();
+            const key = `${sym}.${comp}`;
+            const part = await new Part({key: key, ...await DB.get('json', key)}).attach().revise();
             part.catalog();
             part.links();
         });
