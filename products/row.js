@@ -139,7 +139,7 @@ class Row {
             ]) if (n.map(n => `B-${n}`).includes(no))
                 this.any(['layer6s', 'disk']).style.color = color;
     }
-    any(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}]`) || this.tr.querySelector(`td[data-part$=${tds[1]}]`);}
+    any(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}], td[data-part$=${tds[1]}]`);}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
 Row.show = true;
