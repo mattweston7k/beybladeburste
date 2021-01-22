@@ -133,7 +133,7 @@ class Row {
                 {n: [160], color: 'dodgerblue'},
                 {n: [161, 163], color: 'red'},
                 {n: [167], color: 'lightseagreen'},
-                {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
+                {n: [168, 171.2, 175, 177], color: 'rgb(174,91,215)'},
                 {n: [169], color: 'deeppink'},
                 {n: [171.1], color: 'deepskyblue'}
             ]) if (n.map(n => `B-${n}`).includes(no))

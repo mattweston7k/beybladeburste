@@ -50,6 +50,9 @@ L(() => {
 let names;
 const DB = {
     db: null,
+    tran(...args) {
+        (DB._tran = DB.db.transaction(...args)).oncomplete = () => DB._tran = null;
+    },
     del: (error = ev => console.log(ev)) =>
          new Promise(res => {
             DB.db ? DB.db.close() : null;
@@ -105,7 +108,7 @@ const DB = {
         for (const [prom, group] of await DB.fetch(update)) {
             const {info, parts} = await prom || {};
             if (!info && !parts) continue;
-            (DB.tran = DB.db.transaction(['json', 'order', 'html'], 'readwrite')).oncomplete = () => DB.tran = null;
+            DB.tran(['json', 'order', 'html'], 'readwrite');
             if (info) DB.put('html', [group, info]);
             if (group != 'other') DB.put('order', [group, parts.map(part => part?.sym || part)]);
             for (const part of parts.filter(part => part && typeof part == 'object')) {
@@ -122,9 +125,9 @@ const DB = {
     },
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status == 200 ? [r.json(), g] : null))),
 
-    put: (store, [key, value]) => (DB.tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
+    put: (store, [key, value]) => (DB._tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
 
-    query: (store, key) => (DB.tran || DB.db.transaction(store)).objectStore(store).get(key),
+    query: (store, key) => (DB._tran || DB.db.transaction(store)).objectStore(store).get(key),
 
     get: (store, key) => DB.open(async () => await new Promise(res => DB.query(store, key).onsuccess = ev => res(ev.target.result))),
 
@@ -132,7 +135,7 @@ const DB = {
 
     getParts: (group, callback = (...content) => console.log(content)) =>
         DB.open(async () => {
-            (DB.tran = DB.db.transaction(['json', 'order', 'html'])).oncomplete = () => DB.tran = null;
+            DB.tran(['json', 'order', 'html']);
             names = names || await DB.getNames();
             let parts = await DB.get('order', group);
             if (Part.derived.includes(group)) {
@@ -141,7 +144,7 @@ const DB = {
                 );
                 return callback(await Promise.all(parts), await DB.get('html', group));
             }
-            DB.tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
+            DB._tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
                     return callback(parts, await DB.get('html', group));
                 const part = await new Part(result.value).attach(result.primaryKey).revise();
