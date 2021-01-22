@@ -191,7 +191,7 @@ Object.assign(HTMLTableCellElement.prototype, {
     code(lang) {
         const {parts: [sym, comp], prefix, dash, core} = $(this).prevAll('td[data-part]')[0].decompose();
         let name = names[comp][sym] || ['', '', ''];
-        name = Part.derivedNames({eng: name?.[0], chi: name?.[1], jap: name?.[2]}, prefix)[lang];
+        name = Part.derivedNames({eng: name[0], chi: name[1], jap: name[2]}, prefix)[lang];
         const code = {
             eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
             chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
