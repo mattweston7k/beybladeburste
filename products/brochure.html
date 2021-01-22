@@ -24,6 +24,6 @@
     display(...ranges[bottom]);
     Q('body').onscroll = () => {
         if (Q('html').scrollTop >= document.body.scrollHeight - window.innerHeight - 150)
-            display(...ranges[bottom++]);
+            display(...ranges[++bottom]);
     };
 </script>
