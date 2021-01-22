@@ -8,14 +8,12 @@ class Part {
             other.attr = other.attr.filter(attr => !Part.derived.includes(attr));
             for (const p of ['stat', 'desc', 'attr'].filter(p => !`${other[p]}`.replace(/,/g, ''))) 
                 delete other[p];
-            return ({...other, key: `${sym}.${comp}`, names: this.names?.can ? {can: this.names.can} : {}})
+            return ({...other, names: this.names?.can ? {can: this.names.can} : {}})
         })(this);
     }
-    attach(sym) {
-        [this.sym, this.comp] = this.key.split('.');
-        if (sym) this.sym = sym;
+    attach(key) {
+        if (key) [this.sym, this.comp] = key.split('.');
         [this.names.eng, this.names.chi, this.names.jap] = names[this.comp]?.[this.sym] || names[this.comp]?.[this.sym.replace('′', '')] || ['', '', ''];
-        delete this.key;
         return this;
     }
     async revise() {
@@ -105,7 +103,7 @@ Part.prototype.catalog = function() {
                 chi: (names.chi || '').replace(/[｜︱].*/, ''),
                 can: names.can || ''
             }
-            if (/′$/.test(sym))
+            if (comp == 'driver' && /′$/.test(sym))
                 [names.eng, names.jap] = [names.eng + ' <sup>dash</sup>', names.jap + 'ダッシュ'];
 
             let len, code, rows = comp == 'layer' || Part.derived.includes(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;

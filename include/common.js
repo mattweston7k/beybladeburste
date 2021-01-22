@@ -136,16 +136,15 @@ const DB = {
             names = names || await DB.getNames();
             let parts = await DB.get('order', group);
             if (Part.derived.includes(group)) {
-                parts = parts.map(async sym => {
-                    const key = sym.replace('′', '') + '.driver';
-                    return new Part({key: key, ...await DB.get('json', key)}, group).attach(sym).revise();
-                });
+                parts = parts.map(async sym =>
+                    new Part(await DB.get('json', `${sym.replace('′', '')}.driver`), group).attach(`${sym}.driver`).revise()
+                );
                 return callback(await Promise.all(parts), await DB.get('html', group));
             }
             DB.tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result)
                     return callback(parts, await DB.get('html', group));
-                const part = await new Part({key: result.primaryKey, ...result.value}).attach().revise();
+                const part = await new Part(result.value).attach(result.primaryKey).revise();
                 parts.splice(parts.indexOf(part.sym), 1, part);
                 result.continue();
             }
