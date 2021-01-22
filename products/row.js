@@ -76,7 +76,7 @@ class Row {
         tr.querySelectorAll('td[data-part]').forEach(td => {
             if (/layer(5w|6s)$/.test(td.getAttribute('data-part')))
                 return;
-            const cells = Row.next2(td);
+            const cells = td.next2();
             lang.forEach((l, i) => l ? cells[i].code(l) : null);
         });
     }
@@ -112,9 +112,9 @@ class Row {
         if (/^s[wh]$/.test(mode))
             add(this.any('layer6r'), `<sub>${mode}</sub>`);
         else if (/^\+/.test(mode))
-            for (const td of Row.next2(this.any('driver'))) add(td, `<sub>${mode}</sub>`);
+            for (const td of this.any('driver').next2()) add(td, `<sub>${mode}</sub>`);
         else if (more)
-            for (const td of Row.next2(this.any('layer6r', 'layer'))) add(td, `<b>${more}</b>`);
+            for (const td of this.any('layer6r', 'layer').next2()) add(td, `<b>${more}</b>`);
     }
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
@@ -143,12 +143,12 @@ class Row {
                     return this.any('layer6s', 'disk').style.color = color;
     }
     any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
-    static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
 Row.show = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
 Object.assign(HTMLTableCellElement.prototype, {
+    next2() {return [this.nextElementSibling, this.nextElementSibling.nextElementSibling];},
     decompose(preview = false) {
         let [sym, comp] = this.getAttribute('data-part').split('.');
         let dash, prefix, core, more, regex = {

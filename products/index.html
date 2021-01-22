@@ -202,7 +202,7 @@
         },
         column(lang) {
             const colspan = {eng: [5, 1], cjk: [1, 5]}[lang] || [2, 4];
-            Q('td[data-part$=layer], td:not([data-part]):nth-child(2)', td => Row.next2(td).forEach((td, i) => td.colSpan = colspan[i]));
+            Q('td[data-part$=layer], td:not([data-part]):nth-child(2)', td => td.next2().forEach((td, i) => td.colSpan = colspan[i]));
         },
         flush(update = false) {
             if (window.innerWidth >= 800 || window.innerWidth > window.innerHeight)
