@@ -118,7 +118,7 @@ class Row {
     }
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
-        this.rare(no);
+        this.rare(parseFloat(no.split('-')[1]));
         this.tr.hidden = !Row.show;
         no == Table.limit ? Row.show = false : null;
     }
@@ -133,13 +133,13 @@ class Row {
             {n: [171.1], color: 'deepskyblue'},
             {n: [177], color: 'slateblue'}
         ];
-        if ([100, 117, 129].map(n => `B-${n}`).includes(no))
+        if ([100, 117, 129].includes(no))
             this.any('layer').style.color = 'black';
-        else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
+        else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].includes(no))
             this.tr.classList.add('GT');
-        else
+        else if (no >= 159)
             for (const {n, color} of colors)
-                if (n.map(n => `B-${n}`).includes(no))
+                if (n.includes(no))
                     return this.any('layer6s', 'disk').style.color = color;
     }
     any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
