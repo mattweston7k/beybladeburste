@@ -108,13 +108,13 @@ class Row {
         const {mode, chip, more} = append;
         const add = (td, code) => td.insertAdjacentHTML('beforeend', code);
         if (chip)
-            add(this.any(['layer6c', 'layer']), `<img src=chips.svg#${chip} alt=${chip}>`);
+            add(this.any('layer6c', 'layer'), `<img src=chips.svg#${chip} alt=${chip}>`);
         if (/^s[wh]$/.test(mode))
-            add(this.any(['layer6r']), `<sub>${mode}</sub>`);
+            add(this.any('layer6r'), `<sub>${mode}</sub>`);
         else if (/^\+/.test(mode))
-            for (const td of Row.next2(this.any(['driver']))) add(td, `<sub>${mode}</sub>`);
+            for (const td of Row.next2(this.any('driver'))) add(td, `<sub>${mode}</sub>`);
         else if (more)
-            for (const td of Row.next2(this.any(['layer6r', 'layer']))) add(td, `<b>${more}</b>`);
+            for (const td of Row.next2(this.any('layer6r', 'layer'))) add(td, `<b>${more}</b>`);
     }
     attribute({'data-no': no, ...attr}) {
         Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
@@ -123,24 +123,26 @@ class Row {
         no == Table.limit ? Row.show = false : null;
     }
     rare(no) {
+        const colors = [
+            {n: [159, 172], color: 'rgb(210,190,0)'},
+            {n: [160], color: 'dodgerblue'},
+            {n: [161, 163], color: 'red'},
+            {n: [167], color: 'lightseagreen'},
+            {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
+            {n: [169], color: 'deeppink'},
+            {n: [171.1], color: 'deepskyblue'},
+            {n: [177], color: 'slateblue'}
+        ];
         if ([100, 117, 129].map(n => `B-${n}`).includes(no))
-            this.any(['layer']).style.color = 'black';
+            this.any('layer').style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].map(n => `B-${n}`).includes(no))
             this.tr.classList.add('GT');
         else
-            for (const {n, color} of [
-                {n: [159, 172], color: 'rgb(210,190,0)'},
-                {n: [160], color: 'dodgerblue'},
-                {n: [161, 163], color: 'red'},
-                {n: [167], color: 'lightseagreen'},
-                {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
-                {n: [169], color: 'deeppink'},
-                {n: [171.1], color: 'deepskyblue'},
-                {n: [177], color: 'slateblue'}
-            ]) if (n.map(n => `B-${n}`).includes(no))
-                this.any(['layer6s', 'disk']).style.color = color;
+            for (const {n, color} of colors)
+                if (n.map(n => `B-${n}`).includes(no))
+                    return this.any('layer6s', 'disk').style.color = color;
     }
-    any(tds) {return this.tr.querySelector(`td[data-part$=${tds[0]}], td[data-part$=${tds[1]}]`);}
+    any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
     static next2(td) {return [td.nextElementSibling, td.nextElementSibling.nextElementSibling];}
 }
 Row.show = true;
