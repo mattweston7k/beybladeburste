@@ -125,13 +125,12 @@ class Row {
     rare(no) {
         const colors = [
             {n: [159, 172], color: 'rgb(210,190,0)'},
-            {n: [160], color: 'dodgerblue'},
+            {n: [160, 177], color: 'dodgerblue'},
             {n: [161, 163], color: 'red'},
             {n: [167], color: 'lightseagreen'},
             {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
             {n: [169], color: 'deeppink'},
-            {n: [171.1], color: 'deepskyblue'},
-            {n: [177], color: 'slateblue'}
+            {n: [171.1], color: 'deepskyblue'}
         ];
         if ([100, 117, 129].includes(no))
             this.any('layer').style.color = 'black';
