@@ -29,7 +29,7 @@ class Part {
             [this.sym, this.desc, this.attr] = {
                 high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, /′$/.test(this.sym) ? ['dash'] : [] ],
                 dash: [`${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
-                metal: [`M${this.sym.replace('′', '')}`, `上部 Ring 部分使用金屬的【${this.sym}】driver。`, []]
+                metal: [`M${this.sym.replace('′', '')}`, `上部 Ring 部分使用金屬的【${this.sym.replace('′', '')}′】driver。`, []]
             }[this.group];
             this.names = Part.derivedNames(this.names, this.group);
             delete this.stat;

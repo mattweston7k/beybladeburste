@@ -400,6 +400,9 @@ form button,caption data {
     th {--f:0.9em;}
     td {--f:0.8em;}
 }
+td[data-part='MD.driver']+td {
+    letter-spacing:-.02em;
+}
 
 /*color*/
 .note .tablesorter-header-inner,.comp th:first-child {--b:var(--root-b);}

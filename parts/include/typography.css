@@ -306,6 +306,9 @@ a.metal h2 {
 :-webkit-any(#MA) h2::first-letter {
     letter-spacing:-.025em;
 }
-:-webkit-any(#MF) h2::first-letter {
+:-webkit-any(#MF,#MD) h2::first-letter {
     letter-spacing:-.05em;
+}
+:-webkit-any(#MD).metal h2 {
+    padding-right:0;
 }
