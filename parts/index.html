@@ -91,20 +91,20 @@
         ev.target.disabled = page == 4;
         hidePath(page);
     };
-    if (Parts.group)
-        Q('main:first-of-type').hidden = false;
-    else {
+    L(() => {
+        if (Parts.group)
+            return Q('main:first-of-type').hidden = false;
         Q('.layer a:empty,.disk a:empty', a => a.insertAdjacentHTML('beforeend', `<img src=/img/system-${nav.comp(a.getAttribute('href').substring(1))}.png>`));
         Q('.driver a', a => a.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 20 20"><use href="#round"/></svg>`));
         Q('main:last-of-type').hidden = false;
-        L(() => Q('style[media]').removeAttribute('media'));
-    };
+        Q('style[media]').removeAttribute('media');
+    });
 </script>
 <style media="max-width:1px">
     main [data-icon]::after {content:attr(data-icon);}
-    a[href='?dash']::after {color:gold;}
+    a[href='?dash']::after  {color:gold;}
     a[href='?metal']::after {color:silver;}
-    a[href='?high']::after {color:magenta;}
+    a[href='?high']::after  {color:magenta;}
     a[title]::after {
         content:attr(title);
         position:absolute;right:.5em;bottom:0;
@@ -129,15 +129,10 @@
         display:flex;justify-content:space-around;align-items:center;
         padding:0 8%;
     }
-    .layer>div:first-of-type {
-        left:calc((var(--p) - 6)*100%);
-    }
-    .layer>div:nth-of-type(2) {
-        left:calc((var(--p) - 5)*100%);
-    }
-    .layer>div:last-of-type {
-        left:calc((var(--p) - 4)*100%);
-    }
+    .layer>div:first-of-type  {left:calc((var(--p) - 6)*100%);}
+    .layer>div:nth-of-type(2) {left:calc((var(--p) - 5)*100%);}
+    .layer>div:last-of-type   {left:calc((var(--p) - 4)*100%);}
+
     defs~path,.disk>a[href='?LB'] {
         transition:opacity .5s;
     }
