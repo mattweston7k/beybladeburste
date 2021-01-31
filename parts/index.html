@@ -94,7 +94,7 @@
     if (Parts.group)
         Q('main:first-of-type').hidden = false;
     else {
-        Q('.layer a:empty', a => a.insertAdjacentHTML('beforeend', `<img src=/img/system-${nav.comp(a.getAttribute('href').substring(1))}.png>`));
+        Q('main a:empty', a => a.insertAdjacentHTML('beforeend', `<img src=/img/system-${nav.comp(a.getAttribute('href').substring(1))}.png>`));
         Q('main:last-of-type').hidden = false;
         L(() => Q('style[media]').removeAttribute('media'));
     };
@@ -137,7 +137,7 @@
     .layer>div:last-of-type {
         left:calc((var(--p) - 4)*100%);
     }
-    defs~path {
+    defs~path,.disk>a[href='?LB'] {
         transition:opacity .5s;
     }
     .layer:not([style*='--p:6'])+.disk>a[href='?LB'] {
@@ -160,7 +160,7 @@
         width:2em;
     }
     .disk>a[href='?LB'] {
-        position:absolute;transition:opacity .5s;
+        position:absolute;
     }
     .driver {
         display:grid;grid-template:'a b c d' 2em '. e f .' 2em / 2em 2em 2em 2em;
@@ -209,11 +209,6 @@
     }
 
     /*svg*/
-    g image {
-        width:var(--w);
-        height:calc(var(--w)*5.5/10);
-        transform:translate(calc(var(--w)/-2),calc(var(--w)*5.5/10/-2));
-    }
     path {
         stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
         stroke-linecap:round;
@@ -227,23 +222,6 @@
     circle,rect {
         r:2.5;
         fill:transparent;
-    }
-    #SP a:last-of-type  {
-        transform:translate(-1px,10px);
-    }
-    text {text-anchor:middle;}
-    .disk>text {text-anchor:start;}
-    .driver>text {text-anchor:end;}
-    text:not([fill]) {
-        font-size:calc(var(--w)/4.5);
-        fill:white;
-    }
-    text[fill] {
-        font-size:calc(var(--w)/4);
-    }
-    image+text {
-        text-anchor:end;
-        font-size:calc(var(--w)/5) !important;
     }
     .day .disk svg>*,.day rect {
         fill:hsl(var(--c),var(--s),75%);
