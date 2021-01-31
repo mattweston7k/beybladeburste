@@ -25,27 +25,27 @@
             <button data-icon="" disabled></button>
             <button data-icon=""></button>
             <div>
-                <a href=?layer6s style="top:28%;left:22%" title=Chassis><img src=/img/system-layer6.png></a>
-                <a href=?layer6r style="top:28%;left:53%" title=Ring><img src=/img/system-layer6.png></a>
-                <a href=?layer6c style="top:50%;left:80%" title=Chip><img src=/img/system-layer6.png></a>
-                <a href=?LB style="top:75%;left:35%" title='LB Ring'><img src=/img/system-layer6.png></a>
+                <a href=?layer6s style="top:28%;left:22%" title=Chassis></a>
+                <a href=?layer6r style="top:28%;left:53%" title=Ring></a>
+                <a href=?layer6c style="top:50%;left:80%" title=Chip></a>
+                <a href=?LB style="top:75%;left:35%" title='LB Ring'></a>
             </div>
             <div>
-                <a href=?layer5><img src=/img/system-layer5m.png></a>
-                <a href=?layer5b title=Base><img src=/img/system-layer5.png></a>
-                <a href=?layer5w title=Weight><img src=/img/system-layer5.png></a>
-                <a href=?layer5c title=Chip><img src=/img/system-layer5.png></a>
+                <a href=?layer5></a>
+                <a href=?layer5b title=Base></a>
+                <a href=?layer5w title=Weight></a>
+                <a href=?layer5c title=Chip></a>
             </div>
             <div>
-                <a href=?remake><img src=/img/system-remake.png></a>
-                <a href=?layer4><img src=/img/system-layer4.png></a>
-                <a href=?layer3><img src=/img/system-layer3.png></a>
-                <a href=?layer2><img src=/img/system-layer2.png></a>
-                <a href=?layer1><img src=/img/system-layer1.png></a>
+                <a href=?remake></a>
+                <a href=?layer4></a>
+                <a href=?layer3></a>
+                <a href=?layer2></a>
+                <a href=?layer1></a>
             </div>
         </div>
         <div class=disk style="top:38%;height:22%">
-            <a href=?LB style="left:38%;top:40%" title='LB Disk'><img src=/img/system-layer6.png></a>
+            <a href=?LB style="left:38%;top:40%" title='LB Disk'></a>
             <div style='left:50%;bottom:0%'>
                 <a href=?disk3><svg viewBox="0 0 56 20"><use href="#oval"/></svg>Disk 3</a>
                 <a href=?disk1><svg viewBox="0 0 56 20"><use href="#oval"/></svg>Disk 1</a>
@@ -92,11 +92,12 @@
         hidePath(page);
     };
     if (Parts.group)
-        L(() => Q('main:first-of-type').hidden = false);
-    else L(() => {
+        Q('main:first-of-type').hidden = false;
+    else {
+        Q('.layer a:empty', a => a.insertAdjacentHTML('beforeend', `<img src=/img/system-${nav.comp(a.getAttribute('href').substring(1))}.png>`));
         Q('main:last-of-type').hidden = false;
-        Q('style[media]').removeAttribute('media');
-    });
+        L(() => Q('style[media]').removeAttribute('media'));
+    };
 </script>
 <style media="max-width:1px">
     main [data-icon]::after {content:attr(data-icon);}

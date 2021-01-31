@@ -185,7 +185,8 @@ const nav = {
 
     href: (l, t) => `<a href=${nav.hrefs[l] || l}` + (nav.icons[l] ? ` data-icon=${nav.icons[l]}></a>` : `>${t == 'parts' ? nav.parts : t}</a>`),
     parts: '<img src=/parts/include/parts.svg#whole alt=parts>',
-    system: group => `<img src=/img/system-${group.replace(/^layer5$/, 'layer5m').replace('LB', 'layer6').replace(/(\d)[^m]$/, '$1')}.png alt=${group}>`,
+    comp: group => group.replace(/^layer5$/, 'layer5m').replace('LB', 'layer6').replace(/(\d)[^m]$/, '$1'),
+    system: group => `<img src=/img/system-${nav.comp(group)}.png alt=${group}>`,
     prod: () => `
         <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
         <li><data value></data><span>結果<br>results</span><button data-icon= onclick=Table.reset() disabled>重設 Reset</button></li>`,
