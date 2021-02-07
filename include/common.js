@@ -160,42 +160,49 @@ const twilight = () => {
     Cookie.setOptions();
 };
 
-const nav = {
-    icons: {home: '', menu: '', prod: '', prize: '', back: ''},
-    hrefs: {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'},
-    create: (links = ['home', 'prize'], texts = []) => {
-        nav.ul('link', links, texts);
-        Parts.group ? nav.ul('part') : '/products/' == window.location.pathname ? nav.ul('prod') : '';
-        nav.ul('menu');
-    },
-    ul: (menu, ...p) => {
+class nav {
+    constructor(links = ['home', 'prize'], texts = []) {
+        this.ul('link', links, texts);
+        Parts.group ? this.ul('part') : '/products/' == window.location.pathname ? this.ul('prod') : null;
+        this.ul('menu');
+    }
+    ul(menu, ...p) {
         const ul = document.createElement('ul');
-        ul.innerHTML = nav[menu](...p);
+        ul.innerHTML = menu == 'link' ? this[menu](...p) : this.menu;
         ul.classList.add(menu);
         Q('nav').appendChild(ul);
-    },
-    link: (links, texts) => Parts.group ? nav.next() : nav.href(links[0], texts[0]) + nav.href(links[1], texts[1]),
-    next: () => {
+    }
+    link(links, texts) {
+        return Parts.group ? this.next() : this.href(links[0], texts[0]) + this.href(links[1], texts[1]);
+    }
+    href(l, t) { 
+        return `<a href=${this.hrefs[l] || l}` + (this.icons[l] ? ` data-icon=${this.icons[l]}></a>` : `>${t == 'parts' ? this.parts : t}</a>`);
+    }
+    next() {
         let i;
         const gs = groups.find(gs => (i = gs.indexOf(Parts.group)) >= 0);
         const next = gs[++i % gs.length];
         const inside = /^(layer|remake|LB)/.test(next) ? nav.system(next) : next[0].toUpperCase() + next.substring(1).replace(/(\d)$/, ' $1');
-        return nav.href('menu') + `<a href=?${next} title=${Q(`a[href='?${next}']`)?.title || ''}>${inside}</a>`;
-    },
-
-    href: (l, t) => `<a href=${nav.hrefs[l] || l}` + (nav.icons[l] ? ` data-icon=${nav.icons[l]}></a>` : `>${t == 'parts' ? nav.parts : t}</a>`),
-    parts: '<img src=/parts/include/parts.svg#whole alt=parts>',
-    comp: group => group.replace(/^layer5$/, 'layer5m').replace('LB', 'layer6').replace(/(\d)[^m]$/, '$1'),
-    system: group => `<img src=/img/system-${nav.comp(group)}.png alt=${group}>`,
-    prod: () => `
+        return this.href('menu') + `<a href=?${next} title=${Q(`a[href='?${next}']`)?.title || ''}>${inside}</a>`;
+    }
+    static comp(group) {
+        return group.replace(/^layer5$/, 'layer5m').replace('LB', 'layer6').replace(/(\d)[^m]$/, '$1');
+    }
+    static system(group) {
+        return `<img src=/img/system-${nav.comp(group)}.png alt=${group}>`;
+    }
+    icons = {home: '', menu: '', prod: '', prize: '', back: ''};
+    hrefs = {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'};
+    parts = '<img src=/parts/include/parts.svg#whole alt=parts>';
+    prod = `
         <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
-        <li><data value></data><span>結果<br>results</span><button data-icon= onclick=Table.reset() disabled>重設 Reset</button></li>`,
-    part: () => `
+        <li><data value></data><span>結果<br>results</span><button data-icon= onclick=Table.reset() disabled>重設 Reset</button></li>`;
+    part = `
         <li><data value></data><label for=fixed class=toggle></label></li>    
-        <li class=mag><input type=range min=0.55 max=1.45 value step=0.05></li>`,
-    menu: () => `
+        <li class=mag><input type=range min=0.55 max=1.45 value step=0.05></li>`;
+    menu = `
         <li><input type=checkbox id=day onchange=twilight()><label for=day class=toggle data-icon=''></label></li>
-        <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`
+        <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`;
 }
 class Indicator extends HTMLElement {
     constructor() {
