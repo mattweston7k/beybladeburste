@@ -101,7 +101,6 @@ input[type=checkbox],input[type=radio] {
     :root {font-size:20px;} }
 
 body {
-    display:none;
     margin:0;
     position:relative;
     text-align:center;-webkit-text-size-adjust: 100%;
