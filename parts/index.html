@@ -90,13 +90,13 @@
     hidePath(page);
     Q('button:first-of-type').onclick = ev => {
         Q('button:last-of-type').disabled = false;
-        Q('.layer').style.setProperty('--p', ++page);
+        Q('div.layer').style.setProperty('--p', ++page);
         ev.target.disabled = page == 6;
         hidePath(page);
     };
     Q('button:last-of-type').onclick = ev => {
         Q('button:first-of-type').disabled = false;
-        Q('.layer').style.setProperty('--p', --page);
+        Q('div.layer').style.setProperty('--p', --page);
         ev.target.disabled = page == 4;
         hidePath(page);
     };
