@@ -21,6 +21,7 @@
 <main hidden>
     <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
     <section>
+        <strong class=layer>Layer　攻擊環・結晶輪盤</strong>
         <div class=layer style="height:31%;--p:6">
             <button data-icon="" disabled></button>
             <button data-icon=""></button>
@@ -54,7 +55,7 @@
             </div>
         </div>
         <div class=driver style="top:68%;height:28%">
-            <div style='left:4%;top:75%'>
+            <div style='left:4%;bottom:-80%'>
                 <a href=?driver4>4</a>
                 <a href=?driver3>3</a>
                 <a href=?driver2>2</a>
@@ -122,7 +123,7 @@
     section {
         position:relative;
         max-width:800px;
-        margin:auto;
+        margin:3em auto;
     }
     section div {
         position:absolute;width:100%;
@@ -212,9 +213,14 @@
     .layer a:hover,.day section a:hover {
         filter:brightness(120%) drop-shadow(0.25rem -0.25rem 0.2rem hsla(0,0%,0%,0.4)) !important;
     }
+    section>strong {
+        margin-bottom:.2em;
+        position:absolute;right:.5em;bottom:100%;
+    }
     strong {
         margin-top:.5em;
         display:block;
+        color:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
     }
 
     /*svg*/
