@@ -138,7 +138,7 @@ nav a[data-icon]:first-child::after,nav a[data-icon]:last-child::before {
     content:attr(data-icon);
     font-size:2em;
     margin:0 .1em; }
-nav img {
+nav ul img {
     font-size:2em;
     margin-right:.05em; }
 nav img[src*=svg] {
