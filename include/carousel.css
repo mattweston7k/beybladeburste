@@ -66,11 +66,8 @@ menu {
     padding:0;margin:.5em auto;
     justify-content:space-evenly; }
 menu label {
-    display:flex;justify-content:center;align-items:center;
-    height:3em;
-    border-radius:0.5em;border:0.1em solid #BBB;
-    padding:0 0.3em; }
-menu li[is] label {
-    border-color:var(--theme); }
+    padding:0 0.1em; }
+menu li:not([is]) label {
+    filter:saturate(0); }
 label img {
     height:2.35rem; }
