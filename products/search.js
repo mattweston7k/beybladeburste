@@ -55,11 +55,13 @@ const Search = {
         if (/[\dα′]+[A-Zα_]/i.test(input))
             target.layer6s = target.disk = [input.toUpperCase()];
         else for (let [comp, list] of Object.entries(names)) {
-            let adjusted = comp == 'driver' ? input.replace(/(high|metal|′)/i, '') : input;
-            target[comp] = [adjusted.toUpperCase() || '[A-zαβΩ]+'];
+            let adjusted = comp == 'driver' ? input.replace('′', '') : input;
+            if (adjusted.length <= 3) 
+                target[comp] = [adjusted.toUpperCase() || '[A-zαβΩ]+'];
             if (!input) continue;
             for (let [sym, name] of Object.entries(list))
-                if (match(sym, name)) target[comp].push(sym.replace('+', '\\+'));
+                if (match(sym, name)) 
+                    target[comp] = [...target[comp] || [], sym.replace('+', '\\+')];
         }
         return target;
     },
@@ -81,10 +83,12 @@ const Search = {
             this.regex.push(new RegExp('^.+? (' + target.disk.join('|') + ')[^a-z]? .+?$'));
         if (target.frame)
             this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + target.frame.join('|') + ') .+?$', i));
-        if (target.driver) {
-            target.driver = target.driver.map(d => /^\\\+/.test(d) ? ('.*?' + d) : ('(M(?![br]))' + (this.metal ? '' : '?') + '(H(?![ny]))' + (this.high ? '' : '?') + d));
-            this.regex.push(new RegExp('^.+? (.+ )?(' + target.driver.join('|') + ')′' + (this.dash ? '' : '?') + '(\\+.?)?$', i));
-        }
+        if (target.driver) 
+            this.regex.push(new RegExp('^.+? (.+ )?[MH]?(' + target.driver.map(d => /^\\\+/.test(d) ? ('.*?' + d) : d).join('|') + ')′' + (this.dash ? '' : '?') + '(\\+.?)?$', i));
+        if (this.metal) 
+            this.regex.push(new RegExp('^.+? (.+ )?M[A-ZαβΩ].?$', i));
+        if (this.high)
+            this.regex.push(new RegExp('^.+? (.+ )?H[A-ZαβΩ].?$', i));
     },
     find() {
         Q('tbody tr', tr => {
