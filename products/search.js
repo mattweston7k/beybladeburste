@@ -55,9 +55,9 @@ const Search = {
         if (/[\dα′]+[A-Zα_]/i.test(input))
             target.layer6s = target.disk = [input.toUpperCase()];
         else for (let [comp, list] of Object.entries(names)) {
-            let adjusted = comp == 'driver' ? input.replace('′', '') : input;
-            if (adjusted.length <= 3) 
-                target[comp] = [adjusted.toUpperCase() || '[A-zαβΩ]+'];
+            input = comp == 'driver' ? input.replace('′', '') : input;
+            if (input.length <= 3) 
+                target[comp] = [input.toUpperCase() || '[A-zαβΩ]+'];
             if (!input) continue;
             for (let [sym, name] of Object.entries(list))
                 if (match(sym, name)) 
