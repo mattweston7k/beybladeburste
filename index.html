@@ -165,7 +165,10 @@
             db.style.transform = null;
             db.style.transition = 'transform .5s';
         } else {
-            await Promise.all([DB.del(ev => Q('#refresh h6').title = ev.type == 'blocked' ? '請先關閉所有本網的分頁' : ev.type), caches.delete('cache')]);
+            await Promise.all([
+                DB.del(ev => Q('#refresh h6').title = ev.type == 'blocked' ? '請先關閉所有本網的分頁' : ev.type), 
+                caches.delete('cache'), caches.delete('parts')
+            ]);
             window.onbeforeunload = () => window.scrollTo(0, 0);
             window.location.reload();
         }
