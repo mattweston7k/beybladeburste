@@ -35,7 +35,10 @@ self.addEventListener('fetch', ev => ev.respondWith(
 const goFetch = async (url, cacheable, cache) =>
     await fetch(new Request(append(url), {mode: 'no-cors'}))
         .then(async res => {
-            cacheable && !/bg\.png$/.test(url) ? (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone()) : null;
+            if (/\/parts\/.*?\.png$/.test(url)) 
+                (await caches.open('parts')).add(url, res.clone());
+            else if (cacheable && !/bg\.png$/.test(url)) 
+                (await caches.open('cache')).add(url.replace(/[#?].*$/, ''), res.clone());
             return res;
         }).catch(() => cache);
 
