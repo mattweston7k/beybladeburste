@@ -9,7 +9,7 @@
 <nav><script>L(() => new nav());</script></nav>
 <db-status></db-status>
 
-<main hidden>
+<main hidden id=catalog>
     <h5></h5>
     <details hidden>
         <summary data-icon=></summary>
@@ -18,11 +18,11 @@
     <div class=filter></div>
     <section class=catalog></section>
 </main>
-<main hidden>
+<main hidden id=menu>
     <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
     <section>
         <strong class=layer>Layer　攻擊環・結晶輪盤</strong>
-        <div class=layer style="height:31%;--p:6">
+        <div class=layer style="height:31.5%;--p:6">
             <button data-icon="" disabled></button>
             <button data-icon=""></button>
             <div>
@@ -45,7 +45,7 @@
                 <a href=?layer1></a>
             </div>
         </div>
-        <div class=disk style="top:38%;height:22%">
+        <div class=disk style="top:39%;height:23%">
             <a href=?LB style="left:38%;top:40%" title='LB Disk'></a>
             <div style='left:50%;bottom:0%'>
                 <a href=?disk3><svg viewBox="0 0 56 20"><use href="#oval"/></svg>Disk 3</a>
@@ -54,7 +54,7 @@
                 <a href=?frame><svg viewBox="2 0 60 20"><path d="M 50,0 a 10,10,0,0,1,0,20 h -50 l 10,-10 l -10,-10 Z"></path></svg>Frame</a>
             </div>
         </div>
-        <div class=driver style="top:68%;height:28%">
+        <div class=driver style="top:69.5%;height:28.5%">
             <div style='left:3%;bottom:-20%'>
                 <a href=?driver4>4</a>
                 <a href=?driver3>3</a>
@@ -64,10 +64,10 @@
                 <a href=?high data-icon="⇪"></a>
                 <a href=?dash data-icon="⌇"></a>
             </div>
-            <strong style='left:2%;top:135%;'>Driver　軸心・底盤</strong>
+            <strong style='left:3.5%;top:125%;'>Driver　軸心・底盤</strong>
         </div>
 
-        <svg viewBox="0 0 100 73">
+        <svg viewBox="0 0 100 71">
             <defs>
                 <rect id=round width=20 height=20 rx=10 ry=10></rect>
                 <rect id=oval width=56 height=20 rx=10 ry=10></rect>
@@ -102,10 +102,10 @@
     };
     L(() => {
         if (Parts.group)
-            return Q('main:first-of-type').hidden = false;
+            return Q('#catalog').hidden = false;
         Q('.layer a:empty,.disk a:empty', a => a.insertAdjacentHTML('beforeend', `<img src=/img/system-${nav.comp(a.getAttribute('href').substring(1))}.png>`));
         Q('.driver a', a => a.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 20 20"><use href="#round"/></svg>`));
-        Q('main:last-of-type').hidden = false;
+        Q('#menu').hidden = false;
         Q('style[media]').removeAttribute('media');
     });
 </script>
@@ -120,13 +120,16 @@
         color:white;
     }
 
+    #menu [style],.layer>div {
+        position:absolute;
+    }
     section {
         position:relative;
         max-width:800px;
         margin:3em auto;
     }
     section div {
-        position:absolute;width:100%;
+        width:100%;
         z-index:1;
     }
     .layer {
@@ -165,9 +168,6 @@
     .driver a {
         width:2em;
     }
-    .disk>a[href='?LB'] {
-        position:absolute;
-    }
     .driver>div {
         width:9em;
         text-align:left;
@@ -187,7 +187,7 @@
     button:last-of-type {right:0;}
 
     a[href^='?layer6'],a[href='?LB'] {
-        position:absolute;transform:translate(-50%,-50%);
+        transform:translate(-50%,-50%);
     }
     a[href^='?layer5'] {
         position:relative;
