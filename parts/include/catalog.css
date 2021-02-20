@@ -379,6 +379,9 @@ h5+details article ul {
     text-indent:0;
     line-height:1.7;
 }
+h5+details article a {
+    color:var(--theme);
+}
 dfn[class] {
     background:linear-gradient(-77deg,hsla(var(--c),70%,0%,0) 7%,hsl(var(--c),70%,var(--root-b)) 7%,hsl(var(--c),70%,var(--root-b)) 93%,hsla(var(--c),70%,0%,0) 93%);
     color:hsl(var(--c),70%,calc(90% - var(--root-b)/1.5));
