@@ -262,7 +262,7 @@ h2.single {
 h2.kanji {
     font-family:mono; }
 :lang(yue) {
-    font-family:PingFang TC,Microsoft Jhenghei,sans-serif; font-weight:200; }
+    font-family:Noto Sans TC,PingFang TC,Microsoft Jhenghei,sans-serif; font-weight:200; }
 :lang(yue):not(:empty)::before {content:'〚';}
 :lang(yue):not(:empty)::after  {content:'〛';}
 :lang(yue)::before,:lang(yue)::after {vertical-align:-.06em;}
