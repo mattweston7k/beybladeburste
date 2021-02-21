@@ -33,7 +33,7 @@ self.addEventListener('fetch', ev => ev.respondWith(
     })()
 ));
 const goFetch = async (url, cacheable, cache) =>
-    await fetch(new Request(append(url), {mode: 'no-cors'}))
+    await fetch(new Request(url, {mode: 'no-cors'})) // append(url)
         .then(async res => {
             if (/\/parts\/.*?\.png$/.test(url)) 
                 (await caches.open('parts')).add(url, res.clone());
