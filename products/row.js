@@ -173,13 +173,15 @@ Object.assign(HTMLTableCellElement.prototype, {
     },
     preview() {
         Q('.catalog>*', el => el.remove());
-        Q('#popup').click();
+        Q('#popup').checked = true;
         if (this.hasAttribute('data-url')) {
+            Row.previewing = this;
             let href = this.getAttribute('data-url');
             return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
+        Row.previewing = this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0];
         Q('label[for=popup] img').src = '';
-        const {parts} = (this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0]).decompose(true);
+        const {parts, dash, prefix} = Row.previewing.decompose(true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const key = `${sym}.${comp}`;
             const part = await new Part(await DB.get('json', key)).attach(key).revise();
@@ -204,3 +206,18 @@ Object.assign(HTMLTableCellElement.prototype, {
         this.classList[name.length >= oversize[lang][comp] ? 'add' : 'remove']('small');
     }
 });
+document.onkeydown = ev => {
+    if (!Q('#popup').checked) return;
+    ev.preventDefault();
+    if (ev.key == 'ArrowRight')
+        $(Row.previewing).nextAll('td[data-part]')[0]?.preview();
+    else if (ev.key == 'ArrowLeft')
+        $(Row.previewing).prevAll('td[data-part],td[data-url]')[0]?.preview();
+    else if (/^Arrow(Up|Down)$/.test(ev.key)) {
+        const sib = $(Row.previewing.parentNode)[(ev.key == 'ArrowUp' ? 'prev' : 'next') + 'All']('tr:not([hidden])')[0];
+        if (Row.previewing.hasAttribute('data-url'))
+            return sib?.querySelector('td[data-url]').preview();
+        const comp = Row.previewing.getAttribute('data-part').split('.')[1];
+        (sib?.querySelector(`td[data-part$=${comp}]`) || sib?.querySelector(`td[data-part*=${comp.replace(/\d.$/, '')}]`))?.preview();
+    }
+}
