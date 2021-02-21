@@ -1,7 +1,7 @@
 class Part {
     constructor(info, derived) {
         Object.assign(this, typeof info == 'object' ? info : {comp: info});
-        derived ? this.group = {H: 'high', M: 'metal'}[derived] || derived : null;
+        if (derived) this.group = {H: 'high', M: 'metal', '′': 'dash'}[derived] || derived;
     }
     detach() {
         return (({sym, comp, ...other}) => {
@@ -16,9 +16,11 @@ class Part {
         [this.names.eng, this.names.chi, this.names.jap] = names[this.comp]?.[this.sym] || names[this.comp]?.[this.sym.replace('′', '')] || ['', '', ''];
         return this;
     }
-    async revise() {
+    async revise(dashed) {
         if (this.comp != 'driver') 
             return this;
+        dashed ? this.sym += '′' : /′$/.test(this.sym) ? dashed = true : null;
+
         if (!Part.derived.includes(this.group) || this.group == 'dash')
             for (const g of Part.derived.filter(p => p != this.group)) 
                 await Part.list(g);
@@ -27,7 +29,7 @@ class Part {
             this.attr = [...this.attr || [], ...Part.derived.filter(g => Part[g].includes(this.sym))];
         else {
             [this.sym, this.desc, this.attr] = {
-                high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, /′$/.test(this.sym) ? ['dash'] : [] ],
+                high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, dashed ? ['dash'] : [] ],
                 dash: [`${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
                 metal: [`M${this.sym.replace('′', '')}`, `搭載金屬 Lock 部件的【${this.sym.replace('′', '')}′】driver。`, []]
             }[this.group];

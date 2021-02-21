@@ -156,7 +156,7 @@ Object.assign(HTMLTableCellElement.prototype, {
             core: /[\dα′_]+(?=[A-Zα_])/
         };
         if (comp == 'driver')
-            [dash, prefix, sym] = [regex.dash.test(sym), regex.prefix.exec(sym)?.[0], sym.replace(regex.dash, '').replace(regex.prefix, '')];
+            [dash, prefix, sym] = [regex.dash.exec(sym)?.[0], regex.prefix.exec(sym)?.[0], sym.replace(regex.dash, '').replace(regex.prefix, '')];
         else if (comp == 'disk')
             [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', regex.core.exec(sym)?.[0], sym.replace(regex.core, '')];
         if (preview) {
@@ -184,7 +184,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         const {parts, dash, prefix} = Row.previewing.decompose(true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const key = `${sym}.${comp}`;
-            const part = await new Part(await DB.get('json', key)).attach(key).revise();
+            const part = await new Part(await DB.get('json', key), prefix || dash).attach(key).revise(prefix && dash);
             part.catalog();
             part.links();
         });
