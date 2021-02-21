@@ -47,15 +47,16 @@
         </div>
         <div class=disk style="top:38%;height:23%">
             <a href=?LB style="left:38%;top:40%" title='LB Disk'></a>
-            <div style='left:50%;bottom:0%'>
+            <div style='right:1%;bottom:calc(-20% - 1.5em)'>
                 <a href=?disk3><svg viewBox="0 0 56 20"><use href="#oval"/></svg>Disk 3</a>
                 <a href=?disk1><svg viewBox="0 0 56 20"><use href="#oval"/></svg>Disk 1</a>
                 <a href=?disk2><svg viewBox="-2 0 60 20"><path d="M 10,0 a 10,10,0,0,0,0,20 h 40 l 10,-10 l -10,-10 Z"></path></svg>Disk 2</a>
                 <a href=?frame><svg viewBox="2 0 60 20"><path d="M 50,0 a 10,10,0,0,1,0,20 h -50 l 10,-10 l -10,-10 Z"></path></svg>Frame</a>
+                <b>Disk　金屬輪盤</b>
             </div>
         </div>
         <div class=driver style="top:68%;height:28%">
-            <div style='left:3%;bottom:-20%'>
+            <div style='left:3%;bottom:calc(-29% - 1.6em)'>
                 <a href=?driver4>4</a>
                 <a href=?driver3>3</a>
                 <a href=?driver2>2</a>
@@ -63,8 +64,8 @@
                 <a href=?metal data-icon="✨"></a>
                 <a href=?high data-icon="⇪"></a>
                 <a href=?dash data-icon="⌇"></a>
+                <b>Driver　軸心・底盤</b>
             </div>
-            <b style='left:3.5%;top:125%;'>Driver　軸心・底盤</b>
         </div>
 
         <svg viewBox="0 0 100 73">
@@ -81,6 +82,7 @@
             M 68,12 l -3.5,5 l -20.5,0 m 0,0 l 1,1 m -1,-1 l 1,-1 m -1,1 m -16.5,0 l -4,0 l -2.1,3 l 9.1,13 m 0,0 l .4,-1.3 m -.4,1.3 l -1.5,-.3"/>
             <path id='5' d="M 73,12 l -5,0 m 0,0 l 1,1 m -1,-1 l 1,-1 m -1,1 m -15.5,0 l -5,0 m 0,0 l 1,1 m -1,-1 l 1,-1 m -1,1 "/>
             <path d='M 50,68 l -6.3,9 l -40,0' marker-start='url(#bullseye)'></path>
+            <path d='M 50,42 l 4.2,6 l 45,0' marker-start='url(#bullseye)'></path>
         </svg>
     </section>
 </main>
@@ -152,8 +154,8 @@
         opacity:0;
     }
     .disk>div {
-        display:flex;flex-wrap:wrap;
-        width:10em;
+        width:11em;
+        text-align:right;
     }
     .disk>div a,.driver a {
         max-height:2em;line-height:2em;
@@ -169,7 +171,7 @@
         width:2em;
     }
     .driver>div {
-        width:9em;
+        width:10em;
         text-align:left;
     }
 
@@ -219,9 +221,15 @@
         position:absolute;right:.5em;bottom:100%;
     }
     b {
-        margin-top:.5em;
+        margin-top:.5rem;
         display:block;
         color:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
+    }
+    .disk b {
+        padding-right:.2rem;
+    }
+    .driver b {
+        padding-left:.2rem;
     }
 
     /*svg*/
@@ -246,11 +254,11 @@
         fill:hsl(var(--c),var(--s),75%);
     }
     #bullseye circle:first-child {
-        r:3.5;
+        r:3;
         stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
     }
     #bullseye circle:last-child {
-        r:2;
+        r:1.5;
         fill:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
     }
     #round {
