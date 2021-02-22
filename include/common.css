@@ -495,8 +495,8 @@ nav span,form summary,caption,caption data::after,.tips
 .notify::before {
     content:'❗';
     font-size:2em;
-    position:absolute;top:50%;left:-5%;
-    transform:translate(0%,-80%) rotate(-30deg);
+    position:absolute;top:50%;left:-20%;
+    transform:translate(0%,-95%) rotate(-30deg);
     z-index:2;
 }
 body>db-status {
