@@ -270,7 +270,7 @@ a.dash h2 {
     letter-spacing:calc(1em*var(--space));
     padding-left:calc(1em*var(--space) + .05em);
 }
-#Z.dash~a h2 {
+a.dash h2:not(.single) {
     padding-right:calc(-1em*var(--space) - .025em);
 }
 a.dash h2.single {
