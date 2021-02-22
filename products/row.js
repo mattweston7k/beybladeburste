@@ -184,7 +184,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         const {parts, dash, prefix} = Row.previewing.decompose(true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const key = `${sym}.${comp}`;
-            const part = await new Part(await DB.get('json', key), prefix || dash).attach(key).revise(prefix && dash);
+            const part = await new Part(await DB.get('json', key), !/^\+/.test(sym) ? prefix || dash : null).attach(key).revise(prefix && dash);
             part.catalog();
             part.links();
         });
