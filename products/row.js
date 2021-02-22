@@ -151,7 +151,7 @@ Object.assign(HTMLTableCellElement.prototype, {
     decompose(preview = false) {
         let [sym, comp] = this.getAttribute('data-part').split('.');
         let dash, prefix, core, more, regex = {
-            dash: /′/,
+            dash: /′(\+.)?$/,
             prefix: /^[HM](?=[^′a-z])/,
             core: /[\dα′_]+(?=[A-Zα_])/
         };
