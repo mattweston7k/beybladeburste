@@ -1,7 +1,7 @@
 class Part {
     constructor(info, derived) {
         Object.assign(this, typeof info == 'object' ? info : {comp: info});
-        if (derived) this.group = {H: 'high', M: 'metal', '′': 'dash'}[derived] || derived;
+        if (derived) this.group = {H: 'high', M: 'metal', '′': 'dash'}[derived[0]] || derived;
     }
     detach() {
         return (({sym, comp, ...other}) => {
