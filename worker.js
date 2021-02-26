@@ -1,5 +1,5 @@
 self.addEventListener('install', ev => ev.waitUntil(
-    (async () => (await caches.open('cache')).addAll(['/','/include/head.html','/parts/include/bg.svg']))()
+    (async () => (await caches.open('cache')).addAll(['/','/include/head.html','/parts/include/bg.svg','https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js']))()
 ));
 self.addEventListener('activate', event => event.waitUntil(clients.claim()));
 
