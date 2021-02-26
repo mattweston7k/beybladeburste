@@ -87,14 +87,19 @@ const DB = {
     },
     check(handler) {
         fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).
-        then(r => r.json()).then(j => {
+        then(r => r.json()).then(async j => {
             const updates = [], notify = [];
             for (const [item, [time, major]] of Object.entries(j)) {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
-                if (oldUser || !Cookie.getHistory(item)) item == 'products' ? DB.indicator.prod() : updates.push(item);
-                if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000)) notify.push(item);
+                if (oldUser || !Cookie.getHistory(item))
+                    item == 'products' ? DB.indicator.prod() : updates.push(item);
+                if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000))
+                    notify.push(item);
+                if (item == 'products')
+                    await (await caches.open('cache')).delete('/products/row.js');
             }
-            if (notify.length > 0) Cookie.notification(notify);
+            if (notify.length > 0)
+                Cookie.notification(notify);
             if (updates.length > 0) {
                 DB.indicator.init(true);
                 return DB.cache(handler, updates);
