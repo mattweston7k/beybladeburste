@@ -39,7 +39,7 @@ label::after {
 }
 
 div {
-    background:hsla(var(--c),var(--s),calc(var(--b) + 5%),0.9);--b:30%;
+    background:hsla(var(--c),calc(var(--s) - 10%),var(--b),0.9);--b:30%;
 }
 div,data {
     position:relative;
@@ -80,6 +80,7 @@ span[fusion]::after {
     color:hsl(calc((var(--c) + 230)/2),70%,calc(80% - var(--b)/3));
     background:hsla(0,0%,calc(100% - var(--b)/2),.25);
     font-style:italic;
+    padding:0 .1em;
 }
 :host([group=layer5b]) span[fusion]::after {
     color:inherit;
@@ -139,7 +140,7 @@ span[fusion]::after {
         content:'\f107';left:.37rem;bottom:.3rem; }
     data {
         display:flex;justify-content:center;align-items:center;
-        height:50%;width:2rem;
+        height:50%;width:1.8rem;
         border-left:1px solid;
     }
     data:not(:last-of-type) {
@@ -149,7 +150,7 @@ span[fusion]::after {
     span {
         display:grid;
         text-align:left;line-height:.9rem;
-        top:0;left:2.4rem;
+        top:0;left:2.2rem;
         transform:translate(0,calc(-.5px - 50%));
     }
     span::before {
