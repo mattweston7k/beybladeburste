@@ -177,9 +177,9 @@ Object.assign(HTMLTableCellElement.prototype, {
         if (this.hasAttribute('data-url')) {
             Row.previewing = this;
             let [href, parent] = [this.getAttribute('data-url'), this.parentNode];
-            Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
             if (parent.classList.contains('RB'))
                 Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
+            return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
         Row.previewing = this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0];
         Q('label[for=popup] img', img => img.src = '');
