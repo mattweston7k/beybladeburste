@@ -22,9 +22,12 @@
     <div class=tips>除「重量」外，其餘數據及簡介都是直接由官網引用／翻譯，請自行判斷現實情況！</div>
     <section>
         <b class=layer>Layer　攻擊環・結晶輪盤</b>
-        <div class=layer style="height:31%;--p:6">
+        <div class=layer style="height:31%;--p:7">
             <button data-icon="" disabled></button>
             <button data-icon=""></button>
+            <div>
+                <a href=?layer7c title=Chip></a>
+            </div>
             <div>
                 <a href=?layer6s style="top:28%;left:22%" title=Chassis></a>
                 <a href=?layer6r style="top:28%;left:53%" title=Ring></a>
@@ -87,13 +90,13 @@
     </section>
 </main>
 <script>
-    let page = 6;
+    let max = page = parseInt(Q('div.layer').style.getPropertyValue('--p'));
     const hidePath = page => Q(`path[id]`, path => path.style.opacity = path.id == page ? 1 : 0);
     hidePath(page);
     Q('button:first-of-type').onclick = ev => {
         Q('button:last-of-type').disabled = false;
         Q('div.layer').style.setProperty('--p', ++page);
-        ev.target.disabled = page == 6;
+        ev.target.disabled = page == max;
         hidePath(page);
     };
     Q('button:last-of-type').onclick = ev => {
@@ -119,7 +122,8 @@
     a[title]::after {
         content:attr(title);
         position:absolute;right:.5em;bottom:0;
-        color:white;
+        color:var(--theme);
+        text-shadow:0.05em 0.05em 0 white, -0.05em 0.05em 0 white, -0.05em -0.05em 0 white, 0.05em -0.05em white
     }
 
     #menu [style],.layer>div {
@@ -143,9 +147,10 @@
         display:flex;justify-content:space-around;align-items:center;
         padding:0 8%;
     }
-    .layer>div:first-of-type  {left:calc((var(--p) - 6)*100%);}
-    .layer>div:nth-of-type(2) {left:calc((var(--p) - 5)*100%);}
-    .layer>div:last-of-type   {left:calc((var(--p) - 4)*100%);}
+    .layer>div:nth-last-of-type(4) {left:calc((var(--p) - 7)*100%);}
+    .layer>div:nth-last-of-type(3) {left:calc((var(--p) - 6)*100%);}
+    .layer>div:nth-last-of-type(2) {left:calc((var(--p) - 5)*100%);}
+    .layer>div:last-of-type        {left:calc((var(--p) - 4)*100%);}
 
     defs~path,.disk>a[href='?LB'] {
         transition:opacity .5s;
@@ -207,13 +212,10 @@
     section img {
         height:100%;
     }
-    g:not(.layer) a, svg path {
-        filter:drop-shadow(0 0 0.1rem hsl(var(--c),calc(var(--s)*2),80%)) drop-shadow(0 0 0.3rem hsl(var(--c),calc(var(--s)*1.5),70%)) !important;
-    }
-    .layer a,.day section a {
+    section a {
         filter:drop-shadow(0.25rem -0.25rem 0.2rem hsla(0,0%,0%,0.4)) !important;
     }
-    .layer a:hover,.day section a:hover {
+    section a:hover {
         filter:brightness(120%) drop-shadow(0.25rem -0.25rem 0.2rem hsla(0,0%,0%,0.4)) !important;
     }
     section>b {
@@ -223,7 +225,8 @@
     b {
         margin-top:.5rem;
         display:block;
-        color:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
+        color:hsl(var(--c),var(--s),calc(60% - var(--b)/10));
+        text-shadow:0 0 .05rem hsl(var(--c),var(--s),calc(50% - var(--b)/10));
     }
     .disk b {
         padding-right:.2rem;
@@ -236,22 +239,20 @@
     svg * {
         overflow: visible;
     }
-    path {
+    .driver+svg path {
         stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
         stroke-linecap:round;
         stroke-width:.5;
         fill:transparent;
     }
-    .disk use,.disk path,.driver use {
-        stroke-width:1.5;
-        stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
-    }
     circle,rect {
         r:2.5;
         fill:transparent;
     }
-    .day .disk svg>*,.day rect {
-        fill:hsl(var(--c),var(--s),75%);
+    rect,.disk path {
+        stroke:hsl(var(--c),var(--s),40%);
+        stroke-width:1.5;
+        fill:none;
     }
     #bullseye circle:first-child {
         r:3;
@@ -260,9 +261,6 @@
     #bullseye circle:last-child {
         r:1.5;
         fill:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
-    }
-    #round {
-        stroke-width:1.5;
     }
 </style>
 
