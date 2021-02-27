@@ -6,7 +6,6 @@ self.addEventListener('activate', event => event.waitUntil(clients.claim()));
 const justUpdated = (url, cache) => {
     const cachedDate = new Date(cache.headers.get('date')).getTime();
     return (
-        /(Mincho-chi\.ttf)$/.test(url) && new Date('2020-10-14').getTime() >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
         /io\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 2) >= cachedDate || false);
