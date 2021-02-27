@@ -173,6 +173,7 @@ Object.assign(HTMLTableCellElement.prototype, {
     },
     preview() {
         Q('.catalog>*', el => el.remove());
+        Q('label[for=popup] img', img => img.src = '');
         Q('#popup').checked = true;
         if (this.hasAttribute('data-url')) {
             Row.previewing = this;
@@ -182,7 +183,6 @@ Object.assign(HTMLTableCellElement.prototype, {
             return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
         Row.previewing = this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0];
-        Q('label[for=popup] img', img => img.src = '');
         const {parts, dash, prefix} = Row.previewing.decompose(true);
         parts.filter(p => p).forEach(async ([sym, comp]) => {
             const key = `${sym}.${comp}`;
