@@ -5,7 +5,8 @@
 <style></style>
 
 <nav><script>new nav(["home","/parts/"],["","parts"])</script></nav>
-<input type=radio name=system id=sparking data-part='[["Chip","layer6c"],["Ring","layer6r"],["Chassis","layer6s"]]' checked>
+<input type=radio name=system id=DB data-part='[["Core","layer7c"],["Blade","layer7b"],["Armor","layer7a"]]' checked>
+<input type=radio name=system id=SP data-part='[["Chip","layer6c"],["Ring","layer6r"],["Chassis","layer6s"]]'>
 <input type=radio name=system id=GT data-part='[["Chip","layer5c"],["Base","layer5b"],["Weight","layer5w"]]'>
 <main>
     <db-status></db-status>
@@ -27,14 +28,15 @@
             <summary><span>精準檢索Precise search</span><button type=button data-icon= onclick=Search.go()></button></summary>
             <fieldset>
                 <p class=layer>
-                    <label for=sparking><img src=../img/system-layer6.png></label>
+                    <label for=DB><img src=../img/system-layer7.png></label>
+                    <label for=SP><img src=../img/system-layer6.png></label>
                     <label for=GT><img src=../img/system-layer5.png></label>
-                    <label for=chip>Chip</label>
-                    <input type=text name=layer6c id=chip placeholder=g/V/s><br>
-                    <label for=main>Ring</label>
-                    <input type=text name=layer6r id=main placeholder=g/V/s><br>
-                    <label for=weight>Chassis</label>
-                    <input type=text name=layer6s id=weight placeholder=1a/1s/斬>
+                    <label for=motif>Core</label>
+                    <input type=text name=layer7c id=motif placeholder=g/V/s><br>
+                    <label for=main>Blade</label>
+                    <input type=text name=layer7b id=main placeholder=g/V/s><br>
+                    <label for=key>Armor</label>
+                    <input type=text name=layer7a id=key placeholder=6/1s/斬>
                 <p class=layer>
                     <label for=layer>Layer</label>
                     <input type=text name=layer id=layer placeholder=L2/GV/br>
@@ -89,8 +91,8 @@
         <thead>
         <tr class=comp>
             <th rowspan=2>No
-            <th colspan=3 class=layer>Layer / <br>Base / Ring
-            <th colspan=3 class=layer>Chip
+            <th colspan=3 class=layer>Layer / <br>Base / Ring / Blade
+            <th colspan=3 class=layer>Chip / Core
             <th class=layer>
             <th colspan=3 class=disk>Disk<br> (＋Frame)
             <th colspan=3 class=driver>Driver

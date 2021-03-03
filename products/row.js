@@ -19,34 +19,40 @@ class Layer extends AbsPart {
     baseORring(sym) {
         if (sym == '/')
             return this.none();
-        if (this.system == 'GT')
-            return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;&nbsp;${sym}`, false);
+        if (this.system == 'DB')
+            return super.code(`${sym}.layer7b`, `<s>&lt;</s>&nbsp;&nbsp;${sym}`, false);
         if (this.system == 'SP')
-            return super.code(`${sym}.layer6r`, `<s>&lt;</s>${sym[0]}`, false);
+            return super.code(`${sym}.layer6r`, `<s>=</s>${sym[0]}`, false);
+        if (this.system == 'GT')
+            return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;${sym}&nbsp;`, false);
     }
     chip(sym) {
         if (sym == '/')
             return this.none();
+        if (this.system == 'DB')
+            return super.code(`${sym}.layer7c`, '<s>&lt;</s>' + sym, false);
+        if (this.system == 'SP')
+            return super.code(`${sym}.layer6c`, '<s>=</s>' + sym.replace('2', '<sup>2</sup>'), false);
         if (this.system == 'GT')
             return super.code(`${sym}.layer5c`, '<s>&gt;</s>' + sym.replace('Δ','D'), sym == 'Δ');
-        if (this.system == 'SP')
-            return super.code(`${sym}.layer6c`, '<s>&lt;</s>' + sym.replace('2', '<sup>2</sup>'), false);
     }
     weightORchassis(sym) {
-        if (this.system == 'GT') {
-            const code = {'/': '<s>¬龘</s>', '!': '<s>¬</s>🚫'}[sym];
-            return `<td${code ? '' : ` data-part='${sym}.layer5w'`}>${code || `<s>¬</s>${sym}`}`;
-        }
+        if (this.system == 'DB')
+            return `<td data-part='${sym}.layer7a'><s>.</s>${sym}`;
         if (this.system == 'SP') {
             const code = {'!': '🚫'}[sym];
             return `<td${this.fusion ? ' class=fusion' : ''}${code ? '' : ` data-part='${sym}.layer6s'`}>${code || sym}`;
+        }
+        if (this.system == 'GT') {
+            const code = {'/': '<s>¬龘</s>', '!': '<s>¬</s>🚫'}[sym];
+            return `<td${code ? '' : ` data-part='${sym}.layer5w'`}>${code || `<s>¬</s>${sym}`}`;
         }
     }
     code() {
         const [body, chip, key] = this.sym.split('.');
         if (!key)
             return super.code();
-        this.system = /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
+        this.system = /^\d+$/.test(key) ? 'DB' : /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
         return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
     }
 }
@@ -74,7 +80,7 @@ class Row {
     }
     static fill(lang, tr) {
         tr.querySelectorAll('td[data-part]').forEach(td => {
-            if (/layer(5w|6s)$/.test(td.getAttribute('data-part')))
+            if (/layer(5w|6s|7a)$/.test(td.getAttribute('data-part')))
                 return;
             const cells = td.next2();
             lang.forEach((l, i) => l ? cells[i].code(l) : null);

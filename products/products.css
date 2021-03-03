@@ -87,15 +87,18 @@ form p input {
     border:.05em solid grey;border-radius:0;
 }
 
-label[for=sparking],label[for=GT] {
+label[for=DB],label[for=SP],label[for=GT] {
     position:absolute;top:0;transform:translate(0,-40%);
     filter:saturate(0);
 }
-label[for=sparking] {
+label[for=DB] {
     left:1.5em;
 }
-label[for=GT] {
+label[for=SP] {
     left:6em;
+}
+label[for=GT] {
+    left:10.5em;
 }
 form label img {
     height:2.5em;
