@@ -238,13 +238,13 @@ h3 {
     text-shadow:0.08em 0.08em 0 hsl(var(--glow),100%,100%), 0 0 1em hsl(var(--glow),100%,70%), 0 0 2em hsl(var(--glow),100%,50%);
     transform:skew(0,-7deg);
 }
-#now a:nth-child(1) {
+#now h3 a:nth-child(1) {
     transform:translateY(0.3em);font-size:2.5em; }
-#now a:nth-child(2) {
+#now h3 a:nth-child(2) {
     transform:translateY(-0.3em);font-size:4em; }
-#now a:nth-child(3) {
+#now h3 a:nth-child(3) {
     transform:translateY(0.7em);font-size:1.5em; }
-#now a:nth-child(4) {
+#now h3 a:nth-child(4) {
     transform:translateY(0.1em);font-size:3em; }
 
 /*font-size*/
