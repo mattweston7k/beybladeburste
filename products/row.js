@@ -204,7 +204,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         const code = {
             eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
             chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
-            jap: name => (core ? `${core} ` : '') + (comp == 'driver' ? name.replace(/(アルティメット|エクステンド)/, '$1<br>') : name)
+            jap: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name)
         }[lang](name) + (name && dash ? '<i>′</i>' : '');
         this.innerHTML = this.innerHTML.replace(/^.*?(<(sub|b)>.+>)?$/, code + '$1');
 

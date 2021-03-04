@@ -47,7 +47,7 @@ const Search = {
         if (/^\\+/.test(input))
             return this.more = input;
 
-        [this.dash, this.high, this.metal] = [/′$/, /high/i, /metal/i].map(regex => regex.test(input));
+        [this.dash, this.high, this.metal] = [/′$/, /high|ハイ|高位/i, /metal|メタル|金屬/i].map(regex => regex.test(input));
         const match = (sym, name) => new RegExp(`^${input}$`, 'i').test(sym) ||
             (/^[0-9A-zαβΩΔ]{1,2}(′|\\\+)?$/.test(input) ? false : name.some(n => new RegExp(input, 'i').test(n)));
 
