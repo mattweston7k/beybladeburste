@@ -16,7 +16,7 @@ const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
-    setHistory: item => (/^(layer7|disk[34]|driver[34]|high|dash|metal|product|remake|name|frame)/.test(item)) ?
+    setHistory: item => (/^(layer7|disk[34]|driver[34]|high|dash|metal|product|remake|name|frame|LB)/.test(item)) ?
         Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000)} )) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
