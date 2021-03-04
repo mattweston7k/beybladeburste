@@ -22,6 +22,7 @@
     const ranges = [[200, 180], [179, 159], [158, 133], [132, 104], [103, 73], [71, 34], [31, 1]];
     let bottom = 0;
     display(...ranges[bottom]);
+    if (!Q('section img:not([style]')) display(...ranges[++bottom]);
     Q('body').onscroll = () => {
         if (Q('html').scrollTop >= document.body.scrollHeight - window.innerHeight - 150)
             display(...ranges[++bottom]);
