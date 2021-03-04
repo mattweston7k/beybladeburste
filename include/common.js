@@ -193,12 +193,12 @@ class nav {
         return group.replace(/^layer5$/, 'layer5m').replace('LB', 'layer6').replace(/(\d)[^m]$/, '$1');
     }
     static system(group) {
-        return `<img src=/img/system-${nav.comp(group)}.png alt=${group}>`;
+        return `<img src=/img/system-${nav.comp(group)}.png>`;
     }
 }
 nav.icons = {home: '', menu: '', prod: '', prize: '', back: ''};
 nav.hrefs = {home: '/', menu: '/parts/', prod: '/products/', prize: '/prize/', back: '../'};
-nav.parts = '<img src=/parts/include/parts.svg#whole alt=parts>';
+nav.parts = '<img src=/parts/include/parts.svg#whole>';
 nav.prod = `
     <li data-icon=><span>自由檢索<br>Free search</span><input type=text name=free placeholder=巨神/valkyrie></li>
     <li><data value></data><span>結果<br>results</span><button data-icon= onclick=Table.reset() disabled>重設 Reset</button></li>`;
