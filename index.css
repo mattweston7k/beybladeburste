@@ -150,7 +150,7 @@ h2,a[href*='takaratomy'],.fb,time,h5 {
 #now h4,#now h4+ul li,#now a {
     color:hsl(var(--glow),100%,70%); }
 #now a:link,fieldset a[href]:not([href*='youtube']) {
-    color:chartreuse; }
+    color:chartreuse !important; }
 
 #now h4+div {
     position:relative;
