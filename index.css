@@ -146,11 +146,11 @@ ul ul {
 }
 
 h2,a[href*='takaratomy'],.fb,time,h5 {
-    color:var(--theme);-webkit-text-fill-color:var(--theme); }
+    color:var(--theme); }
 #now h4,#now h4+ul li,#now a {
-    color:hsl(var(--glow),100%,70%);-webkit-text-fill-color:hsl(var(--glow),100%,70%); }
+    color:hsl(var(--glow),100%,70%); }
 #now a:link,fieldset a[href]:not([href*='youtube']) {
-    color:chartreuse;-webkit-text-fill-color:chartreuse; }
+    color:chartreuse; }
 
 #now h4+div {
     position:relative;
@@ -218,7 +218,7 @@ iframe {
 }
 #refresh h6[title]::after {
     content:attr(title);
-    display:block;color:deeppink;-webkit-text-fill-color:deeppink;
+    display:block;color:deeppink;
 }
 
 footer {
