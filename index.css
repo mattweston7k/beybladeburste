@@ -18,6 +18,9 @@ section {
     padding:0.2em 0.6em;
 }
 
+[data-icon]::before {
+    content:attr(data-icon);
+}
 #contents {
     position:relative;
 }
@@ -37,7 +40,6 @@ a[href*='takaratomy'] {
     margin-top:0.2em;
 }
 .fb a::before {
-    content:attr(data-icon);
     margin-right:0.15em;line-height:1;
 }
 
@@ -156,9 +158,6 @@ h2,a[href*='takaratomy'],.fb,time,h5 {
 }
 #now a[href*=youtube] {
     position:absolute;right:0;bottom:-0.8em;
-}
-#now a[href*=youtube]::before {
-    content:attr(data-icon);
 }
 iframe {
     margin-top:0.5em;
