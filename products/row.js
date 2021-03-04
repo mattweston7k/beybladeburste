@@ -209,7 +209,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         this.innerHTML = this.innerHTML.replace(/^.*?(<(sub|b)>.+>)?$/, code + '$1');
 
         const oversize = {eng: {layer6c: 10, driver: 12}};
-        oversize.chi = {layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4};
+        oversize.chi = {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4};
         oversize.jap = {...oversize.chi, disk: 7, frame: 6, driver: 7}; //イグニッション
         this.classList[name.length >= oversize[lang][comp] ? 'add' : 'remove']('small');
     }
