@@ -8,7 +8,7 @@ const count = el => document.querySelectorAll(el).length;
 const query = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v}), {});
 const groups = [
     ['layer7a', 'layer7b', 'layer7c'], ['layer6s', 'layer6r', 'LB', 'layer6c'], ['layer5b', 'layer5c', 'layer5w'],
-    ['remake', 'layer4', 'layer3', 'layer2', 'layer1'],
+    ['layer5', 'remake', 'layer4', 'layer3', 'layer2', 'layer1'],
     ['disk3', 'disk2', 'frame', 'disk1'],
     ['metal', 'dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
