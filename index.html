@@ -118,7 +118,7 @@
                     cat.indexOf(c) > 0 ? t.querySelector('article').style.setProperty('--c', colors[c]) : null;
                 Q('#now fieldset').appendChild(t);
             };
-            fetch('/update/-news.json').then(r => r.json()).catch(() => {
+            fetch('/update/-news.json?' + Math.random()).then(r => r.json()).catch(() => {
                 DB.indicator.setAttribute('status', 'offline');
                 Q('#now').hidden = true;
             }).then(beys => beys.forEach(b =>
