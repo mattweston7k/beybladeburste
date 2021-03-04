@@ -1,2 +1,0 @@
-/parts/layer/Sr.png
-/parts/layer/sR.png
