@@ -188,7 +188,7 @@
         z-index:3;
         border:none;background:none;
         color:hsl(var(--c),65%,60%);
-        font-size:3em;line-height:.5;
+        font-size:3em;height:1em;
         padding:0;
     }
     button[disabled] {
@@ -200,7 +200,7 @@
     a[href^='?layer6'],a[href='?LB'] {
         transform:translate(-50%,-50%);
     }
-    a[href^='?layer5'] {
+    .layer a:not([style]) {
         position:relative;
     }
     .layer a,.disk>a {
