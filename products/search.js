@@ -112,6 +112,7 @@ const Search = {
         Q('input[type=text]', searching ? input => input.blur() : input => input.value = '');
     },
     autofill(comp, sym) {
+        this.state(false);
         Q(/layer7/.test(comp) ? '#DB' : /layer6/.test(comp) ? '#SP' : '#GT').click();
         Q(`input[name=${comp}]`).value = sym;
         this.go();
