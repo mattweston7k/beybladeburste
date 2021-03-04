@@ -55,7 +55,7 @@ const DB = {
     },
     del: (error = ev => console.log(ev)) =>
          new Promise(res => {
-            DB.db ? DB.db.close() : null;
+            if (DB.db) DB.db.close();
             const del = indexedDB.deleteDatabase('db');
             del.onsuccess = ev => res(ev.target.readyState);
             del.onerror = del.onblocked = error;
@@ -150,8 +150,7 @@ const DB = {
                 return callback(await Promise.all(parts), await DB.get('html', group));
             }
             DB._tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
-                if (!result)
-                    return callback(parts, await DB.get('html', group));
+                if (!result) return callback(parts, await DB.get('html', group));
                 const part = await new Part(result.value).attach(result.primaryKey).revise();
                 parts.splice(parts.indexOf(part.sym), 1, part);
                 result.continue();

@@ -17,8 +17,7 @@ class Part {
         return this;
     }
     async revise(dashed) {
-        if (this.comp != 'driver') 
-            return this;
+        if (this.comp != 'driver') return this;
         dashed ? this.sym += '′' : /′$/.test(this.sym) ? dashed = true : null;
 
         if (!Part.derived.includes(this.group) || this.group == 'dash')

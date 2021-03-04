@@ -16,7 +16,7 @@ class Layer extends AbsPart {
         super(sym, upperFusion);
         this.symCode = sym == 'Sr' ? '<s>s</s>&nbsp;Sr' : sym.replace(/^([A-ZαβΩ][^αγ]?)$/, '&nbsp;$1');
     }
-    baseORring(sym) {
+    main(sym) {
         if (sym == '/')
             return this.none();
         if (this.system == 'DB')
@@ -26,7 +26,7 @@ class Layer extends AbsPart {
         if (this.system == 'GT')
             return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;${sym}&nbsp;`, false);
     }
-    chip(sym) {
+    motif(sym) {
         if (sym == '/')
             return this.none();
         if (this.system == 'DB')
@@ -36,7 +36,7 @@ class Layer extends AbsPart {
         if (this.system == 'GT')
             return super.code(`${sym}.layer5c`, '<s>&gt;</s>' + sym.replace('Δ','D'), sym == 'Δ');
     }
-    weightORchassis(sym) {
+    key(sym) {
         if (this.system == 'DB')
             return `<td data-part='${sym}.layer7a'><s>.</s>${sym}`;
         if (this.system == 'SP') {
@@ -49,11 +49,11 @@ class Layer extends AbsPart {
         }
     }
     code() {
-        const [body, chip, key] = this.sym.split('.');
+        const [main, motif, key] = this.sym.split('.');
         if (!key)
             return super.code();
-        this.system = /^\d+$/.test(key) ? 'DB' : /\d[A-Z]/.test(key) || /2$/.test(chip) ? 'SP' : 'GT';
-        return this.baseORring(body) + this.chip(chip) + this.weightORchassis(key);
+        this.system = /^\d+$/.test(key) ? 'DB' : /\d[A-Z]/.test(key) || /2$/.test(motif) ? 'SP' : 'GT';
+        return this.main(main) + this.motif(motif) + this.key(key);
     }
 }
 class Disk extends AbsPart {

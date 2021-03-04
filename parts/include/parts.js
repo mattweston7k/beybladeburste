@@ -46,9 +46,8 @@ Parts = {
     },
     target() {
         let target = window.location.hash.substring(1);
-        if (!target) return;
-        Q(`a[id='${decodeURI(target)}']`).scrollIntoView({behavior: 'smooth'});
-        Q(`a[id='${decodeURI(target)}']`).classList.add('target');
+        Q(`a[id='${decodeURI(target)}']`)?.scrollIntoView({behavior: 'smooth'});
+        Q(`a[id='${decodeURI(target)}']`)?.classList.add('target');
     },
     any(prefix) {
         const css = '/parts/include/typography.css';
@@ -127,8 +126,7 @@ const Tools = {
         window.onresize = () => window.innerWidth > 630 ? slider() : Q('.catalog').style.fontSize = '';
     },
     ruler(group) {
-        if (Part.derived.includes(group))
-            return;
+        if (Part.derived.includes(group)) return;
         let [max, min, scale] =
         [
             [/^layer(1|2|3|5[bw]|6[rs]|7[ab])$/, [10, 1, 'w+7']],

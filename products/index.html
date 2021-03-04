@@ -176,8 +176,7 @@
                 input.disabled = loading;
             });
             Q('caption').classList[loading ? 'add' : 'remove']('loading');
-            if (loading)
-                return Q('tbody').innerHTML = '';
+            if (loading) return Q('tbody').innerHTML = '';
             window.location.hash == '#BBG' ? Table.BBG() : null;
             Q('tr', tr => Row.connectedCallback(tr));
             !Search.go() ? Q('nav data').value = '' : null;

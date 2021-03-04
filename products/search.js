@@ -67,18 +67,18 @@ const Search = {
     },
     buildRegex(target, i = false) {
         i = i ? 'iu' : 'u';
-        if (target.layer5b)
-            this.regex.push(new RegExp('^(' + target.layer5b.join('|') + ')\\..+\\.\\W (.+ )?.+?$', i));
-        if (target.layer6r)
-            this.regex.push(new RegExp('^(' + target.layer6r.join('|') + ').?\\..+\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', i));
         if (target.layer7b)
             this.regex.push(new RegExp('^(' + target.layer7b.join('|') + ')\\..+\\.\\d (.+ )?.+?$', i));
-        if (target.layer5c)
-            this.regex.push(new RegExp('^.+\\.(' + target.layer5c.join('|') + ')\\.\\W (.+ )?.+?$', i));
-        if (target.layer6c)
-            this.regex.push(new RegExp('^.+\\.(' + target.layer6c.join('|') + ')\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', i));
         if (target.layer7c)
             this.regex.push(new RegExp('^.+\\.(' + target.layer7c.join('|') + ')\\.\\d (.+ )?.+?$', i));
+        if (target.layer6r)
+            this.regex.push(new RegExp('^(' + target.layer6r.join('|') + ').?\\..+\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', i));
+        if (target.layer6c)
+            this.regex.push(new RegExp('^.+\\.(' + target.layer6c.join('|') + ')\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', i));
+        if (target.layer5b)
+            this.regex.push(new RegExp('^(' + target.layer5b.join('|') + ')\\..+\\.\\W (.+ )?.+?$', i));
+        if (target.layer5c)
+            this.regex.push(new RegExp('^.+\\.(' + target.layer5c.join('|') + ')\\.\\W (.+ )?.+?$', i));
         if (target.layer5w || target.layer6s || target.layer7a)
             this.regex.push(new RegExp('^.+\\..+\\.(' + [...target.layer5w || [], ...target.layer6s || [], ...target.layer7a || []].join('|') + ') (.+ )?.+?$', i));
         if (target.layer)
