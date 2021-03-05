@@ -172,8 +172,7 @@ iframe {
 }
 #refresh h5 {
     display:block;
-    font-size:1.3rem;
-    margin-top:.5em;
+    margin:.3em 0 ;
 }
 #refresh dl,#refresh dl+div {
     text-align:right;
@@ -265,7 +264,7 @@ h3
 {font-size:0.95em;}
 h4
 {font-size:1.05em;}
-h2:first-of-type,h6[title^=請]::after
+h2:first-of-type,h6[title^=請]::after,#refresh h5
 {font-size:1.2em;}
 h4+div a::before,h6:not([title^=請])::after
 {font-size:2em;}
