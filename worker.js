@@ -12,7 +12,7 @@ const justUpdated = (url, cache) => {
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
 const append = url => internal(url) && !/\?/.test(url) && /(ttf|woff2?|js|json|css)$/.test(url) ? `${url}?${Math.random()}` : url;
-const noCacheNow = url => /^\/(products\/brochure\.html|prize\/BH-others\.html)?$/.test(new URL(url).pathname);
+const noCacheNow = url => /^\/(products\/launchers\.html|prize\/BH-others\.html)?$/.test(new URL(url).pathname);
 
 const classify = {
     update: url => [/\.json/].some(file => file.test(new URL(url).pathname)),
