@@ -152,7 +152,7 @@ const DB = {
             DB._tran.objectStore('json').index('group').openCursor(group).onsuccess = async ({target: {result}}) => {
                 if (!result) return callback(parts, await DB.get('html', group));
                 const part = await new Part(result.value).attach(result.primaryKey).revise();
-                parts.splice(parts.indexOf(part.sym), 1, part);
+                if (parts.includes(parts.sym)) parts[parts.indexOf(part.sym)] = part;
                 result.continue();
             }
         })
