@@ -105,7 +105,7 @@ const DB = {
                 return DB.cache(handler, updates);
             }
             return handler ? handler() : null;
-        }).catch(er => DB.indicator.error(er));
+        })//.catch(er => DB.indicator.error(er));
     },
     async cache(handler, update = groups.flat()) {
         DB.indicator.total = update.length;

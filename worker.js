@@ -1,7 +1,7 @@
 self.addEventListener('install', ev => ev.waitUntil(
-    (async () => (await caches.open('cache')).addAll(['/','/include/head.html','/parts/include/bg.svg','https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js']))()
+    (async () => (await caches.open('cache')).addAll(['/include/head.html','/parts/include/bg.svg','https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js']))()
 ));
-self.addEventListener('activate', event => event.waitUntil(clients.claim()));
+self.addEventListener('activate', ev => ev.waitUntil(clients.claim()));
 
 const justUpdated = (url, cache) => {
     const cachedDate = new Date(cache.headers.get('date')).getTime();
@@ -12,6 +12,7 @@ const justUpdated = (url, cache) => {
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
 const append = url => internal(url) && !/\?/.test(url) && /(ttf|woff2?|js|json|css)$/.test(url) ? `${url}?${Math.random()}` : url;
+const noCacheNow = url => /beybladeburst\.github\.io\/(products\/brochure\.html|prize\/BH-others\.html)$/.test(url);
 
 const classify = {
     update: url => [/\.json/].some(file => file.test(new URL(url).pathname)),
@@ -28,7 +29,7 @@ self.addEventListener('fetch', ev => ev.respondWith(
         if (classify.volatile(url))
             return await addHead(await goFetch(url, internal(url), c));
 
-        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, internal(url) && !/\/img\/bg\.jpg$/.test(url), c));
+        return await addHead(c && !justUpdated(url, c) ? c : await goFetch(url, internal(url) && !noCacheNow(url) && !/\/img\/bg\.jpg$/.test(url), c));
     })()
 ));
 const goFetch = async (url, cacheable, cache) =>
