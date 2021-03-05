@@ -216,7 +216,7 @@ li,.toggle {
 
 nav data {
     position:absolute;top:50%;transform:translate(0,-50%);
-    font-family:ANC,'Font Awesome 5 Free',sans-serif;
+    font-family:ANC,'Font Awesome 5 Free',AN,sans-serif;
     color:coral;
     text-align:right;white-space:nowrap;
 }

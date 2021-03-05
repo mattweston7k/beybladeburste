@@ -163,7 +163,7 @@ caption img {
 }
 caption data {
     color:coral;
-    font-family:ANC;
+    font-family:ANC,AN;
 }
 caption data::after {
     content:' / 'attr(value);
