@@ -254,8 +254,10 @@ footer
 {font-size:0.5em;}
 a[href*='takaratomy']
 {font-size:0.7em;}
-h1,.fb
+.fb
 {font-size:0.75em;}
+h1
+{font-size:0.8em;}
 time,h5,fieldset li,#refresh li
 {font-size:0.85em;}
 menu a span,.fb a,h2:last-child
