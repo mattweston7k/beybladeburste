@@ -128,8 +128,14 @@
 </section>
 
 <section id=refresh>
-    <h5>請使用<i data-icon=></i>或<i data-icon=></i>以確保所有功能正常</h5>
-    <h5>先把所有頁面訪問一次，就能離線使用！（需上線方能更新）</h5>
+    <h5>能離線使用！</h5>
+    <ul>
+        <li>把瀏覽器更新至最新，或使用 Chrome 或 Safari 以確保功能正常</li>
+        <li>在線狀態下，先把所有頁面都造訪一次</li>
+        <li>瀏覽器的選單中，「加到主頁面」(Add to home)</li>
+        <li>外來圖片不會儲存（如商品圖片）</li>
+        <li>需上線方能更新</li>
+    </ul>
     <dl style="display:none">
         <div title=V0><dt>2016 秋</dt><dd>把以圖片製成的《部件圖鑑》及《景品圖鑑》放上互聯網</dd></div>
         <div title=V1><dt>2017 春</dt><dd>正式成立網站，新增主頁、商品頁面等內容</dd></div>
@@ -147,7 +153,7 @@
 <script>
     let startT, endX;
     Q('#refresh h5').onpointerdown = () => startT = new Date;
-    Q('#refresh h5').onpointerup = () => (new Date - startT) / 1000 > .5 ? Q('h5+dl').style.display = 'flex' : null;
+    Q('#refresh h5').onpointerup = () => (new Date - startT) / 1000 > .5 ? Q('h5~dl').style.display = 'flex' : null;
     const [db, trash] = [Q('#refresh span:first-of-type'), Q('#refresh span:last-of-type')];
     db.onpointerdown = pressed => {
         db.style.transition = null;

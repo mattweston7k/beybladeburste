@@ -167,13 +167,15 @@ iframe {
 }
 
 #refresh {
-    text-align:right;
     user-select:none;
 }
 #refresh h5 {
     display:block;
     font-size:1.3rem;
     margin-top:.5em;
+}
+#refresh dl,#refresh dl+div {
+    text-align:right;
 }
 #refresh dl {
     display:flex;flex-wrap:wrap;
@@ -254,7 +256,7 @@ a[href*='takaratomy']
 {font-size:0.7em;}
 h1,.fb
 {font-size:0.75em;}
-time,h5,fieldset li
+time,h5,fieldset li,#refresh li
 {font-size:0.8em;}
 menu a span,.fb a,h2:last-child
 {font-size:0.9em;}
