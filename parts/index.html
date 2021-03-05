@@ -157,8 +157,11 @@
     defs~path,.disk>a[href='?LB'] {
         transition:opacity .5s;
     }
-    .layer:not([style*='--p']):not([style*='6'])+.disk>a[href='?LB'] {
+    .disk>a[href='?LB'] {
         opacity:0;
+    }
+    .layer[style*='6']+.disk>a[href='?LB'] {
+        opacity:1;
     }
     .disk>div {
         width:11em;
