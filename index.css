@@ -110,8 +110,9 @@ menu:hover>svg:last-of-type,menu:focus-within>svg:last-of-type {
 @keyframes rotatingR {
     to {transform:rotate(359deg);} }
 
-article,fieldset {
+#contents~section>* {
     max-width:1000px;
+    margin:auto;
 }
 article>* {
     display:block;
@@ -119,7 +120,7 @@ article>* {
 fieldset {
     position:relative;
     border:none;
-    margin:3.5em auto 1em auto; padding:2.5em 0 0 0;
+    margin:3.5em auto 1em auto !important; padding:2.5em 0 0 0;
 }
 #now article {
     margin-bottom:1em; padding-left:.5em;
@@ -172,7 +173,7 @@ iframe {
 }
 #refresh h5 {
     display:block;
-    margin:.3em 0 ;
+    margin:.3em auto;
 }
 #refresh dl,#refresh dl+div {
     text-align:right;
