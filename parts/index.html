@@ -125,10 +125,9 @@
     a[title]::after {
         content:attr(title);
         position:absolute;right:.5em;bottom:0;
-        color:var(--theme);
-        text-shadow:0.05em 0.05em 0 white, -0.05em 0.05em 0 white, -0.05em -0.05em 0 white, 0.05em -0.05em white
+        color:white;
+        text-shadow:0.05em 0.05em 0 var(--theme), -0.05em 0.05em 0 var(--theme), -0.05em -0.05em 0 var(--theme), 0.05em -0.05em var(--theme);
     }
-
     #menu [style],.layer>div {
         position:absolute;
     }
