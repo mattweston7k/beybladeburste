@@ -1,11 +1,11 @@
-document.head.insertAdjacentHTML('afterbegin', `<style>
+setTimeout(() => document.head.insertAdjacentHTML('afterbegin', `<style>
 html {background:black;}
 html::before {
     content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari';
     text-align:center;color:white;font-size:4em;
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
 }
-body {opacity:0;transition:opacity .5s;}</style>`);
+body {opacity:0;transition:opacity .5s;}</style>`), 1000);
 
 navigator.serviceWorker.register('/worker.js').then(async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
