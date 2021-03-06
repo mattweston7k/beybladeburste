@@ -6,13 +6,11 @@ html::before {
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
 }
 body {opacity:0;transition:opacity .5s;}</style>`);
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1';}</style>`);
 
-navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? async () => {
+navigator.serviceWorker.register('/worker.js').then(async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
     if (!document.querySelector('head meta')) document.head.insertAdjacentHTML('afterbegin', html);
-} : null);
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari2';}</style>`);
+});
 
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
@@ -38,7 +36,6 @@ const Cookie = {
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
 let Parts = {group: '/parts/' == window.location.pathname ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari3';}</style>`);
 
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
@@ -176,7 +173,6 @@ const twilight = () => {
     Q('object', obj => obj.data = obj.data.replace(...p));
     Cookie.setOptions();
 };
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari4';}</style>`);
 
 class nav {
     constructor(links = ['home', 'prize'], texts = []) {
@@ -292,4 +288,3 @@ class Indicator extends HTMLElement {
 }
 Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari5';}</style>`);
