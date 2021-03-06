@@ -1,8 +1,16 @@
-navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? (async () => {
+navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
     document.head.insertAdjacentHTML('afterbegin', html);
-})() : null);
+} : null);
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
+Q('head style').insertAdjacentHTML('afterbegin', `
+html {background:black;}
+html::before {
+    content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari';
+    text-align:center;color:white;font-size:4em;
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+}
+body {opacity:1;transition:opacity .5s;}`);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
 const query = window.location.search.substring(1).split('&').map(q => q.split('=')).reduce((obj, [p, v]) => ({...obj, [p]: v}), {});
