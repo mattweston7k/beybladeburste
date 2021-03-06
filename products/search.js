@@ -25,7 +25,7 @@ const Search = {
                 this.buildRegex(this.byEntered(inputs), true);
             else if (Object.keys(inputs = this.clicked).length > 0)
                 this.buildRegex(this.byClicked(inputs));
-        gtag('event', 'search', typeof inputs == 'string' ? {free: inputs} : inputs);
+        setTimeout(() => gtag('event', 'search', typeof inputs == 'string' ? {free: inputs} : inputs));
         if (this.regex.length > 0 || this.more) {
             this.find();
             return true;
