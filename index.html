@@ -127,7 +127,7 @@
             fetch('/update/-news.json?' + Math.random()).then(r => r.json()).catch(() => {
                 DB.indicator.setAttribute('status', 'offline');
                 Q('#now').hidden = true;
-            }).then(beys => beys.forEach(b =>
+            }).then(beys => beys?.forEach(b =>
                     typeof b == 'string' ? Q('#now fieldset').insertAdjacentHTML('beforeend', b) : newBey(...b) ));
         </script>
     </fieldset>
@@ -152,7 +152,7 @@
     </dl>
     <div>
         <span data-icon=></span>
-        <h6>如在商品／部件頁遇上問題<br>請把左圖拖至右圖<br>（全站約 80 MB）</h6>
+        <h6>如在商品／部件頁遇上問題<br>請把左圖拖至右圖<br>（全站約 40 MB）</h6>
         <span data-icon=></span>
     </div>
 </section>
