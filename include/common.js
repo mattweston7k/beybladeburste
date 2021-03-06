@@ -20,7 +20,6 @@ const groups = [
     ['disk3', 'disk2', 'frame', 'disk1'],
     ['metal', 'dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1</style>';}`);
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
@@ -35,6 +34,7 @@ const Cookie = {
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
 let Parts = {group: '/parts/' == window.location.pathname ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1';}</style>`);
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
@@ -54,7 +54,7 @@ L(() => {
     if (Cookie.get.mode) Q('html').classList.add(Cookie.get.mode);
     setTimeout(() => Q('#day') ? Q('#day').checked = Cookie.get.mode == 'day' : null);
 });
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari2</style>';}`);
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari2';}</style>`);
 
 let names;
 const DB = {
@@ -217,7 +217,7 @@ nav.part = `
 nav.menu = `
     <li><input type=checkbox id=day onchange=twilight()><label for=day class=toggle data-icon=''></label></li>
     <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`;
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari3</style>';}`);
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari3';}</style>`);
 
 class Indicator extends HTMLElement {
     constructor() {
@@ -288,4 +288,4 @@ class Indicator extends HTMLElement {
 }
 Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari4</style>';}`);
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari4';}</style>`);
