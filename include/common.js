@@ -268,7 +268,7 @@ class Indicator extends HTMLElement {
         this.setAttribute('progress', this.progress++ / this.total * 100);
         if (this.progress != this.total) return;
         this.setAttribute('status', 'success');
-        this.show('成功');
+        this.show('更新成功');
     }
     error(error) {
         this.hidden = false;
