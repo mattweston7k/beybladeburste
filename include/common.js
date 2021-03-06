@@ -6,10 +6,14 @@ html::before {
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
 }
 body {opacity:0;transition:opacity .5s;}</style>`);
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1';}</style>`);
+
 navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
-    document.head.insertAdjacentHTML('afterbegin', html);
+    if (!document.querySelector('head meta')) document.head.insertAdjacentHTML('afterbegin', html);
 } : null);
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari2';}</style>`);
+
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
@@ -34,7 +38,7 @@ const Cookie = {
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
 let Parts = {group: '/parts/' == window.location.pathname ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1';}</style>`);
+
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
@@ -54,7 +58,6 @@ L(() => {
     if (Cookie.get.mode) Q('html').classList.add(Cookie.get.mode);
     setTimeout(() => Q('#day') ? Q('#day').checked = Cookie.get.mode == 'day' : null);
 });
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari2';}</style>`);
 
 let names;
 const DB = {
@@ -217,7 +220,6 @@ nav.part = `
 nav.menu = `
     <li><input type=checkbox id=day onchange=twilight()><label for=day class=toggle data-icon=''></label></li>
     <li><label onclick=window.scrollTo(0,0) data-icon=></label><label onclick=window.scrollTo(0,document.body.scrollHeight) data-icon=></label></li>`;
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari3';}</style>`);
 
 class Indicator extends HTMLElement {
     constructor() {
@@ -288,4 +290,3 @@ class Indicator extends HTMLElement {
 }
 Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari4';}</style>`);
