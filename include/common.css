@@ -505,6 +505,9 @@ body>db-status {
 main>db-status {
     margin:0 0 .5em 0;
 }
+html::before {
+    content:initial !important;
+}
 body {
     opacity:1 !important;
 }

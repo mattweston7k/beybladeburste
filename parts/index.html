@@ -242,22 +242,21 @@
 
     /*svg*/
     svg * {
-        overflow: visible;
+        overflow:visible;
+        fill:none;
     }
     .driver+svg path {
         stroke:hsl(var(--c),var(--s),calc(50% - var(--b)/10));
         stroke-linecap:round;
         stroke-width:.5;
-        fill:transparent;
     }
-    circle,rect {
+    circle {
         r:2.5;
-        fill:transparent;
     }
     rect,.disk path {
-        stroke:hsl(var(--c),var(--s),40%);
+        stroke:hsl(var(--c),80%,50%);
         stroke-width:1.5;
-        fill:none;
+        fill:hsla(var(--c),var(--s),70%,.7);
     }
     #bullseye circle:first-child {
         r:3;

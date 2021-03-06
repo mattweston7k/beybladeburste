@@ -4,7 +4,12 @@
 <title>非官方資訊站 ￭ Beyblade Burst unofficial site</title>
 <link rel=preload as=style href=index.css onload=this.rel='stylesheet'>
 <style>
-    html {background:black;;}
+    html {background:black;}
+    html::before {
+        content:'請嘗試更新你的瀏覽器，使用 Chrome 或 Safari';
+        text-align:center;color:white;
+        position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    }
     body {opacity:0;transition:opacity .5s;}
     menu > svg {--r: 105;}
     @keyframes movingR { to {stroke-dashoffset: 45.8;} }
@@ -130,8 +135,8 @@
 </section>
 
 <section id=refresh>
-    <h5>能離線使用！</h5>
-    <ul>
+    <h5 style='display:none'>能離線使用！</h5>
+    <ul style='display:none'>
         <li>把瀏覽器更新至最新，或使用 Chrome 或 Safari 以確保功能正常</li>
         <li>在線狀態下，先把所有頁面都造訪一次</li>
         <li>瀏覽器的選單中，「加到主頁面」(Add to home)</li>

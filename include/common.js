@@ -44,7 +44,7 @@ L(() => {
     document.title += ' ｜ 戰鬥陀螺 爆烈世代 ￭ 爆旋陀螺 擊爆戰魂 ￭ ベイブレードバースト';
     notify();
     if (Cookie.get.mode) Q('html').classList.add(Cookie.get.mode);
-    if (Q('#day')) Q('#day').checked = Cookie.get.mode == 'day';
+    setTimeout(() => Q('#day') ? Q('#day').checked = Cookie.get.mode == 'day' : null);
 });
 
 let names;
