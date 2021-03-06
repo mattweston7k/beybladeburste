@@ -1,4 +1,4 @@
-setTimeout(() => document.head.insertAdjacentHTML('afterbegin', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari';}</style>`), 1000);
+setTimeout(() => document.head.insertAdjacentHTML('afterbegin', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari';}</style>`), 2000);
 
 navigator.serviceWorker.register('/worker.js').then(async () => {
     const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
