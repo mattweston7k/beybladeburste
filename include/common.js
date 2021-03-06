@@ -1,7 +1,3 @@
-navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? async () => {
-    const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
-    document.head.insertAdjacentHTML('afterbegin', html);
-} : null);
 document.head.insertAdjacentHTML('afterbegin', `<style>
 html {background:black;}
 html::before {
@@ -10,6 +6,10 @@ html::before {
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
 }
 body {opacity:0;transition:opacity .5s;}</style>`);
+navigator.serviceWorker.register('/worker.js').then(!document.querySelector('head meta') ? async () => {
+    const html = await (await caches.match('/include/head.html') || await fetch('/include/head.html')).text();
+    document.head.insertAdjacentHTML('afterbegin', html);
+} : null);
 const Q = (el, func) => func ? document.querySelectorAll(el).forEach(func) : document.querySelector(el);
 const L = func => window.addEventListener('DOMContentLoaded', func);
 const count = el => document.querySelectorAll(el).length;
@@ -20,6 +20,7 @@ const groups = [
     ['disk3', 'disk2', 'frame', 'disk1'],
     ['metal', 'dash', 'high', 'driver4', 'driver3', 'driver2', 'driver1'], ['other']
 ];
+document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1</style>';}`);
 const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
@@ -34,7 +35,6 @@ const Cookie = {
     notification: notify => document.cookie = `notify=${notify}; path=/`,
 };
 let Parts = {group: '/parts/' == window.location.pathname ? groups.flat().filter(g => Object.keys(query).includes(g))[0] : null};
-document.head.insertAdjacentHTML('beforeend', `<style>html::before {content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari1</style>';}`);
 const notify = () => {
     const pages = (Cookie.get.notify || '').split(',');
     const gs = pages.filter(g => groups.flat().includes(g));
