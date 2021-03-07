@@ -183,6 +183,7 @@
                 (await navigator.serviceWorker.getRegistration())?.unregister(),
                 caches.delete('cache'), caches.delete('parts')
             ]);
+            gtag('event', 'delete', {'d': 'd'});
             window.onbeforeunload = () => window.scrollTo(0, 0);
             window.location.reload();
         }
