@@ -6,9 +6,12 @@
 <style>
     html {background:black;}
     html::before {
-        text-align:center;color:white;font-size:4em;
+        content:'請嘗試更新你的瀏覽器，或使用 Chrome 或 Safari';
+        opacity:0;animation:appear .5s 2s forwards;
+        text-align:center;color:white;font-size:2em;
         position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     }
+    @keyframes appear { to {opacity:1;} }
     body {opacity:0;transition:opacity .5s;}
     menu > svg {--r: 105;}
     @keyframes movingR { to {stroke-dashoffset: 45.8;} }
