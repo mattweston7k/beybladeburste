@@ -113,6 +113,8 @@ a[id^=DG],a[id^=DC],a[id^=DR],#GDV {
     --left:.1em; }
 a[id^=DZ] {
     --left:.15em; }
+#DGV2,#DRV2,#DZV2,#DCV2 {
+    --left:.5em; }
     
 a[id$='+'] sup {
     font-size: 0.55em;
@@ -145,6 +147,8 @@ a[id$='+'] sup {
     margin-left:-.4em; }
 :-webkit-any(#GDV,#DCF) div[class|=name]>div:last-child {
     margin-left:-.1em; }
+:-webkit-any(#DGV2,#DCV2,#DZV2,#DRV2) :lang(yue) {
+    margin-left:.5em; }
     
 .name-row :lang(ja) {
     letter-spacing:calc(-1em*var(--space));
@@ -155,6 +159,9 @@ a[id$='+'] sup {
 }
 #Dt.layer6c :lang(ja) {
     --space:1.8;
+}
+:-webkit-any(#DGV2,#DZV2,#DRV2,#DCV2) :lang(ja) {
+    margin:0 -.2em;
 }
 :-webkit-any(#wV,#bX) :lang(en) {
     letter-spacing:-.01em;
@@ -176,10 +183,10 @@ a[id$='+'] sup {
     letter-spacing:-.03em;
     margin-right:calc(var(--can) - .2em);
 }
-:-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(en) {
+:-webkit-any(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(en) {
     letter-spacing:-.05em;
 }
-:-webkit-any(#Sr,#nL,#Q2,#Pα) :lang(yue) {
+:-webkit-any(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(yue) {
     letter-spacing:-.04em;
     margin-right:calc(var(--can) - .2em);
 }

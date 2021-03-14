@@ -250,6 +250,11 @@ td[data-part],td:first-child {
     width:.1em;
     padding:0 var(--pad);
 }
+td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] {
+    transform:scaleX(.9);
+    max-width:.1em;
+    padding:0;
+}
 td>*:not([onclick]) {
     pointer-events:none;
 }
