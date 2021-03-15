@@ -257,7 +257,7 @@ a[id$='+'] sup {
 a.high h2::first-letter {
     letter-spacing:-.05em;
 }
-:-webkit-any(#HB).high h2::first-letter {
+:-webkit-any(#HB,#HM).high h2::first-letter {
     letter-spacing:-.1em;
 }
 :-webkit-any(#HZ,#HS).high h2::first-letter {
