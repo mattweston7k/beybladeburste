@@ -4,11 +4,11 @@ self.addEventListener('install', ev => ev.waitUntil(
 self.addEventListener('activate', ev => ev.waitUntil(clients.claim()));
 
 const justUpdated = (url, cache) => {
-    const cachedDate = new Date(cache.headers.get('date')).getTime();
+    const cachedDate = Date.parse(cache.headers.get('date'));
     return (
-        /common\.js$/.test(url) && new Date('2021/03/15 12:10:00').getTime() >= cachedDate ||
-        /parts\/$/.test(url) && new Date('2021/03/15 12:10:00').getTime() >= cachedDate ||
-        /(typography|products)\.css$/.test(url) && new Date('2021/03/14 15:00:00').getTime() >= cachedDate ||
+        /common\.js$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
+        /parts\/$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
+        /(typography|products)\.css$/.test(url) && Date.parse('2021/03/14 15:00:00') >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
         /io\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 2) >= cachedDate || false);
