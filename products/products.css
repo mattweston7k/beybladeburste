@@ -254,7 +254,7 @@ td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] 
     transform:scaleX(.9);
     max-width:.1em;
     padding:0;
-    letter-spacing:-.01em;
+    letter-spacing:-.02em;
     text-align:center;
 }
 td>*:not([onclick]) {
