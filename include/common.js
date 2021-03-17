@@ -216,7 +216,7 @@ class Indicator extends HTMLElement {
         this.progress = 0;
         this.attachShadow({mode: 'open'}).innerHTML = `
         <style>
-            :host:not([progress]):not([status]) {display:none;}
+            :host(:not([progress]):not([status])) {display:none;}
             :host {
                 position:relative;
                 background:radial-gradient(circle at center var(--p),hsla(0,0%,100%,.2) 70%, var(--on) 70%);
