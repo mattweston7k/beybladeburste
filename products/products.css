@@ -5,7 +5,7 @@ form,form~details {
 .comp .tablesorter-header-inner,td {
     cursor: pointer;
 }
-form summary,form~summary {
+form summary,form~details summary {
     list-style:revert;
 }
 form {
