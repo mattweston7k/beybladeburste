@@ -12,7 +12,7 @@ const justUpdated = (url, cache) => {
         /(typography|products)\.css$/.test(url) && Date.parse('2021/03/14 15:00:00') >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
         /io\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
-        (new Date).setMonth((new Date).getMonth() - 2) >= cachedDate || false);
+        (new Date).setMonth((new Date).getMonth() - 1) >= cachedDate || false);
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
 const append = url => internal(url) && !/\?/.test(url) && /(ttf|woff2?|js|json|css)$/.test(url) ? `${url}?${Math.random()}` : url;
