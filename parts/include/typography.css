@@ -5,31 +5,31 @@ h2 {
 }
 h2.kanji {
     --adj:.15em; }
-:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
+:is(.layer[id^=超],#闇α,#光α) h2 {
     --adj:.13em; }
-:-webkit-any(#W) h2 {
+:is(#W) h2 {
     --adj:.05em; }
-:-webkit-any(#α,#β) h2 {
+:is(#α,#β) h2 {
     --adj:-.1em; }
     
-:-webkit-any(#SgV) h2 {
+:is(#SgV) h2 {
     padding-right:.2em;
 }
 a[id^='1']:not([id='11']):not(.single) h2,
-:-webkit-any(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
+:is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
 #dC,#dF,#oE,#eF) h2 {
     padding-right:.05em;
 }
-:-webkit-any(.layer[id$='2'],#Hn,#Op,#Rb,#Sp) h2 {
+:is(.layer[id$='2'],#Hn,#Op,#Rb,#Sp) h2 {
     padding-right:0;
 }
-:-webkit-any(#Cn,#Om,#Sw,#Wd,#Wh,a[id='00'],
+:is(#Cn,#Om,#Sw,#Wd,#Wh,a[id='00'],
 #S2,#V2,#W2,#aB,#kD,
 #zA,#aH,#Db,#SP,#BP,#GD,#WB) h2 {
     padding-right:0;
     padding-left:.03em;
 }
-:-webkit-any(#Ab,#Tw,#Vn,#Ym,#Zn,
+:is(#Ab,#Tw,#Vn,#Ym,#Zn,
 #A2,#J2,#X2,#Y2,#Z2) h2 {
     padding-right:0;
     padding-left:.05em;
@@ -38,33 +38,33 @@ a[id^='1']:not([id='11']):not(.single) h2,
 h2:not(.single)::first-letter {
     letter-spacing:0em;
 }
-:-webkit-any(#Ab,#Dr,#Ds,#Gn,#Hy,#Hr,#Kp,#Qc,#Rb,#Rg,#Sp,#Sw,#Vn,#Xc,#Zn,#αn,
+:is(#Ab,#Dr,#Ds,#Gn,#Hy,#Hr,#Kp,#Qc,#Rb,#Rg,#Sp,#Sw,#Vn,#Xc,#Zn,#αn,
 #B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,#Wy,
 #oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP) h2::first-letter {
     letter-spacing:-.025em;
 }
-:-webkit-any(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
+:is(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
 a[id='2D'],a[id='2B'],.driver[id^='+'],
 #M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,
 #gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,
 a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
     letter-spacing:-.05em !important;
 }
-:-webkit-any(#Hn,#Mb,#Mr,#Op,#Wd,a[id$=m],
+:is(#Hn,#Mb,#Mr,#Op,#Wd,a[id$=m],
 #mG,#SgV) h2::first-letter {
     letter-spacing:-.075em;
 }
-:-webkit-any(#Om,a[id='1′']) h2::first-letter {
+:is(#Om,a[id='1′']) h2::first-letter {
     letter-spacing:-.1em;
 }
-:-webkit-any(.layer[id^=超],#闇α,#光α) h2::first-letter {
+:is(.layer[id^=超],#闇α,#光α) h2::first-letter {
     letter-spacing:-.03em;
 }
-:-webkit-any(.layer[id^=超],#闇α,#光α) h2 {
+:is(.layer[id^=超],#闇α,#光α) h2 {
     margin-left:-.07em;margin-right:.07em;
 }
 
-:-webkit-any(#GPg,#HKr,#GPr,#RUn,#MLd) h2 {
+:is(#GPg,#HKr,#GPr,#RUn,#MLd) h2 {
     letter-spacing:-.05em;
     padding-right:.1em;
     transform:scaleX(.9);
@@ -78,7 +78,7 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
 #RUn h2 {
     letter-spacing:-.1em !important;
 }
-:-webkit-any(#GPg,#HKr,#GPr,#RUn,#MLd) h2::first-letter {
+:is(#GPg,#HKr,#GPr,#RUn,#MLd) h2::first-letter {
     letter-spacing:-.075em;
 }
 #MLd h2::first-letter {
@@ -93,17 +93,17 @@ a[id$='+'] h2 {
 #Hy2 h2 {
     margin-left:.1em;
 }
-:-webkit-any(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 {
+:is(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 {
     letter-spacing:-.03em;
     margin-left:var(--left);
 }
-:-webkit-any(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 sup {
+:is(a[id^=DG],a[id^=DC],a[id^=DR],a[id^=DZ],#GDV) h2 sup {
     line-height:.3em;
 }
 a[id$='2'].layer6c h2 sup {
     line-height:.7em;
 }
-:-webkit-any(a[id^=DC],a[id^=DZ],#DRF,#Lc2) h2 sup {
+:is(a[id^=DC],a[id^=DZ],#DRF,#Lc2) h2 sup {
     margin-left:.03em;
 }
 #GDV h2 sup {
@@ -143,11 +143,11 @@ a[id$='+'] sup {
 :lang(yue) {
     margin:0 var(--can); 
 }
-:-webkit-any(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV,#DCF,#DRF,#DGF,#DZF) :lang(yue) {
+:is(#GDV,#DCS,#DRS,#DGS,#DZS,#DCV,#DRV,#DGV,#DZV,#DCF,#DRF,#DGF,#DZF) :lang(yue) {
     margin-left:-.4em; }
-:-webkit-any(#GDV,#DCF) div[class|=name]>div:last-child {
+:is(#GDV,#DCF) div[class|=name]>div:last-child {
     margin-left:-.1em; }
-:-webkit-any(#DGV2,#DCV2,#DZV2,#DRV2) :lang(yue) {
+:is(#DGV2,#DCV2,#DZV2,#DRV2) :lang(yue) {
     margin-left:.5em; }
     
 .name-row :lang(ja) {
@@ -160,33 +160,33 @@ a[id$='+'] sup {
 #Dt.layer6c :lang(ja) {
     --space:1.8;
 }
-:-webkit-any(#DGV2,#DZV2,#DRV2,#DCV2) :lang(ja) {
+:is(#DGV2,#DZV2,#DRV2,#DCV2) :lang(ja) {
     margin:0 -.2em;
 }
-:-webkit-any(#wV,#bX) :lang(en) {
+:is(#wV,#bX) :lang(en) {
     letter-spacing:-.01em;
 }
-:-webkit-any(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
+:is(#eF,#Y2,#wV,#bX,#mG,#gK,#sΩ,#DCF) :lang(yue) {
     margin-right:calc(var(--can) - .1em);
 }
-:-webkit-any(#sΩ,#闇α) :lang(en) {
+:is(#sΩ,#闇α) :lang(en) {
     letter-spacing:-.02em;
 }
 #闇α :lang(yue) {
     letter-spacing:-.01em;
     margin-right:calc(var(--can) - .2em);
 }
-:-webkit-any(#LL,#GDV) :lang(en) {
+:is(#LL,#GDV) :lang(en) {
     letter-spacing:-.04em;
 }
-:-webkit-any(#LL,#GDV) :lang(yue) {
+:is(#LL,#GDV) :lang(yue) {
     letter-spacing:-.03em;
     margin-right:calc(var(--can) - .2em);
 }
-:-webkit-any(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(en) {
+:is(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(en) {
     letter-spacing:-.05em;
 }
-:-webkit-any(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(yue) {
+:is(#Sr,#nL,#Q2,#Pα,#DGV2,#DZV2) :lang(yue) {
     letter-spacing:-.04em;
     margin-right:calc(var(--can) - .2em);
 }
@@ -223,15 +223,15 @@ a[id$='+'] sup {
     }
 }
 
-:-webkit-any(#Ev,#Dm,#J.layer5b,#Dt.layer6c) div[class|=name]{
+:is(#Ev,#Dm,#J.layer5b,#Dt.layer6c) div[class|=name]{
     margin-left:.05em; }
-:-webkit-any(#K.layer5b) div[class|=name] {
+:is(#K.layer5b) div[class|=name] {
     margin-left:.1em; }
-:-webkit-any(#I.layer5b) div[class|=name]>div:first-child {
+:is(#I.layer5b) div[class|=name]>div:first-child {
     margin-right:.15em; }
-:-webkit-any(#J.layer5b,#K.layer5b) div[class|=name]>div:first-child {
+:is(#J.layer5b,#K.layer5b) div[class|=name]>div:first-child {
     margin-right:.1em; }
-:-webkit-any(#I.layer5b,#K.layer5b) :lang(zh) {
+:is(#I.layer5b,#K.layer5b) :lang(zh) {
     margin-left:calc(var(--m) - .1em); }
 
 #Dm :lang(ja)::first-letter {
@@ -241,7 +241,7 @@ a[id$='+'] sup {
 #Hy.layer6c :lang(ja)::first-letter {
     letter-spacing:-.07em; }
     
-:-webkit-any(#Vl.layer6c,#V.layer5c) :lang(en) {
+:is(#Vl.layer6c,#V.layer5c) :lang(en) {
     letter-spacing:0; }
 #X.driver :lang(ja) {
     letter-spacing:-.07em; }
@@ -250,27 +250,27 @@ a[id$='+'] sup {
 #I.disk :lang(zh) {
     letter-spacing:-.01em; }
 
-:-webkit-any(a.dash,a.high,a.metal) :lang(en) {
+:is(a.dash,a.high,a.metal) :lang(en) {
     font-size:0.9em;
     margin-left:0.1em;
 }
 a.high h2::first-letter {
     letter-spacing:-.05em;
 }
-:-webkit-any(#HB,#HM).high h2::first-letter {
+:is(#HB,#HM).high h2::first-letter {
     letter-spacing:-.1em;
 }
-:-webkit-any(#HZ,#HS).high h2::first-letter {
+:is(#HZ,#HS).high h2::first-letter {
     letter-spacing:0;
 }
-:-webkit-any(#HB,#HJ).high h2 {
+:is(#HB,#HJ).high h2 {
     letter-spacing:-.05em;
 }
-:-webkit-any(#HA).high h2 {
+:is(#HA).high h2 {
     letter-spacing:-.1em;
     padding-right:.05em;
 }
-:-webkit-any(#HZ,#HS).high h2 {
+:is(#HZ,#HS).high h2 {
     padding-right:.05em;
 }
 a.dash h2 {
@@ -282,23 +282,23 @@ a.dash h2:not(.single) {
 }
 a.dash h2.single {
     --space:-.025;}
-:-webkit-any(#T,#F,#V).dash h2 {
+:is(#T,#F,#V).dash h2 {
     --space:0 !important;}
-:-webkit-any(#Jl,#Ul,#Vl).dash h2  {
+:is(#Jl,#Ul,#Vl).dash h2  {
     --space:-.025 !important;}
-:-webkit-any(#B,#H,#L,#U,#X,#Xc).dash h2 {
+:is(#B,#H,#L,#U,#X,#Xc).dash h2 {
     --space:-.05 !important; }
-:-webkit-any(#Q,#Ev,#Ig,#Mr,#Qc).dash h2  {
+:is(#Q,#Ev,#Ig,#Mr,#Qc).dash h2  {
     --space:-.075 !important; }
-:-webkit-any(#A,#Ds).dash h2 {
+:is(#A,#Ds).dash h2 {
     --space:-.1 !important; }
-:-webkit-any(#Kp,#Op,#Sp,#Ch,#Zn).dash h2  {
+:is(#Kp,#Op,#Sp,#Ch,#Zn).dash h2  {
     --space:-.15; }
-:-webkit-any(#Hn,#Rb).dash h2  {
+:is(#Hn,#Rb).dash h2  {
     --space:-.175; }
-:-webkit-any(#Dm).dash h2  {
+:is(#Dm).dash h2  {
     --space:-.25; }
-:-webkit-any(#Zt,#Xc,#Zn).dash h2 {
+:is(#Zt,#Xc,#Zn).dash h2 {
     padding-left:.1em; }
 
 #α.dash h2 {
@@ -310,12 +310,12 @@ a.metal h2 {
     transform:scaleX(.9);
     padding-right:.05em;
 }
-:-webkit-any(#MA) h2::first-letter {
+:is(#MA) h2::first-letter {
     letter-spacing:-.025em;
 }
-:-webkit-any(#MF,#MD) h2::first-letter {
+:is(#MF,#MD) h2::first-letter {
     letter-spacing:-.05em;
 }
-:-webkit-any(#MD).metal h2 {
+:is(#MD).metal h2 {
     padding-right:0;
 }

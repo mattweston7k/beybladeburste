@@ -320,6 +320,10 @@ figure.elec::after {
     content:'\f0e7';color:greenyellow;
     right:-.1em;bottom:-.1em;
 }
+figure.low::before {
+    content:'\f181';color:blueviolet;
+    left:-.1em;bottom:-.1em;
+}
 
 h5 {
     font-size:1.5em;
@@ -381,6 +385,10 @@ h5+details article ul {
 }
 h5+details article a {
     color:var(--theme);
+}
+h5+details i[data-icon]::before {
+    content:attr(data-icon);
+    color:blueviolet;
 }
 dfn[class] {
     background:linear-gradient(-77deg,hsla(var(--c),70%,0%,0) 7%,hsl(var(--c),70%,var(--root-b)) 7%,hsl(var(--c),70%,var(--root-b)) 93%,hsla(var(--c),70%,0%,0) 93%);

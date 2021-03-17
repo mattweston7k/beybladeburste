@@ -26,15 +26,12 @@ Parts = {
         Parts.count();
         Tools.ruler(Parts.group); //Parts.fusion
         Tools.filter(Parts.group);
-        new Promise(res => res(Q(':-webkit-any(#A)'))).catch(() => {
-            Q(':is(#A)');
-            Parts.any('is');
+        new Promise(res => res(Q(':is(#A)'))).catch(() => {
+            Q(':-webkit-any(#A)');
+            Parts.any('-webkit-any');
         }).catch(() => {
             Q(':matches(#A)');
             Parts.any('matches');
-        }).catch(() => {
-            Q(':-moz-any(#A)');
-            Parts.any('-moz-any');
         });
     },
     count() {
@@ -52,7 +49,7 @@ Parts = {
     any(prefix) {
         const css = '/parts/include/typography.css';
         caches.match(css).then(r => r.text()).catch(() => fetch(css).then(r => r.text()))
-            .then(style => Q('head').insertAdjacentHTML('beforeend', '<style>' + style.replace(/-webkit-any/g, prefix) + '</style>'));
+            .then(style => Q('head').insertAdjacentHTML('beforeend', '<style>' + style.replace(/is(?=\()/g, prefix) + '</style>'));
     },
     types: {A: 'Attack', B: 'Balance', D: 'Defense', S: 'Stamina'},
     fusion: false,
