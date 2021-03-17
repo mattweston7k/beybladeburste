@@ -321,7 +321,7 @@ figure.elec::after {
     right:-.1em;bottom:-.1em;
 }
 figure.low::before {
-    content:'\f181';color:blueviolet;
+    content:'\f181';color:peru;
     left:-.1em;bottom:-.1em;
 }
 
@@ -388,7 +388,7 @@ h5+details article a {
 }
 h5+details i[data-icon]::before {
     content:attr(data-icon);
-    color:blueviolet;
+    color:peru;
 }
 dfn[class] {
     background:linear-gradient(-77deg,hsla(var(--c),70%,0%,0) 7%,hsl(var(--c),70%,var(--root-b)) 7%,hsl(var(--c),70%,var(--root-b)) 93%,hsla(var(--c),70%,0%,0) 93%);

@@ -423,7 +423,7 @@ td[data-part='MD.driver']+td {
 /*color*/
 .note .tablesorter-header-inner,.comp th:first-child {--b:var(--root-b);}
 form p:first-of-type {--s:var(--root-s);--b:var(--root-b);}
-td:first-child      {color:dodgerblue;}
+td:first-child      {color:deepskyblue;}
 .day td:first-child {color:blue;}
 .RB {--c:0;  --s:0%;                       --b:calc(var(--root-b) + 10%);}
 .St {--c:250;--s:calc(var(--root-s) + 10%);--b:calc(var(--root-b) + 10%);}
