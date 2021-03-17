@@ -97,10 +97,10 @@ label[for=DB] {
     left:2em;
 }
 label[for=SP] {
-    left:6em;
+    left:5.5em;
 }
 label[for=GT] {
-    left:12.2em;
+    right:-.3em;
 }
 form label img {
     height:2.5em;
