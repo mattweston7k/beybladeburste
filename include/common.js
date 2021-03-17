@@ -87,8 +87,8 @@ const DB = {
         })) return '/' == window.location.pathname ? DB.check(handler) : handler ? handler() : null;
     },
     check(handler) {
-        fetch(`/update/-time.json?${Math.random()}`).catch(() => DB.indicator.setAttribute('status', 'offline')).
-        then(r => r.json()).then(async j => {
+        fetch(`/update/-time.json?${Math.random()}`).then(r => r.json())
+        .catch(() => DB.indicator.setAttribute('status', 'offline')).then(async j => {
             const updates = [], notify = [];
             for (const [item, [time, major]] of Object.entries(j)) {
                 const oldUser = new Date(time) / 1000 > Cookie.getHistory(item);
@@ -106,7 +106,7 @@ const DB = {
                 return DB.cache(handler, updates);
             }
             return handler ? handler() : null;
-        })//.catch(er => DB.indicator.error(er));
+        }).catch();
     },
     async cache(handler, update = groups.flat()) {
         DB.indicator.total = update.length;
