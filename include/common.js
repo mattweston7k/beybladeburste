@@ -216,7 +216,7 @@ class Indicator extends HTMLElement {
         this.progress = 0;
         this.attachShadow({mode: 'open'}).innerHTML = `
         <style>
-            :host([hidden]) {display:none;}
+            :host:not([progress]):not([status]) {display:none;}
             :host {
                 position:relative;
                 background:radial-gradient(circle at center var(--p),hsla(0,0%,100%,.2) 70%, var(--on) 70%);
@@ -246,7 +246,6 @@ class Indicator extends HTMLElement {
         <p></p>`;
     }
     connectedCallback() {
-        this.hidden = true;
         DB.open(Parts.group ? Parts.load : null);
     }
     attributeChangedCallback(attr, o, n) {
@@ -258,7 +257,6 @@ class Indicator extends HTMLElement {
         }
     }
     init(update = false) {
-        this.hidden = false;
         this.show(update ? '更新中' : '首次訪問 預備中⋯⋯');
         this.setAttribute('progress', 0);
     }
@@ -269,7 +267,6 @@ class Indicator extends HTMLElement {
         this.show('更新成功');
     }
     error(error) {
-        this.hidden = false;
         if (this.getAttribute('status') == 'offline') return;
         this.setAttribute('status', 'error');
         this.show(error.target?.errorCode || error);
