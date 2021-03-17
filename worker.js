@@ -6,6 +6,7 @@ self.addEventListener('activate', ev => ev.waitUntil(clients.claim()));
 const justUpdated = (url, cache) => {
     const cachedDate = Date.parse(cache.headers.get('date'));
     return (
+        /brochure\.html$/.test(url) && Date.parse('2021/03/17 11:05:00') >= cachedDate ||
         /common\.js$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
         /parts\/$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
         /(typography|products)\.css$/.test(url) && Date.parse('2021/03/14 15:00:00') >= cachedDate ||
