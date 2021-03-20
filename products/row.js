@@ -130,7 +130,7 @@ class Row {
     }
     rare(no) {
         const colors = [
-            {n: [159, 172], color: 'rgb(210,190,0)'},
+            {n: [159, 172, 179], color: 'rgb(210,190,0)'},
             {n: [160, 177], color: 'dodgerblue'},
             {n: [161, 163], color: 'red'},
             {n: [167], color: 'lightseagreen'},
