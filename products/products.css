@@ -94,7 +94,7 @@ label[for=DB],label[for=SP],label[for=GT] {
     filter:saturate(0);
 }
 label[for=DB] {
-    left:2em;
+    left:1.7em;
 }
 label[for=SP] {
     left:5.5em;
@@ -105,7 +105,9 @@ label[for=GT] {
 form label img {
     height:2.5em;
 }
-#sparking:checked~main [for=sparking], #GT:checked~main [for=GT] {
+#DB:checked~main label[for=DB],
+#SP:checked~main label[for=SP], 
+#GT:checked~main label[for=GT] {
     filter:saturate(1);
 }
 form .layer:first-of-type {
