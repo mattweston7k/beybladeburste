@@ -6,13 +6,12 @@ self.addEventListener('activate', ev => ev.waitUntil(clients.claim()));
 const justUpdated = (url, cache) => {
     const cachedDate = Date.parse(cache.headers.get('date'));
     return (
+        /io\/$/.test(url) && Date.parse('2021/03/25 09:50:00') >= cachedDate ||
+        /prize\/$/.test(url) && Date.parse('2021/03/25 09:50:00') >= cachedDate ||
         /brochure\.html$/.test(url) && Date.parse('2021/03/17 11:05:00') >= cachedDate ||
         /\.woff2$/.test(url) && Date.parse('2021/03/17 17:50:00') >= cachedDate ||
-        /common\.js$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
         /parts\/$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
-        /(typography|products)\.css$/.test(url) && Date.parse('2021/03/14 15:00:00') >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
-        /io\/$/.test(url) && (new Date).setDate((new Date).getDate() - 14) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 1) >= cachedDate || false);
 }
 const internal = url => /beybladeburst\.github\.io$/.test(new URL(url).host);
