@@ -7,7 +7,7 @@ const justUpdated = (url, cache) => {
     const cachedDate = Date.parse(cache.headers.get('date'));
     return (
         /io\/$/.test(url) && Date.parse('2021/03/25 09:50:00') >= cachedDate ||
-        /others\.html$/.test(url) && Date.parse('2021/03/25 09:55:00') >= cachedDate ||
+        /others\.html$/.test(url) && Date.parse('2021/03/25 16:25:00') >= cachedDate ||
         /brochure\.html$/.test(url) && Date.parse('2021/03/17 11:05:00') >= cachedDate ||
         /\.woff2$/.test(url) && Date.parse('2021/03/17 17:50:00') >= cachedDate ||
         /parts\/$/.test(url) && Date.parse('2021/03/15 12:10:00') >= cachedDate ||
