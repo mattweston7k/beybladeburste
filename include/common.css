@@ -321,6 +321,9 @@ db-status[progress]~main,db-status[status]~main {
 #popup:checked+label {
     display:flex;
 }
+#popup+label[title] {
+    padding-top:8em;
+}
 #popup+label[title]::before {
     content:attr(title);
     color:var(--theme);
