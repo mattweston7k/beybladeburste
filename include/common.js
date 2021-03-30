@@ -17,7 +17,7 @@ const Cookie = {
     get get() {return document.cookie.split(/;\s?/).map(c => c.split('=')).reduce((obj, [k, v]) => ({...obj, [k]: v}), {});},
     set: (key, value) => document.cookie = `${key}=${value}; max-age=22222222; path=/`,
     getHistory: item => JSON.parse(Cookie.get.history || '{}')[item],
-    setHistory: item => (/^(layer7|disk[34]|driver[34]|high|dash|metal|product|remake|name|frame|LB)/.test(item)) ?
+    setHistory: (item, updating) => updating || /^(layer7|disk[34]|driver[34]|high|dash|metal|product|remake|name)/.test(item) ?
         Cookie.set('history', JSON.stringify( {...JSON.parse(Cookie.get.history || '{}'), [item]: Math.round(new Date() / 1000)} )) : null,
     setOptions: () => {
         Cookie.set('mode', Q('html').classList.contains('day') ? 'day' : '');
@@ -103,12 +103,12 @@ const DB = {
                 Cookie.notification(notify);
             if (updates.length > 0) {
                 DB.indicator.init(true);
-                return DB.cache(handler, updates);
+                return DB.cache(handler, updates, true);
             }
             return handler ? handler() : null;
         }).catch();
     },
-    async cache(handler, update = groups.flat()) {
+    async cache(handler, update = groups.flat(), updating = false) {
         DB.indicator.total = update.length;
         names = names || await DB.getNames() || {};
         for (const [prom, group] of await DB.fetch(update)) {
@@ -123,7 +123,7 @@ const DB = {
                 DB.put('json', [`${part.sym}.${part.comp}`, new Part(part).detach()]);
             }
             DB.indicator.update();
-            Cookie.setHistory(group);
+            Cookie.setHistory(group, updating);
         }
         DB.put('json', ['names', names]);
         notify();
