@@ -324,7 +324,7 @@ db-status[progress]~main,db-status[status]~main {
 #popup+label[title]::before {
     content:attr(title);
     color:var(--theme);
-    margin-bottom:1em;padding:.3em 0;
+    margin-bottom:1em;padding:.3em;
     border-top:.1em solid var(--theme);border-bottom:.1em solid var(--theme);
 }
 #popup+label>img:not([src='']) {
