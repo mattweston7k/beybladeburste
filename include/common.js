@@ -115,7 +115,7 @@ const DB = {
             const {info, parts} = await prom || {};
             if (!info && !parts) continue;
             DB.tran(['json', 'order', 'html'], 'readwrite');
-            if (info) DB.put('html', [group, info]);
+            info ? DB.put('html', [group, info]) : DB.del('html', group);
             if (group != 'other') DB.put('order', [group, parts.map(part => part?.sym || part)]);
             for (const part of parts.filter(part => part && typeof part == 'object')) {
                 if (part.names)
@@ -132,6 +132,8 @@ const DB = {
     fetch: update => Promise.all(update.map(g => fetch(`/update/${g}.json`).then(r => r.status == 200 ? [r.json(), g] : null))),
 
     put: (store, [key, value]) => (DB._tran || DB.db.transaction(store, 'readwrite')).objectStore(store).put(value, key),
+    
+    del: (store, key) => (DB._tran || DB.db.transaction(store, 'readwrite')).objectStore(store).delete(key),
 
     query: (store, key) => (DB._tran || DB.db.transaction(store)).objectStore(store).get(key),
 
