@@ -129,26 +129,32 @@ class Row {
         no == Table.limit ? Row.show = false : null;
     }
     rare(no) {
-        const colors = [
-            {n: [159, 172, 179], color: 'rgb(210,190,0)'},
-            {n: [160, 177], color: 'dodgerblue'},
-            {n: [161, 163], color: 'red'},
-            {n: [167], color: 'lightseagreen'},
-            {n: [168, 171.2, 175], color: 'rgb(174,91,215)'},
-            {n: [169], color: 'deeppink'},
-            {n: [171.1], color: 'deepskyblue'}
-        ];
         if ([100, 117, 129].includes(no))
             this.any('layer').style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].includes(no))
             this.tr.classList.add('GT');
-        else if (no >= 159)
-            for (const {n, color} of colors)
-                if (n.includes(no))
-                    return this.any('layer6s', 'disk').style.color = color;
+        else if (no >= 159) {
+            let x = Row.rareColors[no];
+            if (x) return this.any('layer6s', 'disk').style.color = x;
+            x = Row.reducedRate[`${no}`.split('.')[0]];
+            if (x) return this.tr.setAttribute('data-extra', x);
+        }
     }
     any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
 }
+Row.rareColors = [
+    [[159, 172, 179], 'rgb(210,190,0)'],
+    [[160, 177], 'dodgerblue'],
+    [[161, 163], 'red'],
+    [[167], 'lightseagreen'],
+    [[168, 171.2, 175], 'rgb(174,91,215)'],
+    [[169], 'deeppink'],
+    [[171.1], 'deepskyblue'],
+].reduce((obj, [nos, color]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: color}), {}) }), {});
+Row.reducedRate = [
+    [[170], '03 04'],
+    [[173, 176], '07 08']
+].reduce((obj, [nos, extra]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: extra}), {}) }), {});
 Row.show = true;
 customElements.define('product-row', Row, {extends: 'tr'});
 
@@ -186,6 +192,8 @@ Object.assign(HTMLTableCellElement.prototype, {
             let [href, parent] = [this.getAttribute('data-url'), this.parentNode];
             if (parent.classList.contains('RB'))
                 Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
+            if (parent.hasAttribute('data-extra'))
+                Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
             return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
         }
         Row.previewing = this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0];

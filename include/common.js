@@ -54,7 +54,7 @@ const DB = {
     tran(...args) {
         (DB._tran = DB.db.transaction(...args)).oncomplete = () => DB._tran = null;
     },
-    del: (error = ev => console.log(ev)) =>
+    remove: (error = ev => console.log(ev)) =>
         new Promise(res => {
             if (DB.db) DB.db.close();
             const del = indexedDB.deleteDatabase('db');

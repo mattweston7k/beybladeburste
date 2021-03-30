@@ -321,6 +321,10 @@ db-status[progress]~main,db-status[status]~main {
 #popup:checked+label {
     display:flex;
 }
+#popup+label[title]::before {
+    content:attr(title);
+    width:100%;
+}
 #popup+label>img:not([src='']) {
     max-width:min(35em,95%);max-height:150%;
     margin:1em;
