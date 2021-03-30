@@ -185,7 +185,7 @@ Object.assign(HTMLTableCellElement.prototype, {
     },
     preview() {
         Q('.catalog>*', el => el.remove());
-        Q('label[for=popup]').title = '';
+        Q('label[for=popup]').removeAttribute('title');
         Q('label[for=popup] img', img => img.src = '');
         Q('#popup').checked = true;
         if (this.hasAttribute('data-url')) {
