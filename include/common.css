@@ -304,6 +304,9 @@ input[type='range']::-moz-range-thumb {
 main {
     padding:5em 0 1em 0;
 }
+#catalog {
+    padding-bottom:4em;
+}
 db-status[progress]~main,db-status[status]~main {
     padding-top:1em;
 }
