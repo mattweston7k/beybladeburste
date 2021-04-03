@@ -317,7 +317,7 @@ db-status[progress]~main,db-status[status]~main {
     width:100%;height:100%;z-index:1;
     background:hsla(0,0%,0%,0.7);
     align-items:center;justify-content:center;
-    flex-wrap:wrap;flex-basis:90%;
+    flex-wrap:wrap;
     overflow-y:auto;
     -webkit-overflow-scrolling: touch;
     padding:5em 0 1em 0;
@@ -331,8 +331,9 @@ db-status[progress]~main,db-status[status]~main {
 #popup+label[title]::before {
     content:attr(title);
     color:var(--theme);
-    margin-bottom:1em;padding:.3em;
-    border-top:.1em solid var(--theme);border-bottom:.1em solid var(--theme);
+    flex-basis:90%;
+    margin:3em 0 1em 0;padding:.3em;
+    background:hsla(0,0%,50%,.5);
 }
 #popup+label>img:not([src='']) {
     max-width:min(35em,95%);max-height:150%;
