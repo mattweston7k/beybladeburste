@@ -217,7 +217,7 @@ iframe {
     margin:0 1em;
     width:14em;
     font-size:.8rem;
-    line-height:2;
+    line-height:1.7;
     text-align:center;
 }
 #refresh h6[title]::after {
