@@ -116,7 +116,7 @@
                 t.querySelector('h5').innerHTML = cat;
                 t.querySelector('h4').innerHTML = name;
                 t.querySelector('div').insertAdjacentHTML('afterbegin', desc);
-                const a = t.querySelector('div a');
+                const a = t.querySelector('div a[href*=youtube]');
                 !video || !searchable ? a.remove() : a.href += search;
                 video ? t.querySelector('iframe').src += video : t.querySelector('iframe').remove();
                 const colors = {
