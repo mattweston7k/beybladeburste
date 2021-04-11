@@ -3,7 +3,7 @@ const Search = {
     read(where) {
         if (where == 'free') 
             return this.inputs = this.esc(Q('input[name=free]').value);
-        this.inputs = [...where == 'form' ? new FormData(Q('form')) : new URLSearchParams(location.search)]
+        this.inputs = [...where == 'form' ? new FormData(Q('form')) : new URLSearchParams(window.location.search)]
                     .filter(([k, v]) => k.length > 1 && v !== '')
                     .reduce((inputs, [comp, sym]) => ({...inputs, [comp]: this.esc(decodeURIComponent(sym)).split('/')}), {});
         return Object.keys(this.inputs).length > 0;

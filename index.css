@@ -96,19 +96,33 @@ menu>svg:last-of-type {
     position:absolute;top:0%;left:0%;
     will-change:stroke-dashoffset;
 }
+menu>svg {--r: 105;}
 
 menu a[href] use {
-    animation:rotatingR 3s ease-out forwards; }
-menu>svg:last-of-type {
-    animation:movingR 3s ease-out forwards; }
-menu:hover a[href] use,menu:focus-within a[href] use {
-    animation:rotatingL 20s forwards;}
-menu:hover>svg:last-of-type,menu:focus-within>svg:last-of-type {
-    animation:movingL 20s forwards; }
-@keyframes rotatingL {
-    to {transform:rotate(-1079deg);} }
+    animation:rotatingR 3s ease-out forwards; 
+}
 @keyframes rotatingR {
-    to {transform:rotate(359deg);} }
+    to {transform:rotate(359deg);}
+}
+menu>svg:last-of-type {
+    animation:movingR 3s ease-out forwards;
+}
+@keyframes movingR { 
+    to {stroke-dashoffset: 45.8;}
+}
+menu:hover a[href] use,menu:focus-within a[href] use {
+    animation:rotatingL 20s forwards;
+}
+@keyframes rotatingL {
+    to {transform:rotate(-1079deg);}
+}
+menu:hover>svg:last-of-type,menu:focus-within>svg:last-of-type {
+    animation:movingL 20s forwards;
+}
+@keyframes movingL {
+    from {stroke-dashoffset: 45.8;}
+    to {stroke-dashoffset: -146.4;}
+}
 
 #contents~section>* {
     max-width:1000px;
