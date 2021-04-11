@@ -258,9 +258,8 @@ td[data-part],td:first-child {
 }
 td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] {
     transform:scaleX(.9);
-    max-width:.1em;
     padding:0;
-    letter-spacing:-.02em;
+    letter-spacing:-.025em;
     text-align:center;
 }
 td>*:not([onclick]) {
@@ -400,7 +399,6 @@ form button,caption data {
     td {--f:0.7em; }
     #eng:checked~main td {--f:0.65em;}
     #jap:checked~main td {--f:0.58em;}
-    .catalog>div:nth-last-of-type(2) {margin-top:8em;}
 }
 @media (min-width: 631px) {
     th {--f:0.95em;}

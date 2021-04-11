@@ -98,7 +98,7 @@ const Tools = {
         if (group == 'remake')
             for (const t of ['MFB', 'BSB']) add(t, 'series');
         else if (count('object[data*=unk]') === 0 && !/^(disk|frame)/.test(group))
-            for (const t of Object.values(Parts.types)) add(t.substring(0, 3).toLowerCase(), 'type');
+            for (const t in Parts.types) add(Part.types[t].substring(0, 3).toLowerCase(), 'type');
     },
     magnify() {
         const slider = () => {
@@ -127,12 +127,12 @@ const Tools = {
         let [max, min, scale] =
         [
             [/^layer(1|2|3|5[bw]|6[rs]|7[ab])$/, [10, 1, 'w+7']],
-            [/^remake$/,              [19, 10, 'w+7']],
-            [/^(layer4|disk[12])$/,   [8, 0, 'w+17']],
-            [/^(disk3|layer5|LB)$/,   [15, 5, 'w+17']],
-            [/^(frame|layer5c)$/,     [7, 0, 'w*0.3+2.3']],
-            [/^layer[67]c$/,          [12, 2, 'w*0.3+2.3']],
-            [/^driver[1234]$/,        [10, 0, 'w/2+5.4']]
+            [/^remake$/,            [19, 10, 'w+7']],
+            [/^(layer4|disk[12])$/, [8, 0, 'w+17']],
+            [/^(disk3|layer5|LB)$/, [15, 5, 'w+17']],
+            [/^(frame|layer5c)$/,   [7, 0, 'w*0.3+2.3']],
+            [/^layer[67]c$/,        [12, 2, 'w*0.3+2.3']],
+            [/^driver.$/,           [10, 0, 'w/2+5.4']]
         ].find(s => s[0].test(group))[1];
         Q('main').insertAdjacentHTML('afterend', `<weight-scale min='${min}' max='${max}' scale='${scale}' group='${group}'></weight-scale>`);
     }

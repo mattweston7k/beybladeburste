@@ -86,7 +86,7 @@ Part.prototype.catalog = function() {
                 .replace(/^([dlr]α).$/, '$1')
                 .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
                 .replace(/^(.{2,}?)([2+])$/, '$1<sup>$2</sup>')
-                .replace(/^\+(?=s[wh]|BA)/, '');
+                .replace(/^\+(?=s[wh]|ba)/, '');
             if (sym == 'sΩ')
                 code = "Ω";
             else if (comp == 'layer5c' && sym == 'Δ')
@@ -152,7 +152,7 @@ Part.prototype.catalog = function() {
             <div class='info'>` + code.symbol + code.name + `</div>
             <div class='content'>` + code.content + `</div>
             <p class='desc'>` + (desc || '') + `</p>` : ``);
-        for (const [a, v] of Object.entries(attr)) if (v) part[a] = v;
+        for (const a in attr) if (attr[a]) part[a] = attr[a];
         return part;
     }
 
@@ -164,7 +164,7 @@ Part.prototype.catalog = function() {
 
     return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
-        href: /(9|pP|[lrd]αe|BA)/.test(sym) ? '' : `/products/?${/^\+/.test(sym) ? 'more' : comp}=${encodeURIComponent(sym)}`,
+        href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${comp}=${encodeURIComponent(sym)}`,
         classList: [...new Set([comp, group, type, generation, sym == 9 ? 'none' : ''])].filter(c => c).join(' ')
     }));
 }
@@ -172,7 +172,7 @@ Part.prototype.links = function() {
     Q('.catalog>a:last-of-type').removeAttribute('href');
     if (this.group == 'other') return;
     const temp = Q('template').content.cloneNode(true);
-    temp.querySelector('a[onclick]').onclick = () => Search.autofill(/^\+/.test(this.sym) ? 'more' : this.comp, this.sym);
+    temp.querySelector('a[onclick]').onclick = () => Search.autofill(this.comp, this.sym);
     temp.querySelector('a[href]').href = `/parts/?${this.group}#${this.sym}`;
     /^(layer|remake)/.test(this.group) ?
         temp.querySelector('img').src = `/img/system-${this.group.replace(/^layer5$/, 'layer5m').replace(/(layer\d)[^m]$/, '$1')}.png` :

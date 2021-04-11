@@ -2,7 +2,9 @@ class AbsPart {
     constructor(sym, fusion = false) {
         [this.sym, this.fusion] = [sym, fusion];
     }
-    code(part = this.sym+'.'+this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
+    code(part = this.sym + '.' + this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
+        const mode = part.match(/\+[^. ]+/)?.[0];
+        mode ? symCode = symCode.replace(mode, '') + `<sub>${mode.replace(/\+(?=[sh])/, '')}</sub>` : '';
         return this.sym == '/' ? this.none() :
             `<td data-part='${part}'>${symCode}<td class=left><td class='right${fusion ? ' fusion' : ''}'>`;
     }
@@ -52,7 +54,7 @@ class Layer extends AbsPart {
         const [main, motif, key] = this.sym.split('.');
         if (!key)
             return super.code();
-        this.system = /^\d+$/.test(key) ? 'DB' : /\d[A-Z]/.test(key) || /2$/.test(motif) ? 'SP' : 'GT';
+        this.system = /^\d+$/.test(key) ? 'DB' : /^\d[A-Z]$/.test(key) || /2$/.test(motif) ? 'SP' : 'GT';
         return this.main(main) + this.motif(motif) + this.key(key);
     }
 }
@@ -65,7 +67,7 @@ class Disk extends AbsPart {
 class Driver extends AbsPart {
     constructor(sym, lowerFusion) {
         super(sym, lowerFusion);
-        this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace('′', '<s>#</s><i>′</i>').replace(/(\+.)/, `<sub>$1</sub>`) + (sym == '∞' ? '&nbsp;' : '');
+        this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace('′', '<s>#</s><i>′</i>') + (sym == '∞' ? '&nbsp;' : '');
     }
 }
 
@@ -87,14 +89,7 @@ class Row {
         });
     }
     create([no, type, abbr, append], place) {
-        const attr = {
-            'class': type,
-            'data-no': no,
-            'data-abbr': abbr,
-            'data-more': (append?.mode || append?.more || '').replace('+', '')
-        };
-        no = no.split('.')[0];
-
+        this.no = no;
         let [layer, disk, driver] = abbr.split(' ');
         if (disk && !driver) // lower fusion
             [layer, disk, driver] = [new Layer(layer), new Disk('/'), new Driver(disk, true)];
@@ -103,32 +98,36 @@ class Row {
         else
             [layer, disk, driver] = [new Layer(layer), new Disk(disk), new Driver(driver)];
 
-        this.tr.innerHTML = `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-<s>0</s>&nbsp;$1').replace(/(^BBG-\d+)/, place ? '$1' : 'wbba')
-            + layer.code() + (driver.fusion ? driver.code() + driver.none(true) : disk.code() + driver.code());
-        this.append(append);
-        this.attribute(attr);
+        this.tr.innerHTML = this.numberCode(place) + layer.code() + (driver.fusion ? driver.code() + driver.none(true) : disk.code() + driver.code());
+        this.attribute({
+            'class': type,
+            'data-no': no.split('.')[0],
+            'data-abbr': abbr,
+            'data-more': append?.more || append?.mode || '',
+        }).append(append).rare();
         Q(place || 'tbody').appendChild(this.tr);
     }
+    numberCode(place, no = this.no.split('.')[0]) {
+        return `<td data-url='${Product.image(no)}'>` + no.replace(/^B-(\d\d)$/, 'B-<s>0</s>&nbsp;$1').replace(/(^BBG-\d+)/, place ? '$1' : 'wbba');
+    }
     append(append) {
-        if (!append) return;
-        const {mode, chip, more} = append;
-        const add = (td, code) => td.insertAdjacentHTML('beforeend', code);
+        if (!append) return this;
+        let {chip, more} = append;
         if (chip)
-            add(this.any('layer6c', 'layer'), `<img src=chips.svg#${chip} alt=${chip}>`);
-        if (/^s[wh]$/.test(mode))
-            add(this.any('layer6r'), `<sub>${mode}</sub>`);
-        else if (/^\+/.test(mode))
-            for (const td of this.any('driver').next2()) add(td, `<sub>${mode}</sub>`);
-        else if (more)
-            for (const td of this.any('layer6r', 'layer').next2()) add(td, `<b>${more}</b>`);
+            this.any('layer6c', 'layer').beforeEnd(`<img src=chips.svg#${chip}>`);
+        more = more?.split('.');
+        if (more)
+            for (const td of this.any(more[1], 'layer').next2()) 
+                td.beforeEnd(`<b>${more[0].replace(/^([^+])/, '+$1')}</b>`);
+        return this;
     }
-    attribute({'data-no': no, ...attr}) {
-        Object.entries({'data-no': no.split('.')[0], ...attr}).forEach(([a, v]) => v ? this.tr.setAttribute(a, v) : null);
-        this.rare(parseFloat(no.split('-')[1]));
+    attribute(attr) {
+        for (const a in attr) if (attr[a]) this.tr.setAttribute(a, attr[a]);
         this.tr.hidden = !Row.show;
-        no == Table.limit ? Row.show = false : null;
+        this.no == Table.limit ? Row.show = false : null;
+        return this;
     }
-    rare(no) {
+    rare(no = parseInt(this.no.split('-')[1])) {
         if ([100, 117, 129].includes(no))
             this.any('layer').style.color = 'black';
         else if ([139, 140.1, 142, 144, 145.1, 145.2, 146.1, 148, 149.1, 149.2, 150, 151.1, 153.1, 153.2, 154, 155, 156.1, 157].includes(no))
@@ -156,85 +155,86 @@ Row.reducedRate = [
     [[173, 176], '07 08']
 ].reduce((obj, [nos, extra]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: extra}), {}) }), {});
 Row.show = true;
-customElements.define('product-row', Row, {extends: 'tr'});
 
 Object.assign(HTMLTableCellElement.prototype, {
+    beforeEnd(html) {this.insertAdjacentHTML('beforeEnd', html);},
     next2() {return [this.nextElementSibling, this.nextElementSibling.nextElementSibling];},
+    preview() {Previewer.reset().open()[this.hasAttribute('data-url') ? 'image' : 'part'](this);},
     decompose(preview = false) {
-        let [sym, comp] = this.getAttribute('data-part').split('.');
-        let dash, prefix, core, more, regex = {
-            dash: /′(\+.)?$/,
-            prefix: /^[HM](?=[^′a-z])/,
-            core: /[\dα′_]+(?=[A-Zα_])/
-        };
-        if (comp == 'driver')
-            [dash, prefix, sym] = [regex.dash.exec(sym)?.[0], regex.prefix.exec(sym)?.[0], sym.replace(regex.dash, '').replace(regex.prefix, '')];
-        else if (comp == 'disk')
-            [comp, core, sym] = [regex.core.test(sym) ? 'frame' : 'disk', regex.core.exec(sym)?.[0], sym.replace(regex.core, '')];
-        if (preview) {
-            more = this.parentNode.getAttribute('data-more');
-            preview = [
-                core ? [core, 'disk'] : null,
-                /s[wh]/.test(more) && comp == 'layer6r' || /[ZX]/.test(more) && comp == 'driver' ? [`+${more}`, comp] : null
-            ];
-        }
-        return {
-            dash: dash, prefix: prefix, core: core,
-            parts: !preview ? [sym, comp] : [...preview, [sym, comp]].filter(part => part && part[0] != '_')
-        };
+        const sym = new PartAbbr(...this.getAttribute('data-part').split('.')).decompose();
+        if (preview) sym.preview(this.parentNode.getAttribute('data-more'));
+        return {...sym.prop, parts: sym.parts};
     },
-    preview() {
+    code(lang) {
+        const {parts: [sym, comp], prefix, dash, core, mode} = $(this).prevAll('td[data-part]')[0].decompose();
+        let name = names[comp][sym] || ['', '', ''];
+        name = Part.derivedNames({eng: name[0], chi: name[1], jap: name[2]}, prefix)[lang];
+        this.innerHTML = this.innerHTML.replace(/^.*?(<b>.+>)?$/, this[lang](name, comp, core) + this.append(name, dash, mode) + '$1');
+        this.classList[name.length >= this.oversize[lang][comp] ? 'add' : 'remove']('small');
+    },
+    eng: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
+    chi: (name, comp, core) => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
+    jap: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name),
+    append: (name, dash, mode) => name ? (dash ? '<i>′</i>' : '') + (/^\+(?!s[hw])/.test(mode) ? `<sub>${mode}</sub>` : '') : '',
+    oversize: {
+        eng: {layer6c: 10, driver: 12},
+        chi: {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4},
+        jap: {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, disk: 7, frame: 6, driver: 7} //イグニッション
+    }
+});
+class PartAbbr {
+    constructor(sym, comp) {
+        [this.sym, this.comp, this.prop] = [sym, comp, {}];
+    }
+    yield(...items) {
+        this.prop = items.reduce((prop, item) => ({...prop, [item]: PartAbbr.regex[item].exec(this.sym)?.[0]}), this.prop);
+        this.sym = items.reduce((sym, item) => sym.replace(PartAbbr.regex[item], ''), this.sym);
+        return this;
+    }
+    decompose() {
+        this.yield('mode').yield(...{driver: ['prefix', 'dash'], disk: ['core']}[this.comp] || []);
+        this.parts = [this.sym, this.comp = this.prop.core ? 'frame' : this.comp];
+        return this;
+    }
+    preview(more) {
+        this.parts = [this.parts.join('.'), 
+            this.prop.core ? this.prop.core + '.disk' : null, 
+            this.prop.mode ? this.prop.mode + '.' + this.comp : null, 
+            more && more.split('.')[1].includes(this.comp) ? more : null
+        ].filter(p => p && p[0] != '_');
+    }
+}
+PartAbbr.regex = {
+    prefix: /^[HM](?=[^′a-z])/,
+    dash: /′(?:\+.)?$/,
+    core: /[\dα′_]+(?=[A-Zα_])/,
+    mode: /\+[^. ]+/
+};
+const Previewer = {
+    reset() {
         Q('.catalog>*', el => el.remove());
         Q('label[for=popup]').removeAttribute('title');
         Q('label[for=popup] img', img => img.src = '');
+        return this;
+    },
+    open() {
         Q('#popup').checked = true;
-        if (this.hasAttribute('data-url')) {
-            Row.previewing = this;
-            let [href, parent] = [this.getAttribute('data-url'), this.parentNode];
-            if (parent.classList.contains('RB'))
-                Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
-            if (parent.hasAttribute('data-extra'))
-                Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
-            return Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
-        }
-        Row.previewing = this.hasAttribute('data-part') ? this : $(this).prevAll('td[data-part]')[0];
-        const {parts, dash, prefix} = Row.previewing.decompose(true);
-        parts.filter(p => p).forEach(async ([sym, comp]) => {
-            const key = `${sym}.${comp}`;
-            const part = await new Part(await DB.get('json', key), !/^\+/.test(sym) && (prefix || dash)).attach(key).revise(prefix && dash);
+        return this;
+    },
+    image(td) {
+        let [href, parent] = [td.getAttribute('data-url'), td.parentNode];
+        if (parent.classList.contains('RB'))
+            Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
+        if (parent.hasAttribute('data-extra'))
+            Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
+        Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
+    },
+    part(td) {
+        const {parts, dash, prefix} = (td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0]).decompose(true);
+        parts.forEach(async p => {
+            const part = await new Part(await DB.get('json', p), !/^\+/.test(p) && (prefix || dash)).attach(p).revise(prefix && dash);
             part.catalog();
             part.links();
         });
-    },
-    code(lang) {
-        const {parts: [sym, comp], prefix, dash, core} = $(this).prevAll('td[data-part]')[0].decompose();
-        let name = names[comp][sym] || ['', '', ''];
-        name = Part.derivedNames({eng: name[0], chi: name[1], jap: name[2]}, prefix)[lang];
-        const code = {
-            eng: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
-            chi: name => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
-            jap: name => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name)
-        }[lang](name) + (name && dash ? '<i>′</i>' : '');
-        this.innerHTML = this.innerHTML.replace(/^.*?(<(sub|b)>.+>)?$/, code + '$1');
-
-        const oversize = {eng: {layer6c: 10, driver: 12}};
-        oversize.chi = {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4};
-        oversize.jap = {...oversize.chi, disk: 7, frame: 6, driver: 7}; //イグニッション
-        this.classList[name.length >= oversize[lang][comp] ? 'add' : 'remove']('small');
-    }
-});
-document.onkeydown = ev => {
-    if (!Q('#popup').checked) return;
-    ev.preventDefault();
-    if (ev.key == 'ArrowRight')
-        $(Row.previewing).nextAll('td[data-part]')[0]?.preview();
-    else if (ev.key == 'ArrowLeft')
-        $(Row.previewing).prevAll('td[data-part],td[data-url]')[0]?.preview();
-    else if (/^Arrow(Up|Down)$/.test(ev.key)) {
-        const sib = $(Row.previewing.parentNode)[(ev.key == 'ArrowUp' ? 'prev' : 'next') + 'All']('tr:not([hidden])')[0];
-        if (Row.previewing.hasAttribute('data-url'))
-            return sib?.querySelector('td[data-url]').preview();
-        const comp = Row.previewing.getAttribute('data-part').split('.')[1];
-        (sib?.querySelector(`td[data-part$=${comp}]`) || sib?.querySelector(`td[data-part*=${comp.replace(/\d.$/, '')}]`))?.preview();
     }
 }
