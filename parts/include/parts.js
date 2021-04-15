@@ -98,7 +98,7 @@ const Tools = {
         if (group == 'remake')
             for (const t of ['MFB', 'BSB']) add(t, 'series');
         else if (count('object[data*=unk]') === 0 && !/^(disk|frame)/.test(group))
-            for (const t in Parts.types) add(Part.types[t].substring(0, 3).toLowerCase(), 'type');
+            for (const t in Parts.types) add(Parts.types[t].substring(0, 3).toLowerCase(), 'type');
     },
     magnify() {
         const slider = () => {
