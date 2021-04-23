@@ -40,7 +40,8 @@ h2:not(.single)::first-letter {
 }
 :is(#Ab,#Dr,#Ds,#Gn,#Hy,#Hr,#Kp,#Qc,#Rb,#Rg,#Sp,#Sw,#Vn,#Xc,#Zn,#αn,
 #B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,#Wy,
-#oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP) h2::first-letter {
+#oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP,
+#BL,#RG) h2::first-letter {
     letter-spacing:-.025em;
 }
 :is(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
