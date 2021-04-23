@@ -223,11 +223,14 @@ const Previewer = {
     },
     image(td) {
         let [href, parent] = [td.getAttribute('data-url'), td.parentNode];
-        if (parent.classList.contains('RB'))
-            Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
+        Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
+        if (!parent.classList.contains('RB')) 
+            return;
+        Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
+        if (parent.getAttribute('data-no') >= 'B-181')
+            Q('label[for=popup]').title = `01、02 機率各 1/12；其餘機率各 5/24`;
         if (parent.hasAttribute('data-extra'))
             Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
-        Q('label[for=popup] img').src = href.indexOf('https') < 0 ? `https://beyblade.takaratomy.co.jp/category/img/products/${href}.png` : href;
     },
     part(td) {
         const {parts, dash, prefix} = (td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0]).decompose(true);
