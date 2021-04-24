@@ -227,8 +227,8 @@ const Previewer = {
         if (!parent.classList.contains('RB')) 
             return;
         Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
-        if (parent.getAttribute('data-no') >= 'B-181')
-            Q('label[for=popup]').title = `01、02 機率各 1/12；其餘機率各 5/24`;
+        // if (parent.getAttribute('data-no') >= 'B-181')
+        //     Q('label[for=popup]').title = `01、02 機率各 1/12；其餘機率各 5/24`;
         if (parent.hasAttribute('data-extra'))
             Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
     },
