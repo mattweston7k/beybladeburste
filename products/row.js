@@ -152,7 +152,8 @@ Row.rareColors = [
 ].reduce((obj, [nos, color]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: color}), {}) }), {});
 Row.reducedRate = [
     [[170], '03 04'],
-    [[173, 176], '07 08']
+    [[173, 176], '07 08'],
+    [[181], '03']
 ].reduce((obj, [nos, extra]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: extra}), {}) }), {});
 Row.show = true;
 
@@ -227,10 +228,10 @@ const Previewer = {
         if (!parent.classList.contains('RB')) 
             return;
         Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
-        // if (parent.getAttribute('data-no') >= 'B-181')
-        //     Q('label[for=popup]').title = `01、02 機率各 1/12；其餘機率各 5/24`;
         if (parent.hasAttribute('data-extra'))
-            Q('label[for=popup]').title = `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
+            Q('label[for=popup]').title = parent.getAttribute('data-no') >= 'B-181' ? 
+                `01 機率 1/8；${parent.getAttribute('data-extra')} 機率 5/24；其餘各 1/6` : 
+                `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
     },
     part(td) {
         const {parts, dash, prefix} = (td.hasAttribute('data-part') ? td : $(td).prevAll('td[data-part]')[0]).decompose(true);
