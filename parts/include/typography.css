@@ -162,7 +162,7 @@ a[id$='+'] sup {
     --space:1.8;
 }
 #D.layer7b .name-col>div {
-    --space:.5 !important;
+    --space:.7 !important;
 }
 :is(#DGV2,#DZV2,#DRV2,#DCV2) :lang(ja) {
     margin:0 -.2em;

@@ -230,7 +230,7 @@ const Previewer = {
         Q('label[for=popup] img:nth-of-type(2)').src = `/img/RB/${parent.getAttribute('data-no')}.jpg`;
         if (parent.hasAttribute('data-extra'))
             Q('label[for=popup]').title = parent.getAttribute('data-no') >= 'B-181' ? 
-                `01 機率 1/8；${parent.getAttribute('data-extra')} 機率 5/24；其餘各 1/6` : 
+                `01 機率 1/8；${parent.getAttribute('data-extra')} 機率 5/24` : 
                 `01、02 機率各 1/12；${parent.getAttribute('data-extra').replace(' ', '、')} 機率各 1/6`;
     },
     part(td) {
