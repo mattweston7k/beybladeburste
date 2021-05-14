@@ -12,25 +12,28 @@ h2.kanji {
 :is(#α,#β) h2 {
     --adj:-.1em; }
     
-:is(#SgV) h2 {
+#SgV h2 {
     padding-right:.2em;
+}
+a[id='D+F'] h2 {
+    padding-right:.1em;
 }
 a[id^='1']:not([id='11']):not(.single) h2,
 :is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
-#dC,#dF,#oE,#eF) h2 {
+#dC,#dF,#oE,#eF):not(.dash) h2 {
     padding-right:.05em;
 }
-:is(.layer[id$='2'],#Hn,#Op,#Rb,#Sp) h2 {
+:is(.layer[id$='2'],#Hn,#Op,#Rb,#Sp):not(.dash) h2 {
     padding-right:0;
 }
 :is(#Cn,#Om,#Sw,#Wd,#Wh,a[id='00'],
 #S2,#V2,#W2,#aB,#kD,
-#zA,#aH,#Db,#SP,#BP,#GD,#WB) h2 {
+#zA,#aH,#Db,#SP,#BP,#GD,#WB):not(.dash) h2 {
     padding-right:0;
     padding-left:.03em;
 }
 :is(#Ab,#Tw,#Vn,#Ym,#Zn,
-#A2,#J2,#X2,#Y2,#Z2) h2 {
+#A2,#J2,#X2,#Y2,#Z2):not(.dash) h2 {
     padding-right:0;
     padding-left:.05em;
 }
@@ -124,10 +127,15 @@ a[id$='+'] sup {
     line-height:.95em;
 }
 #∞L sup {
-    font-size: 0.5em;
-    margin-left: -0.3em;
+    font-size:0.5em;
+    margin-left:-0.3em;
     vertical-align: 1.15em;
     line-height:0;
+}
+a[id*='+'] sub {
+    font-size:.7em;
+    margin-left:-.2em;
+    letter-spacing:-.1em;
 }
 
 /*text spacing*/
@@ -297,11 +305,11 @@ a.dash h2.single {
 :is(#A,#Ds).dash h2 {
     --space:-.1 !important; }
 :is(#Kp,#Op,#Sp,#Ch,#Zn).dash h2  {
-    --space:-.15; }
+    --space:-.125; }
 :is(#Hn,#Rb).dash h2  {
-    --space:-.175; }
+    --space:-.15; }
 :is(#Dm).dash h2  {
-    --space:-.25; }
+    --space:-.2; }
 :is(#Zt,#Xc,#Zn).dash h2 {
     padding-left:.1em; }
 

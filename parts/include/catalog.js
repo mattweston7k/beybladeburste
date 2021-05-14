@@ -86,6 +86,7 @@ Part.prototype.catalog = function() {
                 .replace(/^([dlr]α).$/, '$1')
                 .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
                 .replace(/^(.{2,}?)([2+])$/, '$1<sup>$2</sup>')
+                .replace(/^([A-z]+)(\+[A-Z])$/, '$1<sub>$2</sub>')
                 .replace(/^\+(?=s[wh]|ba)/, '');
             if (sym == 'sΩ')
                 code = "Ω";
@@ -93,7 +94,7 @@ Part.prototype.catalog = function() {
                 code = "D";
             else if (comp == 'layer6r' && sym[0] != '+')
                 code = code[0];
-            const cl = code.match(/^[^′<]+/)[0].length == 1 ? sym.charCodeAt(0) > 18000 ? 'kanji' : 'single' : '';
+            const cl = code.replace('′', '').length == 1 ? sym.charCodeAt(0) > 18000 ? 'kanji' : 'single' : '';
             return `<div class='symbol'><h2${cl ? ` class='${cl}'` : ``}>${code}</h2></div>`;
         },
         get name() {
