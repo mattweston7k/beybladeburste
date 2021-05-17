@@ -94,7 +94,7 @@ Part.prototype.catalog = function() {
                 code = "D";
             else if (comp == 'layer6r' && sym[0] != '+')
                 code = code[0];
-            const cl = code.replace('′', '').length == 1 ? sym.charCodeAt(0) > 18000 ? 'kanji' : 'single' : '';
+            const cl = code.match(/^[^′<]+/)[0].length == 1 ? sym.charCodeAt(0) > 18000 ? 'kanji' : 'single' : '';
             return `<div class='symbol'><h2${cl ? ` class='${cl}'` : ``}>${code}</h2></div>`;
         },
         get name() {

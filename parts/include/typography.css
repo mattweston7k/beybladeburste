@@ -16,7 +16,7 @@ h2.kanji {
     padding-right:.2em;
 }
 a[id='D+F'] h2 {
-    padding-right:.1em;
+    padding-left:.1em;
 }
 a[id^='1']:not([id='11']):not(.single) h2,
 :is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
@@ -133,8 +133,8 @@ a[id$='+'] sup {
     line-height:0;
 }
 a[id*='+'] sub {
-    font-size:.7em;
-    margin-left:-.2em;
+    font-family:ANC;font-size:.7em;
+    margin-left:-.25em;
     letter-spacing:-.1em;
 }
 
