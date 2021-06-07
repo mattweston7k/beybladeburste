@@ -18,6 +18,9 @@ h2.kanji {
 a[id='D+F'] h2 {
     padding-left:.1em;
 }
+a[id='Vn+V'] h2 {
+    padding-left:.5em;
+}
 a[id^='1']:not([id='11']):not(.single) h2,
 :is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
 #dC,#dF,#oE,#eF):not(.dash) h2 {
@@ -49,7 +52,7 @@ h2:not(.single)::first-letter {
 }
 :is(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
 a[id='2D'],a[id='2B'],.driver[id^='+'],
-#M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,
+#M2,#W2,#bK,#gK,#gV,a[id^=dα],#Un,#Wv,#Cm,a[id='Vn+V'],
 #gF,#dH,#hK,#dP,#pP,#wV,#Db,#Pα,
 a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
     letter-spacing:-.05em !important;
@@ -142,6 +145,9 @@ a[id*='+'] sub {
     font-family:ANC;font-size:.7em;
     margin-left:-.25em;
     letter-spacing:-.1em;
+}
+a[id='Vn+V'] sub {
+    margin-left:-.1em;
 }
 
 /*text spacing*/
