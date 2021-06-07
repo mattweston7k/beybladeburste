@@ -44,7 +44,7 @@ h2:not(.single)::first-letter {
 :is(#Ab,#Dr,#Ds,#Gn,#Hy,#Hr,#Kp,#Qc,#Rb,#Rg,#Sp,#Sw,#Vn,#Xc,#Zn,#αn,
 #B2,#D2,#G2,#H2,#N2,#O2,#U2,#aB,#aC,#dC,#dF,#nL,#bR,#Wy,
 #oE,#aH,#aK,#bL,#hS,#bX,#SP,#BP,
-#BL,#RG) h2::first-letter {
+#BH,#BL,#RG) h2::first-letter {
     letter-spacing:-.025em;
 }
 :is(#Wh,a[id^='1']:not(.single),a[id$=′]:not(.high),
@@ -61,11 +61,17 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB) h2::first-letter {
 :is(#Om,a[id='1′']) h2::first-letter {
     letter-spacing:-.1em;
 }
+#Mm h2::first-letter {
+    letter-spacing:-.125em;
+}
 :is(.layer[id^=超],#闇α,#光α) h2::first-letter {
     letter-spacing:-.03em;
 }
 :is(.layer[id^=超],#闇α,#光α) h2 {
     margin-left:-.07em;margin-right:.07em;
+}
+#Mm h2 {
+    transform:scaleX(.9);
 }
 
 :is(#GPg,#HKr,#GPr,#RUn,#MLd) h2 {
@@ -269,7 +275,7 @@ a[id*='+'] sub {
 a.high h2::first-letter {
     letter-spacing:-.05em;
 }
-:is(#HB,#HM).high h2::first-letter {
+:is(#HB,#HM,#HH).high h2::first-letter {
     letter-spacing:-.1em;
 }
 :is(#HZ,#HS).high h2::first-letter {
@@ -277,6 +283,9 @@ a.high h2::first-letter {
 }
 :is(#HB,#HJ).high h2 {
     letter-spacing:-.05em;
+}
+:is(#HH).high h2 {
+    letter-spacing:-.075em;
 }
 :is(#HA).high h2 {
     letter-spacing:-.1em;
