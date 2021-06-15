@@ -10,7 +10,7 @@ const justUpdated = (url, cache) => {
     const cachedDate = Date.parse(cache.headers.get('date'));
     return (
         /(catalog\.js|typography\.css)$/.test(url) && Date.parse('2021/06/10 13:25:00') >= cachedDate ||
-        /launchers\.html$/.test(url) && Date.parse('2021/06/15 16:15:00') >= cachedDate ||
+        /(launchers\.html|image\.js)$/.test(url) && Date.parse('2021/06/15 17:00:00') >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 1) >= cachedDate || false);
 }
