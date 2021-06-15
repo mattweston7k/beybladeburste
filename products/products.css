@@ -262,6 +262,15 @@ td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] 
     letter-spacing:-.025em;
     text-align:center;
 }
+td[data-part='MD.driver']+td {
+    letter-spacing:-.02em;
+}
+tr[data-more] td[data-part='DZV2.layer'] {
+    letter-spacing:-.01em;
+}
+tr[data-more] td[data-part='DZV2.layer'] s {
+    margin:0 -.1em 0 -.4em;
+}
 td>*:not([onclick]) {
     pointer-events:none;
 }
@@ -415,9 +424,6 @@ form button,caption data {
 @media (min-width: 900px) {
     th {--f:0.9em;}
     td {--f:0.8em;}
-}
-td[data-part='MD.driver']+td {
-    letter-spacing:-.02em;
 }
 
 /*color*/
