@@ -457,6 +457,9 @@ section.boards {
 .boards img~* {
     font-size:.85em;
 }
+.boards p {
+    margin-top:0;
+}
 .boards ruby {
     display:inline-grid;
     grid-template-columns:1em 1fr 1em;
