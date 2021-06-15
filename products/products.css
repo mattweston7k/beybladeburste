@@ -265,10 +265,10 @@ td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] 
 td[data-part='MD.driver']+td {
     letter-spacing:-.02em;
 }
-tr[data-more] td[data-part='DZV2.layer'] {
+tr[data-more] td[data-part='DZV2.layer']~.right {
     letter-spacing:-.01em;
 }
-tr[data-more] td[data-part='DZV2.layer'] s {
+tr[data-more] td[data-part='DZV2.layer']~.right s {
     margin:0 -.1em 0 -.4em;
 }
 td>*:not([onclick]) {
