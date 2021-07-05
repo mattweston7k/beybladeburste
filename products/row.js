@@ -153,7 +153,7 @@ Row.rareColors = [
 Row.reducedRate = [
     [[170], '03 04'],
     [[173, 176], '07 08'],
-    [[181], '03']
+    [[181, 186], '03']
 ].reduce((obj, [nos, extra]) => ({...obj, ...nos.reduce((obj, no) => ({...obj, [no]: extra}), {}) }), {});
 Row.show = true;
 
