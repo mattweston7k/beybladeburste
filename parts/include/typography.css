@@ -21,8 +21,11 @@ a[id='D+F'] h2 {
 a[id='Vn+V'] h2 {
     padding-left:.5em;
 }
+a[id='Nx+S'] h2 {
+    padding-left:.45em;
+}
 a[id^='1']:not([id='11']):not(.single) h2,
-:is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,
+:is(.driver[id^='+'],#C,#Q,a[id$=r],#Et,#Nt,#Rt,#Qc,#Qt,
 #dC,#dF,#oE,#eF):not(.dash) h2 {
     padding-right:.05em;
 }
@@ -148,6 +151,9 @@ a[id*='+'] sub {
 }
 a[id='Vn+V'] sub {
     margin-left:-.1em;
+}
+a[id='Nx+S'] sub {
+    margin-left:-.05em;
 }
 
 /*text spacing*/
@@ -321,7 +327,7 @@ a.dash h2.single {
     --space:-.1 !important; }
 :is(#Kp,#Op,#Sp,#Ch,#Zn).dash h2  {
     --space:-.125; }
-:is(#Hn,#Rb).dash h2  {
+:is(#Hn,#Rb,#Wv).dash h2  {
     --space:-.15; }
 :is(#Dm).dash h2  {
     --space:-.2; }
@@ -337,7 +343,7 @@ a.metal h2 {
     transform:scaleX(.9);
     padding-right:.05em;
 }
-:is(#MA) h2::first-letter {
+:is(#MA,#MS) h2::first-letter {
     letter-spacing:-.025em;
 }
 :is(#MF,#MD) h2::first-letter {
