@@ -77,7 +77,7 @@ const Product = {
             return no.replace('-', '_');
 
         const id = no.substring(2, 5);
-        if (id >= 186)
+        if (id >= 186 && id <= 187)
             return no.replace('-', '');
         if (id >= 129 && id <= 132 || id >= 139 && id <= 154 || id >= 159)
             return no;
