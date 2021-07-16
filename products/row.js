@@ -135,13 +135,14 @@ class Row {
         else if (no >= 159) {
             let x = Row.rareColors[no];
             if (x) return no >= 187 ? 
-                this.tr.querySelectorAll('td[data-part$=layer7b],td[data-part$=layer7c],td[data-part$=driver]').forEach(td => td.style.color = x) : 
+                this.all('layer7b', 'layer7c', 'driver').forEach(td => td.style.color = x) : 
                 this.any('layer6s', 'disk').style.color = x;
             x = Row.reducedRate[`${no}`.split('.')[0]];
             if (x) return this.tr.setAttribute('data-extra', x);
         }
     }
     any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
+    all(...tds) {return this.tr.querySelectorAll(tds.map(td => `td[data-part$=${td}]`).join(','));}
 }
 Row.rareColors = [
     [[159, 172, 179], 'rgb(210,190,0)'],
