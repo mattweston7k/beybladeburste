@@ -251,6 +251,7 @@ a:not([id]) dl div:nth-of-type(4) dd {
 .stat-5 dd small {
     margin-left:.1em;
     vertical-align:bottom;
+    font-size:.8em;
 }
 .desc {
     padding:.4em calc(4.2em/.7/10);margin:0;
