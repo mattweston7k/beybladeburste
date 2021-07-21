@@ -235,11 +235,13 @@ a:not([id]) dl div:nth-of-type(4) dd {
     color:hsl(270,80%,50%);
     text-shadow:0 0 0.1em white;
 }
-.stat-6.fusion div:nth-of-type(4) dd {
+:is(.fusion,#L.layer5b) div:nth-of-type(4) dd {
     font-style:italic;
+}
+.stat-6.fusion div:nth-of-type(4) dd {
     margin-right:.1em;
 }
-.stat-6[class*=heavy]:not(.grams) div:nth-of-type(4) dd {
+:is(.stat-6[class*=heavy]:not(.grams),#L.layer5b) div:nth-of-type(4) dd {
     letter-spacing:-.1em;
     padding-right:.1em;
 }
@@ -401,3 +403,4 @@ dfn[class] {
 }
 dfn.double {--c:185;}
 dfn.single {--c:140;}
+dfn.fusion {--c:275;}
