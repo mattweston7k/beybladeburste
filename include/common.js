@@ -96,8 +96,6 @@ const DB = {
                     item == 'products' ? DB.indicator.prod() : updates.push(item);
                 if (major && (oldUser || !Cookie.getHistory(item) && new Date - new Date(time) < 7*24*3600*1000))
                     notify.push(item);
-                if (item == 'products')
-                    await (await caches.open('cache')).delete('/products/row.js');
             }
             if (notify.length > 0)
                 Cookie.notification(notify);
