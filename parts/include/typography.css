@@ -355,3 +355,11 @@ a.metal h2 {
 :is(#MS).metal h2 {
     padding-left:.05em;
 }
+:is(#MDs) h2 {
+    transform:scaleX(.8);
+    padding-right:.08em;
+    letter-spacing:-.07em;
+}
+:is(#MDs) h2::first-letter {
+    letter-spacing:-.11em;
+}
