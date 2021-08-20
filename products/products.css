@@ -323,6 +323,7 @@ td img {
 }
 
 tbody {--border:.5px;}
+@supports (-webkit-touch-callout: none) {tbody {--border:1px;}}
 tbody {
     border-top:solid var(--border); }
 tbody tr {
