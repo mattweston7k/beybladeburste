@@ -39,7 +39,10 @@ Parts = {
         Q('nav .part data').value = Parts.group == 'LB' ?
             count('a[id].layer6r') + '⬌' + count('a[id].disk') :
             count('a[id]:not([id^="+"]):not(.none)');
-        if (/^(driver3|dash)$/.test(Parts.group)) Q('nav .part data').setAttribute('data-extra', '+4');
+        const extra = {
+            driver3: 5, dash: 4, driver4: 3, disk3: 1
+        }[Parts.group];
+        if (extra) Q('nav .part data').setAttribute('data-extra', `+${extra}`);
     },
     target() {
         let target = window.location.hash.substring(1);

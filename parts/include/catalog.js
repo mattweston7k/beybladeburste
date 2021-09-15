@@ -29,7 +29,7 @@ class Part {
         else {
             [this.sym, this.desc, this.attr] = {
                 high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, dashed ? ['dash'] : [] ],
-                dash: [`${this.sym}′`, `內藏強化彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
+                dash: [`${this.sym}′`, `內藏${this.sym == 'Br' ? '<em style="color:yellow">稍強</em>': '強化'}彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
                 metal: [`M${this.sym.replace('′', '')}`, `搭載金屬 Lock 部件、又內藏強化彈簧的【${this.sym.replace('′', '')}】driver。`, []]
             }[this.group];
             this.names = Part.derivedNames(this.names, this.group);
@@ -110,7 +110,7 @@ Part.prototype.catalog = function() {
             if (comp == 'driver' && /′$/.test(sym))
                 [names.eng, names.jap] = [names.eng + ' <sup>dash</sup>', names.jap + 'ダッシュ'];
 
-            let len, code, rows = comp == 'layer' || Part.derived.includes(group) || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
+            let len, code, rows = comp == 'layer' || Part.derived.includes(group) || names.eng.includes('Gear') || /(メタル|プラス)/.test(names.jap) || names.jap.length >= 10;
             if (rows) {
                 len = (names.jap + names.chi).replace(/\s/g, '').length - 15;
                 code = `
@@ -134,7 +134,7 @@ Part.prototype.catalog = function() {
                     <h3 lang=zh>${names.chi}</h3>
                 </div>`;
             }
-            return `<div class='name${!Part.derived.includes(group) ? rows ? '-row' : '-col' : ''}'>${code}</div>`;
+            return `<div class='name${Part.derived.includes(group) || names.eng.includes('Gear') ? '' : rows ? '-row' : '-col'}'>${code}</div>`;
         },
         get content() {
             const code = `<figure class='${(attr || []).join(' ')}' style='background:url(/parts/${comp}/${sym.replace(/^\+/, '⨁')}.png)'></figure>`;

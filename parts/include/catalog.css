@@ -206,7 +206,7 @@ dd {
 .day .stat-5>div {
     margin:0 .8em 0 1em;
 }
-.grams.stat-5 div:nth-of-type(4) dd {
+a:not([id^='+']) .grams.stat-5 div:nth-of-type(4) dd {
     letter-spacing:-0.05em;
 }
 .grams.stat-5 div:nth-of-type(4) {

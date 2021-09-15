@@ -22,17 +22,17 @@ class Layer extends AbsPart {
         if (sym == '/')
             return this.none();
         if (this.system == 'DB')
-            return super.code(`${sym}.layer7b`, `<s>&lt;</s>&nbsp;&nbsp;${sym}`, false);
+            return super.code(`${sym}.layer7b`, `<s>&lt;</s>&nbsp;${sym}`, false);
         if (this.system == 'SP')
             return super.code(`${sym}.layer6r`, `<s>=</s>${sym[0]}`, false);
         if (this.system == 'GT')
-            return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;${sym}&nbsp;`, false);
+            return super.code(`${sym}.layer5b`, `<s>&gt;</s>&nbsp;&nbsp;${sym}`, false);
     }
     motif(sym) {
         if (sym == '/')
             return this.none();
         if (this.system == 'DB')
-            return super.code(`${sym}.layer7c`, '<s>&lt;</s>' + sym, false);
+            return super.code(`${sym}.layer7c`, '<s>&lt;</s>' + sym.replace('2', '<sup>2</sup>'), false);
         if (this.system == 'SP')
             return super.code(`${sym}.layer6c`, '<s>=</s>' + sym.replace('2', '<sup>2</sup>'), false);
         if (this.system == 'GT')
@@ -116,7 +116,7 @@ class Row {
         if (chip)
             this.any('layer6c', 'layer').beforeEnd(`<img src=chips.svg#${chip}>`);
         more = more?.split('.');
-        if (more)
+        if (more && !/[FSVL]$/.test(more[0]))
             for (const td of this.any(more[1], 'layer').next2()) 
                 td.beforeEnd(`<b>${more[0].replace(/^([^+])/, '+$1')}</b>`);
         return this;
