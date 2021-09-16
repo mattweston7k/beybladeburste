@@ -72,9 +72,9 @@ const Search = {
             this.regex.push(new RegExp(this.mode || '__', 'i'));
         let t = this.inputs;
         if (t.layer7b)
-            this.regex.push(new RegExp('^(' + t.layer7b.join('|') + ')\\..+\\.\\d (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^(' + t.layer7b.join('|') + ')\\..+\\.\\d+ (.+ )?.+?$', 'u'));
         if (t.layer7c)
-            this.regex.push(new RegExp('^.+\\.(' + t.layer7c.join('|') + ')\\.\\d (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^.+\\.(' + t.layer7c.join('|') + ')\\.\\d+ (.+ )?.+?$', 'u'));
         if (t.layer6r)
             this.regex.push(new RegExp('^(' + t.layer6r.join('|') + ')(\\+.+)?.?\\..+\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', 'u'));
         if (t.layer6c)
