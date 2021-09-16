@@ -41,7 +41,7 @@ const Product = {
         if (/^BA-02/.test(no))
             return 'https://ct.yimg.com/xd/api/res/1.2/vYdfavcriXmhODfeHxKeug--/YXBwaWQ9eXR3YXVjdGlvbnNlcnZpY2U7aD02MDA7cT04NTtyb3RhdGU9YXV0bzt3PTYwMA--/https://s.yimg.com/ob/image/c4d8642f-cae6-473f-b763-bb50f7186288.jpg';
         if (/^BA-03/.test(no))
-            return 'https://www.toysrus.com.hk/www/4001/files/13274a.jpg';
+            return 'https://viewiderpublicap.s3-ap-southeast-1.amazonaws.com/template_photo/12099_629efd76ff789a1d345d96f8a0ccff881e15d5f9bdd54c4a0b47103a5064b3ee.jpg';
         if (/^BA-04/.test(no))
             return 'https://ct.yimg.com/xd/api/res/1.2/42QonUWAs7dwFUrFhnp5og--/YXBwaWQ9eXR3YXVjdGlvbnNlcnZpY2U7aD03NDA7cT04NTtyb3RhdGU9YXV0bzt3PTgwMA--/https://s.yimg.com/ob/image/410c9674-367e-46f5-9d8d-8b9441857106.jpg';
 

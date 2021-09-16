@@ -181,7 +181,7 @@ Object.assign(HTMLTableCellElement.prototype, {
     jap: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name),
     append: (name, dash, mode) => name ? (dash ? '<i>′</i>' : '') + (/^\+(?!s[hw])/.test(mode) ? `<sub>${mode}</sub>` : '') : '',
     oversize: {
-        eng: {layer6c: 10, driver: 12},
+        eng: {layer7b: 10, layer6c: 10, driver: 12},
         chi: {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, driver: 4},
         jap: {layer7b: 6, layer7c: 6, layer6r: 6, layer6c: 6, layer5b: 6, layer5c: 6, disk: 7, frame: 6, driver: 7} //イグニッション
     }
