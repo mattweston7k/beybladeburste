@@ -141,8 +141,8 @@ class Row {
             if (x) return this.tr.setAttribute('data-extra', x);
         }
     }
-    any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`).join(','));}
-    all(...tds) {return this.tr.querySelectorAll(tds.map(td => `td[data-part$=${td}]`).join(','));}
+    any(...tds) {return this.tr.querySelector(tds.map(td => `td[data-part$=${td}]`));}
+    all(...tds) {return this.tr.querySelectorAll(tds.map(td => `td[data-part$=${td}]`));}
 }
 Row.rareColors = [
     [[159, 172, 179], 'rgb(210,190,0)'],
