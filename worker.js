@@ -9,10 +9,6 @@ self.addEventListener('activate', ev => ev.waitUntil(clients.claim()));
 const justUpdated = (url, cache) => {
     const cachedDate = Date.parse(cache.headers.get('date'));
     return (
-        /(launchers\.html)$/.test(url) && Date.parse('2021/09/15 12:00:00') >= cachedDate ||
-        /(typography|catalog)\.css$/.test(url) && Date.parse('2021/09/15 12:00:00') >= cachedDate ||
-        /(search)\.js$/.test(url) && Date.parse('2021/09/16 10:45:00') >= cachedDate ||
-        /(parts|row|catalog)\.js$/.test(url) && Date.parse('2021/09/15 12:00:00') >= cachedDate ||
         /\.(css|js)$/.test(url) && (new Date).setDate((new Date).getDate() - 7) >= cachedDate ||
         (new Date).setMonth((new Date).getMonth() - 1) >= cachedDate || false);
 }
