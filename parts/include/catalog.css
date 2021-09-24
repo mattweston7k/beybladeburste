@@ -51,6 +51,10 @@
 #bal:not(:checked)~section .bal,
 #sta:not(:checked)~section .sta,
 #def:not(:checked)~section .def,
+#att:not(:checked)~section .unk,
+#bal:not(:checked)~section .unk,
+#sta:not(:checked)~section .unk,
+#def:not(:checked)~section .unk,
 #BSB:not(:checked)~section .BSB,
 #MFB:not(:checked)~section .MFB {
     display:none;
