@@ -250,7 +250,7 @@ a[id*='+'] sub {
     margin-right:.15em; }
 :is(#J.layer5b,#K.layer5b) div[class|=name]>div:first-child {
     margin-right:.1em; }
-:is(#I.layer5b,#K.layer5b) :lang(zh) {
+:is(#I.layer5b,#K.layer5b,#P.layer7b,#Dn.layer7b) :lang(zh) {
     margin-left:calc(var(--m) - .1em); }
 
 #Dm :lang(ja)::first-letter {
