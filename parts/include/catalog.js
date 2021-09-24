@@ -29,7 +29,7 @@ class Part {
         else {
             [this.sym, this.desc, this.attr] = {
                 high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, dashed ? ['dash'] : [] ],
-                dash: [`${this.sym}′`, `內藏${this.sym == 'Br' ? '<em style="color:yellow">稍強</em>': '強化'}彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
+                dash: [`${this.sym}′`, `內藏${this.sym == 'Br' ? '<em style="color:yellow">普通</em>': '強化'}彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
                 metal: [`M${this.sym.replace('′', '')}`, `搭載金屬 Lock 部件、又內藏強化彈簧的【${this.sym.replace('′', '')}】driver。`, []]
             }[this.group];
             this.names = Part.derivedNames(this.names, this.group);
