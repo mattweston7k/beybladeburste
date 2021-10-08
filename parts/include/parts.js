@@ -40,7 +40,7 @@ Parts = {
             count('a[id].layer6r') + '⬌' + count('a[id].disk') :
             count('a[id]:not([id^="+"]):not(.none)');
         const extra = {
-            driver3: 5, dash: 4, driver4: 3, disk3: 1
+            driver3: 5, dash: 4, driver4: 3, disk3: 1, high: 1
         }[Parts.group];
         if (extra) Q('nav .part data').setAttribute('data-extra', `+${extra}`);
     },

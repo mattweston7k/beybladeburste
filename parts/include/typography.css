@@ -295,6 +295,11 @@ a.high h2::first-letter {
 :is(#HZ,#HS).high h2 {
     padding-right:.05em;
 }
+a[id='HXt+'] h2 {
+    transform:scaleX(.9);
+    padding-right:.05em;
+    letter-spacing:-.05em;
+}
 a.dash h2 {
     letter-spacing:calc(1em*var(--space));
     padding-left:calc(1em*var(--space) + .05em);
