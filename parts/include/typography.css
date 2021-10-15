@@ -72,7 +72,7 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB,
     transform:scaleX(.9);
 }
 
-:is(#GPg,#HKr,#GPr,#RUn,#MLd) h2 {
+:is(#GPg,#HKr,#GPr,#RUn,#MLd,#GRP) h2 {
     letter-spacing:-.05em;
     padding-right:.1em;
     transform:scaleX(.9);
@@ -80,13 +80,13 @@ a[id^=GD],a[id^=DC],a[id^=DG],a[id^=DR],a[id^=DZ],#WB,
 #GPg h2 {
     padding-right:.05em !important;
 }
-#GPg h2 {
+#GPg h2,#GRP h2 {
     letter-spacing:-.075em !important;
 }
 #RUn h2 {
     letter-spacing:-.1em !important;
 }
-:is(#GPg,#HKr,#GPr,#RUn,#MLd) h2::first-letter {
+:is(#GPg,#HKr,#GPr,#RUn,#MLd,#GRP) h2::first-letter {
     letter-spacing:-.075em;
 }
 #MLd h2::first-letter {
@@ -127,7 +127,7 @@ a[id^=DZ] {
 #DGV2,#DRV2,#DZV2,#DCV2 {
     --left:.5em; }
     
-a[id$='+'] sup {
+a[id$='+'] h2 sup {
     font-size: 0.55em;
     margin-left: -0.2em;
     vertical-align: 1em;
@@ -295,10 +295,20 @@ a.high h2::first-letter {
 :is(#HZ,#HS).high h2 {
     padding-right:.05em;
 }
+#HXt h2 {
+    transform: scaleX(.9);
+    letter-spacing: -0.05em;
+    padding-left: .1em;
+}
 a[id='HXt+'] h2 {
-    transform:scaleX(.9);
-    padding-right:.05em;
+    transform:scaleX(.8);
+    padding-right:.1em;
     letter-spacing:-.05em;
+}
+a[id='HXt+'] h2 sup {
+    font-size:.6em;
+    vertical-align: .2em;
+    margin:0 -.5em 0 -.05em;
 }
 a.dash h2 {
     letter-spacing:calc(1em*var(--space));
@@ -336,7 +346,7 @@ a.dash h2.single {
 
 #α.dash h2 {
     --adj:0em; }
-#Ul.dash :lang(ja) {
+:is(#Ul.dash,a[id='HXt+']) :lang(ja) {
     letter-spacing:-.13em; }
 
 a.metal h2 {

@@ -302,6 +302,10 @@ a[id^=超].layer h2,#闇α h2,#光α h2 {font-size:1.8em;}
 h2 sup {font-size:.65em;}
 dt,dd {font-size:.8em;}
 .desc {font-size:.69em;}
+#GRP .desc {
+    font-size: 0.55em;
+    letter-spacing: -.04em;
+}
 
 figure::before,figure::after {
     position:absolute;
@@ -314,7 +318,7 @@ figure::before,figure::after {
     content:"\f2ea";color:hsl(30,100%,50%);
     left:-.15em;top:-.2em;
 }
-figure.dash::before {
+figure.dash::before,a[id^=Xt] figure::before {
     content:'⌇';color:gold;
     left:-.3em;bottom:-.3em;
 }
@@ -322,9 +326,16 @@ figure.metal::before {
     content:'✨';color:silver;
     left:-.1em;bottom:-.3em;
 }
-figure.high::after {
+figure.high::after,a[id^=Xt] figure::after {
     content:'⇪';color:magenta;
     right:-.2em;bottom:-.3em;
+}
+a[id^=Xt] figure::after {
+    left:-.2em;
+}
+a[id^=Xt] figure::before {
+    left:-.1em;
+    z-index:1;
 }
 figure.elec::after {
     content:'\f0e7';color:greenyellow;

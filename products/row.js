@@ -3,7 +3,7 @@ class AbsPart {
         [this.sym, this.fusion] = [sym, fusion];
     }
     code(part = this.sym + '.' + this.constructor.name.toLowerCase(), symCode = this.symCode, fusion = this.fusion) {
-        const mode = part.match(/\+[^. ]+/)?.[0];
+        const mode = part.match(/\+[^.′ ]+/)?.[0];
         mode ? symCode = symCode.replace(mode, '') + `<sub>${mode.replace(/\+(?=[sh])/, '')}</sub>` : '';
         return this.sym == '/' ? this.none() :
             `<td data-part='${part}'>${symCode}<td class=left><td class='right${fusion ? ' fusion' : ''}'>`;
@@ -67,7 +67,7 @@ class Disk extends AbsPart {
 class Driver extends AbsPart {
     constructor(sym, lowerFusion) {
         super(sym, lowerFusion);
-        this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace('′', '<s>#</s><i>′</i>') + (sym == '∞' ? '&nbsp;' : '');
+        this.symCode = (lowerFusion ? '&nbsp;' : '') + sym.replace(/\+′$/, '<sup>+</sup>′').replace('′', '<s>#</s><i>′</i>') + (sym == '∞' ? '&nbsp;' : '');
     }
 }
 
@@ -177,7 +177,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         this.classList[name.length >= this.oversize[lang][comp] ? 'add' : 'remove']('small');
     },
     eng: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
-    chi: (name, comp, core) => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
+    chi: (name, comp, core) => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace(/(?<=...)＋/, '<sup>＋</sup>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
     jap: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name),
     append: (name, dash, mode) => name ? (dash ? '<i>′</i>' : '') + (/^\+(?!s[hw])/.test(mode) ? `<sub>${mode}</sub>` : '') : '',
     oversize: {
@@ -212,7 +212,7 @@ PartAbbr.regex = {
     prefix: /^[HM](?=[^′a-z])/,
     dash: /′(?:\+.)?$/,
     core: /[\dα′_]+(?=[A-Zα_])/,
-    mode: /\+[^. ]+/
+    mode: /\+[^.′ ]+/
 };
 const Previewer = {
     reset() {

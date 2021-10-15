@@ -262,6 +262,12 @@ td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] 
     letter-spacing:-.025em;
     text-align:center;
 }
+td[data-part='HXt+′.driver'] sup {
+    margin:.2em .1em 0 -.1em;
+}
+td[data-part='HXt+′.driver']~* sup {
+    margin:.65em .1em 0 -.1em;
+}
 td[data-part='MD.driver']+td,
 tr[data-more] td[data-part='DZV2.layer']~.right {
     letter-spacing:-.02em;

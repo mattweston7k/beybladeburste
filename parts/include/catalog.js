@@ -28,7 +28,7 @@ class Part {
             this.attr = [...this.attr || [], ...Part.derived.filter(g => Part[g].includes(this.sym))];
         else {
             [this.sym, this.desc, this.attr] = {
-                high: [`H${this.sym}`, `高度提升的【${this.sym}】driver。`, dashed ? ['dash'] : [] ],
+                high: [`H${this.sym}`, this.sym == 'Xt′' ? `把【HXt+′】driver 換上【Xt】的 Chip 後即得。` : `高度提升的【${this.sym}】driver。`, dashed ? ['dash'] : [] ],
                 dash: [`${this.sym}′`, `內藏${this.sym == 'Br' ? '<em style="color:yellow">普通</em>': '強化'}彈簧的【${this.sym}】driver。`, ['high', 'metal'].filter(g => Part[g]?.includes(`${this.sym}′`)) ],
                 metal: [`M${this.sym.replace('′', '')}`, `搭載金屬 Lock 部件、又內藏強化彈簧的【${this.sym.replace('′', '')}】driver。`, []]
             }[this.group];
@@ -84,8 +84,8 @@ Part.prototype.catalog = function() {
         get symbol() {
             let code = sym
                 .replace(/^([dlr]α).$/, '$1')
-                .replace(/^([DG][A-Z]|∞)([A-Z].?)$/, '$1<sup>$2</sup>')
-                .replace(/^(.{2,}?)([2+])$/, '$1<sup>$2</sup>')
+                .replace(/^([DG][A-Z]|∞)(S|F|V|V2)$/, '$1<sup>$2</sup>')
+                .replace(/^(.{2,}?)([2+])(′?)$/, '$1<sup>$2</sup>$3')
                 .replace(/^([A-z]+)(\+[A-Z])$/, '$1<sub>$2</sub>')
                 .replace(/^\+(?=s[wh]|ba)/, '');
             if (sym == 'sΩ')
