@@ -265,9 +265,6 @@ td[data-part^=DGV2],td[data-part^=DRV2],td[data-part^=DCV2],td[data-part^=DZV2] 
 td[data-part='HXt+′.driver'] sup {
     margin:.2em .1em 0 -.1em;
 }
-td[data-part='HXt+′.driver']~* sup {
-    margin:.65em .1em 0 -.1em;
-}
 td[data-part='MD.driver']+td,
 tr[data-more] td[data-part='DZV2.layer']~.right {
     letter-spacing:-.02em;
@@ -315,7 +312,7 @@ td[data-part$=driver] sub {
 .right i:last-child {
     margin-right:-.1em; }
 .left sup,.right sup {
-    transform: translate(-.2em,-.4em); }
+    transform: translate(-.2em,.4em); }
 td[data-part*=layer] sup {
     transform: translate(-.1em,-.2em); }
 td:nth-child(5)[data-part$=layer5c],td[data-part$=disk] {
