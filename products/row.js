@@ -177,7 +177,7 @@ Object.assign(HTMLTableCellElement.prototype, {
         this.classList[name.length >= this.oversize[lang][comp] ? 'add' : 'remove']('small');
     },
     eng: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 13 ? name.replace(' ', '<br>') : name),
-    chi: (name, comp, core) => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace(/(?<=...)＋/, '<sup>＋</sup>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
+    chi: (name, comp, core) => (core ? `<u>${core} </u>` : '') + name.replace('︱', '<s>︱</s>').replace(/＋$/, '<sup>＋</sup>').replace('無限Ⅼ', '無限<sup>Ｌ</sup>'),
     jap: (name, comp, core) => (core ? `${core} ` : '') + (comp == 'driver' && name.length > 8 ? name.replace(/(アルティメット|エクステンド|メタル)/, '$1<br>') : name),
     append: (name, dash, mode) => name ? (dash ? '<i>′</i>' : '') + (/^\+(?!s[hw])/.test(mode) ? `<sub>${mode}</sub>` : '') : '',
     oversize: {
