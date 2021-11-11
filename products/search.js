@@ -76,21 +76,21 @@ const Search = {
         if (t.layer7c)
             this.regex.push(new RegExp('^.+\\.(' + t.layer7c.join('|') + ')\\.\\d+ (.+ )?.+?$', 'u'));
         if (t.layer6r)
-            this.regex.push(new RegExp('^(' + t.layer6r.join('|') + ')(\\+.+)?.?\\..+\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^(' + t.layer6r.join('|') + ')(\\+.+)?.?\\..+\\.(\\w{2}|!(?=\\s[一-龥])) (.+ )?.+?$', 'u'));
         if (t.layer6c)
-            this.regex.push(new RegExp('^.+\\.(' + t.layer6c.join('|') + ')\\.(\\w|!(?=\\s\\p{sc=Han}))+ (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^.+\\.(' + t.layer6c.join('|') + ')\\.(\\w{2}|!(?=\\s[一-龥])) (.+ )?.+?$', 'u'));
         if (t.layer5b)
-            this.regex.push(new RegExp('^(' + t.layer5b.join('|') + ')\\..+\\.\\W (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^(' + t.layer5b.join('|') + ')\\..+\\.\\W ([^一-龥]+ )?[^一-龥]+?$', 'u'));
         if (t.layer5c)
-            this.regex.push(new RegExp('^.+\\.(' + t.layer5c.join('|') + ')\\.\\W (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^.+\\.(' + t.layer5c.join('|') + ')\\.\\W ([^一-龥]+ )?[^一-龥]+?$', 'u'));
         if (t.layer5w || t.layer6s || t.layer7a)
-            this.regex.push(new RegExp('^.+\\..+\\.(' + [...t.layer5w || [], ...t.layer6s || [], ...t.layer7a || []].join('|') + ') (.+ )?.+?$', 'u'));
+            this.regex.push(new RegExp('^.+\\..+\\.(' + [...t.layer5w ?? [], ...t.layer6s ?? [], ...t.layer7a ?? []].join('|') + ') (.+ )?.+?$', 'u'));
         if (t.layer)
             this.regex.push(new RegExp('^(' + t.layer.join('|') + ') (.+ )?.+?$', 'u'));
         if (t.disk)
             this.regex.push(new RegExp('^.+? (' + t.disk.join('|') + ')[^a-z]? .+?$'));
-        if (t.frame)
-            this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + t.frame.join('|') + ') .+?$', 'u'));
+        if (t.disk2f)
+            this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + t.disk2f.join('|') + ') .+?$', 'u'));
         if (t.driver) 
             this.regex.push(new RegExp('^.+? (.+ )?[MH]?(' + t.driver.join('|') + ')′?(\\+[^ ]?)?$', 'u'));
         return this;
