@@ -89,8 +89,8 @@ const Search = {
             this.regex.push(new RegExp('^(' + t.layer.join('|') + ') (.+ )?.+?$', 'u'));
         if (t.disk)
             this.regex.push(new RegExp('^.+? (' + t.disk.join('|') + ')[^a-z]? .+?$'));
-        if (t.disk2f)
-            this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + t.disk2f.join('|') + ') .+?$', 'u'));
+        if (t.frame)
+            this.regex.push(new RegExp('^.+? [^A-Za-z]+(' + t.frame.join('|') + ') .+?$', 'u'));
         if (t.driver) 
             this.regex.push(new RegExp('^.+? (.+ )?[MH]?(' + t.driver.join('|') + ')′?(\\+[^ ]?)?$', 'u'));
         return this;
