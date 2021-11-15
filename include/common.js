@@ -272,7 +272,7 @@ class Indicator extends HTMLElement {
         this.show(error.target?.errorCode || error);
     }
     show(message) {this.shadowRoot.querySelector('p').innerHTML = message;}
-    prod() {Q('a[href="products/"]').href += '#flush';}
+    prod() {Q('a[href="products/"]').href += '#update';}
 }
 Indicator.observedAttributes = ['progress', 'status'];
 customElements.define('db-status', Indicator);

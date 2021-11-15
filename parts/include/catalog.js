@@ -168,7 +168,7 @@ Part.prototype.catalog = function() {
     return Q('.catalog').appendChild(anchor({
         id: comp == 'driver' ? sym.replace('′', '') : sym,
         href: /(9|pP|[lrd]αe)/.test(sym) ? '' : `/products/?${comp}=${encodeURIComponent(sym)}`,
-        classList: [...new Set([comp, group, type, generation, sym == 9 ? 'none' : ''])].filter(c => c).join(' ')
+        classList: [...new Set([comp, group, type, generation, sym == 9 && comp == 'disk' ? 'none' : ''])].filter(c => c).join(' ')
     }));
 }
 Part.prototype.links = function() {
